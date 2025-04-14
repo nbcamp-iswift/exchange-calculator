@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		58A6D1E62DACFD25005FE392 /* .swiftformat in Resources */ = {isa = PBXBuildFile; fileRef = 58A6D1E52DACFD1F005FE392 /* .swiftformat */; };
 		58EC91C12DACCB31006F03C4 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 58EC91C02DACCB31006F03C4 /* .swiftlint.yml */; };
 		58EC91CD2DACE3B6006F03C4 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 58EC91CC2DACE3B6006F03C4 /* SnapKit */; };
 		58EC91D02DACE3BF006F03C4 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 58EC91CF2DACE3BF006F03C4 /* Then */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		58A6D1E52DACFD1F005FE392 /* .swiftformat */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftformat; sourceTree = "<group>"; };
 		58EC91A62DACCA9A006F03C4 /* exchangeCalculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = exchangeCalculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		58EC91C02DACCB31006F03C4 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -54,6 +56,7 @@
 		58EC919D2DACCA9A006F03C4 = {
 			isa = PBXGroup;
 			children = (
+				58A6D1E52DACFD1F005FE392 /* .swiftformat */,
 				58EC91C02DACCB31006F03C4 /* .swiftlint.yml */,
 				58EC91A82DACCA9A006F03C4 /* exchangeCalculator */,
 				58EC91A72DACCA9A006F03C4 /* Products */,
@@ -75,6 +78,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 58EC91B92DACCA9B006F03C4 /* Build configuration list for PBXNativeTarget "exchangeCalculator" */;
 			buildPhases = (
+				58A6D1E82DACFD4B005FE392 /* SwiftFormat */,
 				58EC91C22DACCBF9006F03C4 /* SwiftLint */,
 				58EC91A22DACCA9A006F03C4 /* Sources */,
 				58EC91A32DACCA9A006F03C4 /* Frameworks */,
@@ -139,6 +143,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				58A6D1E62DACFD25005FE392 /* .swiftformat in Resources */,
 				58EC91C12DACCB31006F03C4 /* .swiftlint.yml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -146,6 +151,26 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		58A6D1E82DACFD4B005FE392 /* SwiftFormat */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftFormat;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftformat > /dev/null; then\n  swiftformat .\nelse\n  echo \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		58EC91C22DACCBF9006F03C4 /* SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
