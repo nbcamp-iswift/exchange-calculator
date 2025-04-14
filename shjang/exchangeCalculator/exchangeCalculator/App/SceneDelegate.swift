@@ -8,7 +8,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         willConnectTo _: UISceneSession,
         options _: UIScene.ConnectionOptions
     ) {
-        guard let _ = (scene as? UIWindowScene) else { return }
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+        window = UIWindow(windowScene: windowScene)
+        let rootViewController = MainViewController()
+        window?.rootViewController = rootViewController
+        window?.makeKeyAndVisible()
     }
 
     func sceneDidDisconnect(_: UIScene) {}
