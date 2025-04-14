@@ -39,8 +39,8 @@ private extension MainViewController {
 
         viewModel.errorPublisher
             .receive(on: DispatchQueue.main)
-            .sink { error in
-                // TODO: Alert 띄우기
+            .sink { [weak self] _ in
+                self?.showAlert(title: "오류", message: "데이터를 불러올 수 없습니다")
             }
             .store(in: &cancellables)
     }
