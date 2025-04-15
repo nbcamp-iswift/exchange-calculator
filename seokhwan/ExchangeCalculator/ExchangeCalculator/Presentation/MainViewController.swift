@@ -32,8 +32,8 @@ private extension MainViewController {
     func bind() {
         viewModel.exchangeRatesPublisher
             .receive(on: DispatchQueue.main)
-            .sink { exchangeRates in
-                // TODO: TableView에 데이터 갱신
+            .sink { [weak self] exchangeRates in
+                self?.mainView.update(with: exchangeRates)
             }
             .store(in: &cancellables)
 
