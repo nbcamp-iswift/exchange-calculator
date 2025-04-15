@@ -6,7 +6,9 @@ struct ExchangeRates: Hashable {
 
     init(from dto: ExchangeRatesDTO) {
         lastUpdated = Date(timeIntervalSince1970: dto.lastUpdated)
-        rates = Array(dto.rates).map { ExchangeRate(currencyCode: $0.key, rate: $0.value) }
+        rates = Array(dto.rates)
+            .map { ExchangeRate(currencyCode: $0.key, rate: $0.value) }
+            .sorted(by: { $0.currencyCode < $1.currencyCode })
     }
 }
 
