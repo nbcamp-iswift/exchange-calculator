@@ -11,12 +11,9 @@ final class MainView: UIView {
 
     private var dataSource: DataSource?
 
-    private lazy var tableView: UITableView = {
-        let tableView = UITableView()
-        tableView.register(ExchangeRateCell.self, forCellReuseIdentifier: ExchangeRateCell.identifier)
-
-        return tableView
-    }()
+    private lazy var tableView = UITableView().configure {
+        $0.register(ExchangeRateCell.self)
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -33,7 +30,7 @@ final class MainView: UIView {
         snapshot.appendSections([.main])
         snapshot.appendItems(exchangeRates.rates)
 
-        dataSource?.apply(snapshot, animatingDifferences: true)
+        dataSource?.apply(snapshot)
     }
 }
 

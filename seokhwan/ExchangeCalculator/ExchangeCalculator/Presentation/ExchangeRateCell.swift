@@ -2,8 +2,6 @@ import UIKit
 import SnapKit
 
 final class ExchangeRateCell: UITableViewCell {
-    static let identifier = "ExchangeRateCell"
-
     private lazy var currencyCodeLabel = UILabel()
     private lazy var rateLabel = UILabel()
 
@@ -30,9 +28,7 @@ private extension ExchangeRateCell {
     }
 
     func addSubviews() {
-        [currencyCodeLabel, rateLabel].forEach {
-            addSubview($0)
-        }
+        addSubviews(currencyCodeLabel, rateLabel)
     }
 
     func setConstraints() {
