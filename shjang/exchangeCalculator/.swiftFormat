@@ -3,7 +3,7 @@
 --linebreaks lf
 
 --wrapternary "before-operators"
-
+--maxwidth 100
 --wrapcollections "before-first"
 --wraparguments "before-first"
 
@@ -13,3 +13,4 @@
 --stripunusedargs "always"
 --elseposition "same-line"
 --guardelse "same-line"
+
