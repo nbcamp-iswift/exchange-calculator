@@ -13,9 +13,13 @@ final class MainViewController: UIViewController {
         super.viewDidLoad()
     }
 
-    func configure() {}
+    func configure() {
+        
+    }
 
-    func setAttributes() {}
+    func setAttributes() {
+        
+    }
 
     func addSubviews() {
         view.addSubview(tableView)
