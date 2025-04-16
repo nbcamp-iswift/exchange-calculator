@@ -9,6 +9,7 @@ final class ExchangeRateViewController: UIViewController {
 
     private lazy var tableView = UITableView().then {
         $0.dataSource = self
+        $0.delegate = self
         $0.rowHeight = 40
         $0.register(
             CustomTableViewCell.self,
@@ -28,6 +29,10 @@ final class ExchangeRateViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        configure()
+    }
+
+    private func configure() {
         setAttributes()
         setHierarchy()
         setConstraints()
@@ -85,7 +90,7 @@ extension ExchangeRateViewController: UITableViewDataSource {
         }
 
         let rate = viewModel.getRate(at: indexPath.row)
-        cell.configure(with: rate.currency, with: rate.rate)
+        cell.update(with: rate.currency, with: rate.rate)
         return cell
     }
 }

@@ -22,6 +22,10 @@ final class CustomTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        configure()
+    }
+
+    private func configure() {
         setAttribute()
         setHierarchy()
         setConstraints()
@@ -38,17 +42,17 @@ final class CustomTableViewCell: UITableViewCell {
 
     private func setConstraints() {
         currencyLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
+            make.leading.equalToSuperview().offset(16)
             make.centerY.equalToSuperview()
         }
 
         rateLabel.snp.makeConstraints { make in
-            make.trailing.equalToSuperview()
+            make.trailing.equalToSuperview().offset(-16)
             make.centerY.equalToSuperview()
         }
     }
 
-    func configure(with currency: String, with rate: Double) {
+    func update(with currency: String, with rate: Double) {
         currencyLabel.text = currency
         rateLabel.text = String(format: "%.4f", rate)
     }
