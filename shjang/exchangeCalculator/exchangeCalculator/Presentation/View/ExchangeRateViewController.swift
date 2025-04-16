@@ -1,18 +1,20 @@
 import UIKit
 import Combine
+import Then
 import SnapKit
 
 final class ExchangeRateViewController: UIViewController {
     private var viewModel: ExchangeRateViewModel
     private var cancellables = Set<AnyCancellable>()
 
-    private lazy var tableView: UITableView = {
-        let tableView = UITableView()
-        tableView.dataSource = self
-        tableView.rowHeight = 20
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "RateCell")
-        return tableView
-    }()
+    private lazy var tableView = UITableView().then {
+        $0.dataSource = self
+        $0.rowHeight = 40
+        $0.register(
+            CustomTableViewCell.self,
+            forCellReuseIdentifier: CustomTableViewCell.identifier
+        )
+    }
 
     init(viewModel: ExchangeRateViewModel) {
         self.viewModel = viewModel
@@ -58,7 +60,7 @@ final class ExchangeRateViewController: UIViewController {
 
     private func setConstraints() {
         tableView.snp.makeConstraints { make in
-            make.top.leading.trailing.bottom.equalToSuperview()
+            make.edges.equalTo(view.safeAreaLayoutGuide)
         }
     }
 
@@ -75,12 +77,21 @@ extension ExchangeRateViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let rate = viewModel.getRate(at: indexPath.row)
-        let cell = tableView.dequeueReusableCell(
-            withIdentifier: "RateCell",
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: CustomTableViewCell.identifier,
             for: indexPath
-        )
-        cell.textLabel?.text = "\(rate.currency): \(String(format: "%.4f", rate.rate))"
+        ) as? CustomTableViewCell else {
+            fatalError("Failed to Cast to CustomTableViewCell")
+        }
+
+        let rate = viewModel.getRate(at: indexPath.row)
+        cell.configure(with: rate.currency, with: rate.rate)
         return cell
+    }
+}
+
+extension ExchangeRateViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        (tableView.cellForRow(at: indexPath) as? CustomTableViewCell)?.animatedPressed {}
     }
 }
