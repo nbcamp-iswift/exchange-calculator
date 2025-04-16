@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		C969EE522DAF672800109D2F /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = C969EE512DAF672800109D2F /* SnapKit */; };
+		C969EE8A2DAF83D100109D2F /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = C969EE892DAF83D100109D2F /* Alamofire */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		C95071352DAE3D57002B4DD8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -65,6 +70,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C969EE522DAF672800109D2F /* SnapKit in Frameworks */,
+				C969EE8A2DAF83D100109D2F /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,6 +142,8 @@
 			);
 			name = ExchangeCalculator;
 			packageProductDependencies = (
+				C969EE512DAF672800109D2F /* SnapKit */,
+				C969EE892DAF83D100109D2F /* Alamofire */,
 			);
 			productName = ExchangeCalculator;
 			productReference = C950711B2DAE3D55002B4DD8 /* ExchangeCalculator.app */;
@@ -220,7 +229,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				C95071542DAE43D5002B4DD8 /* XCRemoteSwiftPackageReference "SnapKit" */,
-				C9ACDB672DAE592200F848EA /* XCRemoteSwiftPackageReference "Alamofire" */,
+				C969EE882DAF83B300109D2F /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C950711C2DAE3D55002B4DD8 /* Products */;
@@ -276,7 +285,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"Warning: Swiftlint, not installed. Try to download swiftLint by using brew.\"\nfi\n\n\n";
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n  swiftlint lint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		C94F36102DAE500400CB6BB8 /* SwiftFormat */ = {
@@ -296,7 +305,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftformat > /dev/null; then\n  swiftformat .\nelse\n  echo \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n\necho \"🔍 SRCROOT: $SRCROOT\"\necho \"📦 TARGET_NAME: $TARGET_NAME\"\necho \"⚙️ CONFIGURATION: $CONFIGURATION\"\necho \"📁 BUILT_PRODUCTS_DIR: $BUILT_PRODUCTS_DIR\"\n";
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftformat > /dev/null; then\n  swiftformat . --exclude ExchangeCalculatorTests,ExchangeCalculatorUITests\nelse\n  echo \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -636,15 +645,28 @@
 				minimumVersion = 5.7.1;
 			};
 		};
-		C9ACDB672DAE592200F848EA /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+		C969EE882DAF83B300109D2F /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 5.10.2;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C969EE512DAF672800109D2F /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C95071542DAE43D5002B4DD8 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		C969EE892DAF83D100109D2F /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C969EE882DAF83B300109D2F /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C95071132DAE3D55002B4DD8 /* Project object */;
 }
