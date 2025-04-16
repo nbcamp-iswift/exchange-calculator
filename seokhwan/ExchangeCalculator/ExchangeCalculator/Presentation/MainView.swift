@@ -37,7 +37,7 @@ final class MainView: UIView {
 private extension MainView {
     func configure() {
         setAttributes()
-        addSubviews()
+        setHierarchy()
         setConstraints()
     }
 
@@ -55,7 +55,7 @@ private extension MainView {
         }
     }
 
-    func addSubviews() {
+    func setHierarchy() {
         addSubview(tableView)
     }
 

@@ -26,10 +26,10 @@ final class MainViewController: UIViewController {
 
 private extension MainViewController {
     func configure() {
-        bind()
+        setBindings()
     }
 
-    func bind() {
+    func setBindings() {
         viewModel.exchangeRatesPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] exchangeRates in

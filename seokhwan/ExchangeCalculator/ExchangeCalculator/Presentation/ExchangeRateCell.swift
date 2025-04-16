@@ -23,11 +23,11 @@ final class ExchangeRateCell: UITableViewCell {
 
 private extension ExchangeRateCell {
     func configure() {
-        addSubviews()
+        setHierarchy()
         setConstraints()
     }
 
-    func addSubviews() {
+    func setHierarchy() {
         addSubviews(currencyCodeLabel, rateLabel)
     }
 
