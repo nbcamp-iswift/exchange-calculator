@@ -33,7 +33,7 @@
 		C95071462DAE3D57002B4DD8 /* Exceptions for "ExchangeCalculator" folder in "ExchangeCalculator" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				Resource/Info.plist,
 			);
 			target = C950711A2DAE3D55002B4DD8 /* ExchangeCalculator */;
 		};
@@ -277,6 +277,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"Warning: Swiftlint, not installed. Try to download swiftLint by using brew.\"\nfi\n\n\n";
+			showEnvVarsInLog = 0;
 		};
 		C94F36102DAE500400CB6BB8 /* SwiftFormat */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -296,6 +297,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftformat > /dev/null; then\n  swiftformat .\nelse\n  echo \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n\necho \"🔍 SRCROOT: $SRCROOT\"\necho \"📦 TARGET_NAME: $TARGET_NAME\"\necho \"⚙️ CONFIGURATION: $CONFIGURATION\"\necho \"📁 BUILT_PRODUCTS_DIR: $BUILT_PRODUCTS_DIR\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -347,7 +349,7 @@
 				DEVELOPMENT_TEAM = YMLG3QVVWG;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ExchangeCalculator/Info.plist;
+				INFOPLIST_FILE = ExchangeCalculator/Resource/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -375,7 +377,7 @@
 				DEVELOPMENT_TEAM = YMLG3QVVWG;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = ExchangeCalculator/Info.plist;
+				INFOPLIST_FILE = ExchangeCalculator/Resource/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
