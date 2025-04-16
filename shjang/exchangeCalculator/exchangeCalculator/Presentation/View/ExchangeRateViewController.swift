@@ -17,6 +17,10 @@ final class ExchangeRateViewController: UIViewController {
         )
     }
 
+    private lazy var searchBar = UISearchBar().then {
+        $0.searchBarStyle = .minimal
+    }
+
     init(viewModel: ExchangeRateViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -44,6 +48,7 @@ final class ExchangeRateViewController: UIViewController {
     }
 
     private func setHierarchy() {
+        view.addSubview(searchBar)
         view.addSubview(tableView)
     }
 
@@ -64,8 +69,14 @@ final class ExchangeRateViewController: UIViewController {
     }
 
     private func setConstraints() {
+        searchBar.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.trailing.leading.equalTo(view.safeAreaLayoutGuide)
+        }
+
         tableView.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide)
+            make.top.equalTo(searchBar.snp.bottom)
+            make.trailing.leading.bottom.equalTo(view.safeAreaLayoutGuide)
         }
     }
 
