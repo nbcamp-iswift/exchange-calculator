@@ -3,16 +3,29 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
+    private func makeDefaultExchangedRateRepository() -> DefaultExchangeRateRepository {
+        let appConfig = AppConfiguration()
+        return DefaultExchangeRateRepository(appConfiguration: appConfig)
+    }
+
+    private func makeViewModel() -> ExchangeRateViewModel {
+        ExchangeRateViewModel(repository: makeDefaultExchangedRateRepository())
+    }
+
     func scene(
         _ scene: UIScene,
         willConnectTo _: UISceneSession,
         options _: UIScene.ConnectionOptions
     ) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        window = UIWindow(windowScene: windowScene)
-        let rootViewController = MainViewController()
-        window?.rootViewController = rootViewController
-        window?.makeKeyAndVisible()
+        let window = UIWindow(windowScene: windowScene)
+        window
+            .rootViewController =
+            UINavigationController(
+                rootViewController: ExchangeRateViewController(viewModel: makeViewModel())
+            )
+        window.makeKeyAndVisible()
+        self.window = window
     }
 
     func sceneDidDisconnect(_: UIScene) {}
