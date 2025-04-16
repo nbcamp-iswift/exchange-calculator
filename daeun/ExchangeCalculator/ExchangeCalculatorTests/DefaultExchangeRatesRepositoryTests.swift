@@ -1,6 +1,6 @@
 //
-//  DefaultExchangeRepositoryTests.swift
-//  DefaultExchangeRepositoryTests
+//  DefaultExchangeRatesRepositoryTests.swift
+//  ExchangeCalculator
 //
 //  Created by 곽다은 on 4/15/25.
 //
