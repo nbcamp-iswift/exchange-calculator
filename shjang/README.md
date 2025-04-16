@@ -73,7 +73,12 @@ but since, `base_code` key should be matched with `json`. You create enum `Codin
 ### Repostiory(DataService) -> ViewModel -> ViewController
 This can be done normally on DIContainers, but for the simplicity, I used this in `SceneDelegate`.
 
-## Key
+## Log
+### Lvl 1. Complete
+
+### Lvl 2. Complete
+* AutoLayout
+![alt text](<Resource/Screen Recording 2025-04-17 at 1.16.52 AM.gif>)
 
 
 ## Resource

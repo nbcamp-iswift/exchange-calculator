@@ -36,7 +36,7 @@ final class ExchangeRateViewModel {
         }
     }
 
-    func getRate(at index: Int) -> ExchangeRate {
+    func getExchangeRate(at index: Int) -> ExchangeRate {
         rates[index]
     }
 

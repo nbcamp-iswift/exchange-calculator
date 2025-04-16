@@ -10,13 +10,24 @@ final class CustomTableViewCell: UITableViewCell {
 
     private lazy var currencyLabel = UILabel().then {
         $0.textColor = .black
-        $0.font = .systemFont(ofSize: 16, weight: .regular)
-        $0.textAlignment = .left
+        $0.font = .systemFont(ofSize: 16, weight: .medium)
+    }
+
+    private lazy var countryLabel = UILabel().then {
+        $0.textColor = .gray
+        $0.font = .systemFont(ofSize: 14)
+    }
+
+    private lazy var labelStackView = UIStackView(
+        arrangedSubviews: [currencyLabel, countryLabel]
+    ).then {
+        $0.axis = .vertical
+        $0.spacing = 4
     }
 
     private lazy var rateLabel = UILabel().then {
         $0.textColor = .black
-        $0.font = .systemFont(ofSize: 16, weight: .regular)
+        $0.font = .systemFont(ofSize: 16)
         $0.textAlignment = .right
     }
 
@@ -36,25 +47,28 @@ final class CustomTableViewCell: UITableViewCell {
     }
 
     private func setHierarchy() {
-        contentView.addSubview(currencyLabel)
+        contentView.addSubview(labelStackView)
         contentView.addSubview(rateLabel)
     }
 
     private func setConstraints() {
-        currencyLabel.snp.makeConstraints { make in
+        labelStackView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
             make.centerY.equalToSuperview()
         }
 
         rateLabel.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-16)
+            make.trailing.equalToSuperview().inset(16)
             make.centerY.equalToSuperview()
+            make.leading.greaterThanOrEqualTo(labelStackView.snp.trailing).offset(16)
+            make.width.equalTo(120)
         }
     }
 
-    func update(with currency: String, with rate: String) {
+    func update(with currency: String, with contryName: String, with rate: Double) {
         currencyLabel.text = currency
-        rateLabel.text = rate
+        countryLabel.text = contryName
+        rateLabel.text = String(format: "%.4f", rate)
     }
 
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {

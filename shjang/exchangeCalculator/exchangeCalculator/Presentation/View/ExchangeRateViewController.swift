@@ -10,7 +10,7 @@ final class ExchangeRateViewController: UIViewController {
     private lazy var tableView = UITableView().then {
         $0.dataSource = self
         $0.delegate = self
-        $0.rowHeight = 40
+        $0.rowHeight = 60
         $0.register(
             CustomTableViewCell.self,
             forCellReuseIdentifier: CustomTableViewCell.identifier
@@ -19,6 +19,7 @@ final class ExchangeRateViewController: UIViewController {
 
     private lazy var searchBar = UISearchBar().then {
         $0.searchBarStyle = .minimal
+        $0.placeholder = "Search currency"
     }
 
     init(viewModel: ExchangeRateViewModel) {
@@ -100,8 +101,12 @@ extension ExchangeRateViewController: UITableViewDataSource {
             fatalError("Failed to Cast to CustomTableViewCell")
         }
 
-        let rate = viewModel.getRate(at: indexPath.row)
-        cell.update(with: rate.currency, with: rate.rate)
+        let exchangeRate = viewModel.getExchangeRate(at: indexPath.row)
+        cell.update(
+            with: exchangeRate.currency,
+            with: exchangeRate.country,
+            with: exchangeRate.rate,
+        )
         return cell
     }
 }
@@ -109,5 +114,16 @@ extension ExchangeRateViewController: UITableViewDataSource {
 extension ExchangeRateViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         (tableView.cellForRow(at: indexPath) as? CustomTableViewCell)?.animatedPressed {}
+    }
+}
+
+extension ExchangeRateViewController: UISearchBarDelegate {
+    func searchBar(_: UISearchBar, textDidChange searchText: String) {
+        tableView.reloadData()
+    }
+
+    func searchBarSearchButtonClicked(_: UISearchBar) {
+        searchBar.text = nil
+        searchBar.resignFirstResponder()
     }
 }
