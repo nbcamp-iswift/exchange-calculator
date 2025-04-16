@@ -51,16 +51,31 @@ The one of the data response that I will get from server would be following:
     "BSD": 1,
     ....
   }
+}
 ```
 
 This can be converted into
 
 ```swift
 ExchangeRateDto {
-    let base_code: String
+    let baseCode: String
     let rates: [String: Double]
+    
+    enum CodingKeys: String, CodingKey {
+        case baseCode = "base_code"
+        case rates
+    }
 }
 ```
 
+but since, `base_code` key should be matched with `json`. You create enum `CodingKey` type for conversion.
+
+### Repostiory(DataService) -> ViewModel -> ViewController
+This can be done normally on DIContainers, but for the simplicity, I used this in `SceneDelegate`.
+
 ## Key
 
+
+## Resource
+* [Closure, Observable, Combine](https://ios-daniel-yang.tistory.com/entry/iOSSwift-Data-Binding%EC%97%90-%EB%8C%80%ED%95%98%EC%97%AC-%EC%95%8C%EC%95%84%EB%B3%B4%EC%9E%90-Closure-Observable-Combine-MVVM)
+* [CustomTableViewCell](https://ios-development.tistory.com/1753)
