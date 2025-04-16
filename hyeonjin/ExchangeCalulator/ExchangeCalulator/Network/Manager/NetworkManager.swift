@@ -9,7 +9,11 @@ import Foundation
 import RxSwift
 
 final class NetworkManager {
-    private let service = ExchangeRateService()
+    private let service: ExchangeRateServiceProtocol
+
+    init(service: ExchangeRateServiceProtocol) {
+        self.service = service
+    }
 
     func fetchExchangeRates() -> Single<[ExchangeRate]> {
         Single.create { [weak self] emitter in

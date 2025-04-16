@@ -10,7 +10,7 @@ import RxSwift
 
 final class MainViewModel {
 
-    let networkManager = NetworkManager()
+    let networkManager = NetworkManager(service: ExchangeRateService())
 
     var disposeBag: DisposeBag = DisposeBag()
 

@@ -15,9 +15,20 @@
 		9F7CA4C32DAF4C5000B64BF0 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 9F7CA4C22DAF4C5000B64BF0 /* RxSwift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		9F7CA59E2DAFB2E600B64BF0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9F42A6EC2DACDF9F00ADD007 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9F42A6F32DACDF9F00ADD007;
+			remoteInfo = ExchangeCalulator;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		9F42A6F42DACDF9F00ADD007 /* ExchangeCalulator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExchangeCalulator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F7CA4932DAF4AC200B64BF0 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
+		9F7CA59A2DAFB2E500B64BF0 /* ExchangeCalulatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExchangeCalulatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -39,6 +50,11 @@
 			path = ExchangeCalulator;
 			sourceTree = "<group>";
 		};
+		9F7CA59B2DAFB2E500B64BF0 /* ExchangeCalulatorTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ExchangeCalulatorTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +70,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9F7CA5972DAFB2E500B64BF0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -62,6 +85,7 @@
 			children = (
 				9F7CA4932DAF4AC200B64BF0 /* .swiftlint.yml */,
 				9F42A6F62DACDF9F00ADD007 /* ExchangeCalulator */,
+				9F7CA59B2DAFB2E500B64BF0 /* ExchangeCalulatorTests */,
 				9F42A6F52DACDF9F00ADD007 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -70,6 +94,7 @@
 			isa = PBXGroup;
 			children = (
 				9F42A6F42DACDF9F00ADD007 /* ExchangeCalulator.app */,
+				9F7CA59A2DAFB2E500B64BF0 /* ExchangeCalulatorTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -105,6 +130,29 @@
 			productReference = 9F42A6F42DACDF9F00ADD007 /* ExchangeCalulator.app */;
 			productType = "com.apple.product-type.application";
 		};
+		9F7CA5992DAFB2E500B64BF0 /* ExchangeCalulatorTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9F7CA5A02DAFB2E600B64BF0 /* Build configuration list for PBXNativeTarget "ExchangeCalulatorTests" */;
+			buildPhases = (
+				9F7CA5962DAFB2E500B64BF0 /* Sources */,
+				9F7CA5972DAFB2E500B64BF0 /* Frameworks */,
+				9F7CA5982DAFB2E500B64BF0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9F7CA59F2DAFB2E600B64BF0 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				9F7CA59B2DAFB2E500B64BF0 /* ExchangeCalulatorTests */,
+			);
+			name = ExchangeCalulatorTests;
+			packageProductDependencies = (
+			);
+			productName = ExchangeCalulatorTests;
+			productReference = 9F7CA59A2DAFB2E500B64BF0 /* ExchangeCalulatorTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -117,6 +165,10 @@
 				TargetAttributes = {
 					9F42A6F32DACDF9F00ADD007 = {
 						CreatedOnToolsVersion = 16.2;
+					};
+					9F7CA5992DAFB2E500B64BF0 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = 9F42A6F32DACDF9F00ADD007;
 					};
 				};
 			};
@@ -139,6 +191,7 @@
 			projectRoot = "";
 			targets = (
 				9F42A6F32DACDF9F00ADD007 /* ExchangeCalulator */,
+				9F7CA5992DAFB2E500B64BF0 /* ExchangeCalulatorTests */,
 			);
 		};
 /* End PBXProject section */
@@ -149,6 +202,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				9F7CA4942DAF4AC300B64BF0 /* .swiftlint.yml in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9F7CA5982DAFB2E500B64BF0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -184,7 +244,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9F7CA5962DAFB2E500B64BF0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9F7CA59F2DAFB2E600B64BF0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9F42A6F32DACDF9F00ADD007 /* ExchangeCalulator */;
+			targetProxy = 9F7CA59E2DAFB2E600B64BF0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		9F42A7082DACDFA100ADD007 /* Debug */ = {
@@ -362,6 +437,42 @@
 			};
 			name = Release;
 		};
+		9F7CA5A12DAFB2E600B64BF0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 932AKUPJM7;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.RyuhyeonJin.ExchangeCalulatorTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ExchangeCalulator.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ExchangeCalulator";
+			};
+			name = Debug;
+		};
+		9F7CA5A22DAFB2E600B64BF0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 932AKUPJM7;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.RyuhyeonJin.ExchangeCalulatorTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ExchangeCalulator.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ExchangeCalulator";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -379,6 +490,15 @@
 			buildConfigurations = (
 				9F42A7082DACDFA100ADD007 /* Debug */,
 				9F42A7092DACDFA100ADD007 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9F7CA5A02DAFB2E600B64BF0 /* Build configuration list for PBXNativeTarget "ExchangeCalulatorTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9F7CA5A12DAFB2E600B64BF0 /* Debug */,
+				9F7CA5A22DAFB2E600B64BF0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

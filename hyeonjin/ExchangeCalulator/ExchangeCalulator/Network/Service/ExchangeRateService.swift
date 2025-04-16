@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class ExchangeRateService {
+final class ExchangeRateService: ExchangeRateServiceProtocol {
 
     func request<T: Decodable>(_ type: ExchangeRateServiceType) async throws -> T {
         guard let url = URL(string: type.baseURL + type.path) else {

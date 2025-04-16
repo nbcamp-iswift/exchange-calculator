@@ -55,6 +55,7 @@ excluded:
     - ExchangeCalulator/App/AppDelegate.swift
     - Libraries
     - ExchangeCalulator/Network/DTO/ExchangeRateReponseDTO.swift
+    - ExchangeCalulatorTests/ExchangeCalulatorServiceTests.swift
 
 custom_rules:
   prohibit_lower_snake_case:
