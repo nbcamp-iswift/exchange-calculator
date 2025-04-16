@@ -1,0 +1,53 @@
+//
+//  MainView.swift
+//  ExchangeCalulator
+//
+//  Created by 유현진 on 4/15/25.
+//
+
+import UIKit
+import SnapKit
+
+final class MainView: UIView {
+
+    lazy var exchangeTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.register(
+            ExchangeRateTableViewCell.self,
+            forCellReuseIdentifier: ExchangeRateTableViewCell.identifier
+        )
+        return tableView
+    }()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        configure()
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError()
+    }
+}
+
+private extension MainView {
+    private func configure() {
+        setAttributes()
+        setHierarchy()
+        setConstraints()
+    }
+
+    func setAttributes() {
+        backgroundColor = .systemBackground
+    }
+
+    func setHierarchy() {
+        addSubview(exchangeTableView)
+    }
+
+    func setConstraints() {
+        exchangeTableView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+    }
+}
