@@ -11,13 +11,14 @@ import Foundation
 struct DefaultExchangeRatesUseCase: ExchangeRatesUseCase {
     let repository: ExchangeRatesRepository
 
-    init(repository: ExchangeRatesRepository) {
-        self.repository = repository
-    }
-
     func fetchExchangeRates(baseCurrency: String) async -> Result<ExchangeRates, AFError> {
         let result = await repository.fetchExchangeRates(by: baseCurrency)
 
-        return result.map { ExchangeRates(baseCurrency: $0.baseCode, rates: $0.rates) }
+        return result.map {
+            ExchangeRates(
+                baseCurrency: $0.baseCode,
+                rates: $0.rates.map { ExchangeRate(code: $0.key, rate: $0.value) }
+            )
+        }
     }
 }

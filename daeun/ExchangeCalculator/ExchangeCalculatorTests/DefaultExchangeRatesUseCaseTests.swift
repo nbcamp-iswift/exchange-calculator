@@ -28,10 +28,10 @@ final class DefaultExchangeRatesUseCaseTests: XCTestCase {
 
         // then
         switch result {
-            case let .success(entity):
-                XCTAssertEqual(entity.rates["KRW"], 1400)
-            case let .failure(error):
-                XCTFail("Expected success but got failure: \(error)")
+        case let .success(entity):
+            XCTAssertEqual(entity.rates["KRW"], 1400)
+        case let .failure(error):
+            XCTFail("Expected success but got failure: \(error)")
         }
     }
 
@@ -45,10 +45,10 @@ final class DefaultExchangeRatesUseCaseTests: XCTestCase {
         let result = await mockRepository.fetchExchangeRates(by: failureCode)
 
         switch result {
-            case let .success(entity):
-                XCTFail("Expected failure but got success: \(entity)")
-            case let .failure(error):
-                XCTAssertNotNil(error)
+        case let .success(entity):
+            XCTFail("Expected failure but got success: \(entity)")
+        case let .failure(error):
+            XCTAssertNotNil(error)
         }
     }
 }

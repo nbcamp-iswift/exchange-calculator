@@ -9,5 +9,5 @@ import Foundation
 
 struct ExchangeRates {
     let baseCurrency: String
-    let rates: [String: Double]
+    let rates: [ExchangeRate]
 }

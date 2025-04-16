@@ -24,11 +24,11 @@ final class DefaultExchangeRatesRepositoryTests: XCTestCase {
 
         // then
         switch result {
-            case let .success(dto):
-                XCTAssertEqual(dto.baseCode, "KRW")
-                XCTAssertFalse(dto.rates.isEmpty)
-            case let .failure(error):
-                XCTFail("Expected success but got failure: \(error)")
+        case let .success(dto):
+            XCTAssertEqual(dto.baseCode, "KRW")
+            XCTAssertFalse(dto.rates.isEmpty)
+        case let .failure(error):
+            XCTFail("Expected success but got failure: \(error)")
         }
     }
 
@@ -41,10 +41,10 @@ final class DefaultExchangeRatesRepositoryTests: XCTestCase {
 
         // then
         switch result {
-            case let .success(dto):
-                XCTFail("Expected failure but got success: \(dto)")
-            case let .failure(error):
-                XCTAssertNotNil(error)
+        case let .success(dto):
+            XCTFail("Expected failure but got success: \(dto)")
+        case let .failure(error):
+            XCTAssertNotNil(error)
         }
     }
 }
