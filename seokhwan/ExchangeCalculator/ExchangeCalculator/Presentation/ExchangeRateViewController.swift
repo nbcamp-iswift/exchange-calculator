@@ -1,6 +1,5 @@
 import UIKit
 import Combine
-import Alamofire
 
 final class ExchangeRateViewController: UIViewController {
     private lazy var viewModel = ExchangeRateViewModel(
@@ -45,7 +44,7 @@ private extension ExchangeRateViewController {
             }
             .store(in: &cancellables)
 
-        viewModel.errorPublisher
+        viewModel.errorMessagePublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.showAlert(title: "오류", message: "데이터를 불러올 수 없습니다")

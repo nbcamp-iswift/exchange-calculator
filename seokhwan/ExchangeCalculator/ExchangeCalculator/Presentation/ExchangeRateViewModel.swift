@@ -1,6 +1,5 @@
 import Foundation
 import Combine
-import Alamofire
 
 final class ExchangeRateViewModel {
     private let service = ExchangeRateService()
@@ -8,15 +7,15 @@ final class ExchangeRateViewModel {
         ExchangeRateInfo()
     )
     private let filteredExchangeRatesSubject = PassthroughSubject<ExchangeRates, Never>()
-    private let errorSubject = PassthroughSubject<AFError, Never>()
+    private let errorMessageSubject = PassthroughSubject<String, Never>()
     private var cancellables = Set<AnyCancellable>()
 
     var exchangeRatesPublisher: AnyPublisher<ExchangeRates, Never> {
         filteredExchangeRatesSubject.eraseToAnyPublisher()
     }
 
-    var errorPublisher: AnyPublisher<AFError, Never> {
-        errorSubject.eraseToAnyPublisher()
+    var errorMessagePublisher: AnyPublisher<String, Never> {
+        errorMessageSubject.eraseToAnyPublisher()
     }
 
     init(
@@ -46,7 +45,7 @@ final class ExchangeRateViewModel {
                 exchangeRateInfoSubject.send(exchangeRatesInfo)
                 filteredExchangeRatesSubject.send(exchangeRatesInfo.exchangeRates)
             case .failure(let error):
-                errorSubject.send(error)
+                errorMessageSubject.send(error.localizedDescription)
             }
         }
     }
