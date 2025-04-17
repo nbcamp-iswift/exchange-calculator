@@ -16,17 +16,15 @@ enum Constant {
         static let small: CGFloat = 14
     }
 
-    enum Layout {
-        enum Spacing {
-            static let cellVertical: CGFloat = 12
-            static let cellHorizontal: CGFloat = 16
-            static let labelStack: CGFloat = 4
-        }
+    enum Spacing {
+        static let cellVertical: CGFloat = 12
+        static let cellHorizontal: CGFloat = 16
+        static let labelStack: CGFloat = 4
+    }
 
-        enum Size {
-            static let cellHeight: CGFloat = 60
-            static let rateLabelWidth: CGFloat = 120
-        }
+    enum Size {
+        static let cellHeight: CGFloat = 60
+        static let rateLabelWidth: CGFloat = 120
     }
 
     enum Digits {

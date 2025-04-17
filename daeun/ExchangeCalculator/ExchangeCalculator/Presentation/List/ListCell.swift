@@ -9,15 +9,12 @@ import SnapKit
 import UIKit
 
 final class ListCell: UITableViewCell, ReuseIdentifying {
-    typealias Size = Constant.Layout.Size
-    typealias Spacing = Constant.Layout.Spacing
-
     // MARK: - Components
 
     private let labelStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.spacing = Spacing.labelStack
+        stackView.spacing = Constant.Spacing.labelStack
         return stackView
     }()
 
@@ -81,17 +78,17 @@ extension ListCell {
 
     private func setConstraints() {
         labelStackView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(Spacing.cellHorizontal)
+            make.leading.equalToSuperview().inset(Constant.Spacing.cellHorizontal)
             make.centerY.equalToSuperview()
         }
 
         rateLabel.snp.makeConstraints { make in
             make.leading
                 .greaterThanOrEqualTo(labelStackView.snp.trailing)
-                .offset(Spacing.cellHorizontal)
-            make.trailing.equalToSuperview().inset(Spacing.cellHorizontal)
+                .offset(Constant.Spacing.cellHorizontal)
+            make.trailing.equalToSuperview().inset(Constant.Spacing.cellHorizontal)
             make.centerY.equalToSuperview()
-            make.width.equalTo(Size.rateLabelWidth)
+            make.width.equalTo(Constant.Size.rateLabelWidth)
         }
     }
 
