@@ -9,7 +9,11 @@
 
 --indentcase "false"
 --self "remove"
---importgrouping "alpha"
---stripunusedargs "always"
+--stripunusedargs "closure-only"
 --elseposition "same-line"
 --guardelse "same-line"
+
+--disable "hoistPatternLet"
+--disable "sortImports"
+--disable "preferForLoop"
+--disable "trailingCommas"
