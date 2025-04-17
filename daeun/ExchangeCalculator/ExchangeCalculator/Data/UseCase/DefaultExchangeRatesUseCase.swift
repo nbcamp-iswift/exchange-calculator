@@ -11,7 +11,7 @@ import Foundation
 struct DefaultExchangeRatesUseCase: ExchangeRatesUseCase {
     let repository: ExchangeRatesRepository
 
-    func fetchExchangeRates(baseCurrency: String) async -> Result<ExchangeRates, AFError> {
+    func fetchExchangeRates(of baseCurrency: String) async -> Result<ExchangeRates, AFError> {
         let result = await repository.fetchExchangeRates(by: baseCurrency)
 
         return result.map {

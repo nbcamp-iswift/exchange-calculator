@@ -5,6 +5,7 @@
 //  Created by 곽다은 on 4/15/25.
 //
 
+import Combine
 import UIKit
 
 final class ListViewController: UIViewController {
@@ -18,13 +19,25 @@ final class ListViewController: UIViewController {
 
     // MARK: - Properties
 
+    private let viewModel: ListViewModel
     private var dataSource: UITableViewDiffableDataSource<ListSection, ListItem>?
+    private var cancellables = Set<AnyCancellable>()
 
     // MARK: - Components
 
     private let listView = ListView()
 
     // MARK: - Life Cycles
+
+    init(listViewModel: ListViewModel) {
+        viewModel = listViewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func loadView() {
         view = listView
@@ -33,6 +46,8 @@ final class ListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureDataSource()
+        viewModel.loadItems()
+        setBindings()
     }
 }
 
@@ -58,5 +73,21 @@ extension ListViewController {
         initialSnapshot.appendSections([.list])
 
         dataSource?.apply(initialSnapshot, animatingDifferences: true)
+    }
+}
+
+// MARK: Set Bindings
+
+extension ListViewController {
+    private func setBindings() {
+        viewModel.$rates
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] rates in
+                guard let self, var snapshot = dataSource?.snapshot() else { return }
+                let items = rates.map { ListItem.rate($0) }
+                snapshot.appendItems(items, toSection: .list)
+                dataSource?.apply(snapshot, animatingDifferences: true)
+            }
+            .store(in: &cancellables)
     }
 }

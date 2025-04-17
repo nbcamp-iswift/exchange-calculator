@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C9273A172DAFF4AE00CAD4A4 /* .swiftFormat in Resources */ = {isa = PBXBuildFile; fileRef = C9273A162DAFF4AE00CAD4A4 /* .swiftFormat */; };
+		C9273A192DAFF4B400CAD4A4 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = C9273A182DAFF4B400CAD4A4 /* .swiftlint.yml */; };
 		C969EE522DAF672800109D2F /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = C969EE512DAF672800109D2F /* SnapKit */; };
 		C969EE8A2DAF83D100109D2F /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = C969EE892DAF83D100109D2F /* Alamofire */; };
 /* End PBXBuildFile section */
@@ -29,6 +31,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C9273A162DAFF4AE00CAD4A4 /* .swiftFormat */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftFormat; sourceTree = "<group>"; };
+		C9273A182DAFF4B400CAD4A4 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		C950711B2DAE3D55002B4DD8 /* ExchangeCalculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExchangeCalculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C95071342DAE3D57002B4DD8 /* ExchangeCalculatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExchangeCalculatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C950713E2DAE3D57002B4DD8 /* ExchangeCalculatorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExchangeCalculatorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -95,6 +99,8 @@
 		C95071122DAE3D55002B4DD8 = {
 			isa = PBXGroup;
 			children = (
+				C9273A162DAFF4AE00CAD4A4 /* .swiftFormat */,
+				C9273A182DAFF4B400CAD4A4 /* .swiftlint.yml */,
 				C950711D2DAE3D55002B4DD8 /* ExchangeCalculator */,
 				C95071372DAE3D57002B4DD8 /* ExchangeCalculatorTests */,
 				C95071412DAE3D57002B4DD8 /* ExchangeCalculatorUITests */,
@@ -248,6 +254,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9273A192DAFF4B400CAD4A4 /* .swiftlint.yml in Resources */,
+				C9273A172DAFF4AE00CAD4A4 /* .swiftFormat in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

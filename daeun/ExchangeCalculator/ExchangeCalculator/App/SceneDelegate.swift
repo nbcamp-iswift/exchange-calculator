@@ -17,7 +17,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     ) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = ListViewController()
+        let repository = DefaultExchangeRatesRepository()
+        let useCase = DefaultExchangeRatesUseCase(repository: repository)
+        let viewModel = ListViewModel(useCase: useCase)
+        window?.rootViewController = ListViewController(listViewModel: viewModel)
         window?.makeKeyAndVisible()
     }
 }
