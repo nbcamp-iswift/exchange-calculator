@@ -58,6 +58,14 @@ extension MainViewController {
             }
             .disposed(by: self.disposeBag)
 
+        viewModel.filteredExchangeRates
+            .map { $0.isEmpty }
+            .observe(on: MainScheduler.instance)
+            .subscribe { [weak self] emptyItems in
+                guard let self else { return }
+                self.mainView.emptyLabel.isHidden = !emptyItems
+            }.disposed(by: self.disposeBag)
+
         viewModel.errorSubject
             .compactMap { $0 }
             .observe(on: MainScheduler.instance)

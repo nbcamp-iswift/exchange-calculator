@@ -19,11 +19,21 @@ final class MainView: UIView {
     lazy var exchangeTableView: UITableView = {
         let tableView = UITableView()
         tableView.rowHeight = 60
+        tableView.separatorStyle = .none
         tableView.register(
             ExchangeRateTableViewCell.self,
             forCellReuseIdentifier: ExchangeRateTableViewCell.identifier
         )
         return tableView
+    }()
+
+    lazy var emptyLabel: UILabel = {
+        let label = UILabel()
+        label.text = "검색 결과 없음"
+        label.textColor = .secondaryLabel
+        label.font = .systemFont(ofSize: 16)
+        label.textAlignment = .center
+        return label
     }()
 
     override init(frame: CGRect) {
@@ -46,6 +56,7 @@ private extension MainView {
 
     func setAttributes() {
         backgroundColor = .systemBackground
+        exchangeTableView.backgroundView = emptyLabel
     }
 
     func setHierarchy() {
