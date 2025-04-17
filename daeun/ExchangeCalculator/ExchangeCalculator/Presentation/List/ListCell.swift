@@ -40,8 +40,13 @@ final class ListCell: UITableViewCell, ReuseIdentifying {
 
 extension ListCell {
     private func configure() {
+        setAttributes()
         setHierachy()
         setConstraints()
+    }
+
+    private func setAttributes() {
+        selectionStyle = .none
     }
 
     private func setHierachy() {

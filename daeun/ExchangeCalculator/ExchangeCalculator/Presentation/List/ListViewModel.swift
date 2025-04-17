@@ -9,20 +9,20 @@ import Foundation
 import os
 
 final class ListViewModel {
-    private let useCase: ExchangeRatesUseCase
+    private let exchangeRatesUseCase: ExchangeRatesUseCase
     @Published private(set) var rates: [ExchangeRate] = []
 
-    init(useCase: ExchangeRatesUseCase) {
-        self.useCase = useCase
+    init(exchangeRatesUseCase: ExchangeRatesUseCase) {
+        self.exchangeRatesUseCase = exchangeRatesUseCase
     }
 
     func loadItems() {
         Task {
-            let result = await useCase.execute(for: Constant.baseCurrency)
+            let result = await exchangeRatesUseCase.execute()
 
             switch result {
             case let .success(data):
-                self.rates = data.rates
+                self.rates = data
             case .failure:
                 os_log("Show Alert")
             }

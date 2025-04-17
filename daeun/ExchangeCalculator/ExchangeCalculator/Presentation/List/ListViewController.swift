@@ -46,8 +46,8 @@ final class ListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureDataSource()
-        viewModel.loadItems()
         setBindings()
+        viewModel.loadItems()
     }
 }
 
@@ -64,7 +64,6 @@ extension ListViewController {
 
             guard case let ListItem.rate(exchangeRate) = item else { return nil }
             cell?.updateCell(for: exchangeRate)
-            cell?.selectionStyle = .none
 
             return cell
         }
@@ -72,7 +71,7 @@ extension ListViewController {
         var initialSnapshot = NSDiffableDataSourceSnapshot<ListSection, ListItem>()
         initialSnapshot.appendSections([.list])
 
-        dataSource?.apply(initialSnapshot, animatingDifferences: true)
+        dataSource?.apply(initialSnapshot)
     }
 }
 
@@ -86,7 +85,7 @@ extension ListViewController {
                 guard let self, var snapshot = dataSource?.snapshot() else { return }
                 let items = rates.map { ListItem.rate($0) }
                 snapshot.appendItems(items, toSection: .list)
-                dataSource?.apply(snapshot, animatingDifferences: true)
+                dataSource?.apply(snapshot)
             }
             .store(in: &cancellables)
     }
