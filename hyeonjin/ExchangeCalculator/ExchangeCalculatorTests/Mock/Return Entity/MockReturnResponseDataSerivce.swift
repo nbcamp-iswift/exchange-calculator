@@ -1,11 +1,11 @@
 //
 //  MockExchangeRateSerivce.swift
-//  ExchangeCalulatorTests
+//  ExchangeCalculatorTests
 //
 //  Created by 유현진 on 4/16/25.
 //
 
-@testable import ExchangeCalulator
+@testable import ExchangeCalculator
 import Foundation
 
 final class MockReturnResponseDataSerivce: ServiceProtocol {
@@ -29,6 +29,6 @@ final class MockReturnResponseDataSerivce: ServiceProtocol {
                 "EUR": 0.91
             ]
         )
-        return mockResponse as! T
+        return mockResponse as T
     }
 }
