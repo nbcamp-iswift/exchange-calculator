@@ -17,3 +17,5 @@
 --disable "sortImports"
 --disable "preferForLoop"
 --disable "trailingCommas"
+--disable "braces"
+--disable "wrapMultilineStatementBraces"
