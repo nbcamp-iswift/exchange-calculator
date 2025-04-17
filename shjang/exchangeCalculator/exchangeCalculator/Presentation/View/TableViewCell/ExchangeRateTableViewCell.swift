@@ -1,8 +1,8 @@
 import UIKit
 import Then
 
-final class CustomTableViewCell: UITableViewCell {
-    static let identifier: String = "CustomTableViewCell"
+final class ExchangeRateTableViewCell: UITableViewCell {
+    static let identifier: String = "ExchangeRateTableViewCell"
     private enum Const {
         static let backgroundColor = UIColor.white
         static let pressedColor = UIColor.gray
@@ -65,10 +65,15 @@ final class CustomTableViewCell: UITableViewCell {
         }
     }
 
-    func update(with currency: String, with contryName: String, with rate: Double) {
+    func update(with currency: String, with contryName: String, with rate: String) {
         currencyLabel.text = currency
         countryLabel.text = contryName
-        rateLabel.text = String(format: "%.4f", rate)
+        rateLabel.text = rate
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
@@ -84,10 +89,5 @@ final class CustomTableViewCell: UITableViewCell {
         }, completion: { _ in
             completion()
         })
-    }
-
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

@@ -4,16 +4,17 @@ import Then
 import SnapKit
 
 final class ExchangeRateViewController: UIViewController {
+    private enum Section { case main }
     private var viewModel: ExchangeRateViewModel
     private var cancellables = Set<AnyCancellable>()
+    private var dataSource: UITableViewDiffableDataSource<Section, ExchangeRateCellViewModel>?
 
     private lazy var tableView = UITableView().then {
-        $0.dataSource = self
         $0.delegate = self
         $0.rowHeight = 60
         $0.register(
-            CustomTableViewCell.self,
-            forCellReuseIdentifier: CustomTableViewCell.identifier
+            ExchangeRateTableViewCell.self,
+            forCellReuseIdentifier: ExchangeRateTableViewCell.identifier
         )
     }
 
@@ -42,6 +43,7 @@ final class ExchangeRateViewController: UIViewController {
         setAttributes()
         setHierarchy()
         setConstraints()
+        dataSource = configureDataSource()
         setBindings()
     }
 
@@ -59,8 +61,8 @@ final class ExchangeRateViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] state in
                 switch state {
-                case .loaded:
-                    self?.tableView.reloadData()
+                case .loaded(let viewModel):
+                    self?.updateSnapshot(with: viewModel)
                 case .failed(let msg):
                     self?.presentAlert(msg: msg)
                 case .idle, .loading:
@@ -87,44 +89,44 @@ final class ExchangeRateViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }
-}
 
-extension ExchangeRateViewController: UITableViewDataSource {
-    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        viewModel.getNumberOfRates()
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: CustomTableViewCell.identifier,
-            for: indexPath
-        ) as? CustomTableViewCell else {
-            fatalError("Failed to Cast to CustomTableViewCell")
+    private func configureDataSource()
+        -> UITableViewDiffableDataSource<Section, ExchangeRateCellViewModel>
+    {
+        UITableViewDiffableDataSource(tableView: tableView) {
+            tableView, indexPath, item in
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: ExchangeRateTableViewCell.identifier,
+                for: indexPath
+            ) as? ExchangeRateTableViewCell else {
+                fatalError("Failed to Cast to CustomTableView Cell")
+            }
+            cell.update(with: item.title, with: item.subtitle, with: item.trailingText)
+            return cell
         }
-
-        let exchangeRate = viewModel.getExchangeRate(at: indexPath.row)
-        cell.update(
-            with: exchangeRate.currency,
-            with: exchangeRate.country,
-            with: exchangeRate.rate,
-        )
-        return cell
     }
-}
 
-extension ExchangeRateViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        (tableView.cellForRow(at: indexPath) as? CustomTableViewCell)?.animatedPressed {}
+    private func updateSnapshot(with item: [ExchangeRateCellViewModel]) {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, ExchangeRateCellViewModel>()
+        snapshot.appendSections([.main])
+        snapshot.appendItems(item)
+        dataSource?.apply(snapshot, animatingDifferences: true)
     }
 }
 
 extension ExchangeRateViewController: UISearchBarDelegate {
     func searchBar(_: UISearchBar, textDidChange searchText: String) {
-        tableView.reloadData()
+        viewModel.filter(with: searchText)
     }
 
     func searchBarSearchButtonClicked(_: UISearchBar) {
         searchBar.text = nil
         searchBar.resignFirstResponder()
+    }
+}
+
+extension ExchangeRateViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        (tableView.cellForRow(at: indexPath) as? ExchangeRateTableViewCell)?.animatedPressed {}
     }
 }

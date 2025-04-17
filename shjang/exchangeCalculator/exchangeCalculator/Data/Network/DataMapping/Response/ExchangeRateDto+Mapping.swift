@@ -10,15 +10,18 @@ struct ExchangeRateDto: Codable {
     }
 }
 
-extension ExchangeRateDto {
-    func toDomain(using mapper: (String) -> String = CurrencyNameMapper.name) -> [ExchangeRate] {
-        rates
+enum ExchangeRateMapper {
+    static func map(
+        dto: ExchangeRateDto,
+        using mapper: (String) -> String = CurrencyNameMapper.name
+    ) -> [ExchangeRate] {
+        dto.rates
             .sorted { $0.key < $1.key }
-            .map {
+            .map { key, value in
                 ExchangeRate(
-                    currency: $0.key,
-                    country: mapper($0.key),
-                    rate: $0.value
+                    currency: key,
+                    country: mapper(key),
+                    rate: String(format: "%.4f", value)
                 )
             }
     }
