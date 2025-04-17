@@ -93,8 +93,7 @@ final class ExchangeRateViewController: UIViewController {
     private func configureDataSource()
         -> UITableViewDiffableDataSource<Section, ExchangeRateCellViewModel>
     {
-        UITableViewDiffableDataSource(tableView: tableView) {
-            tableView, indexPath, item in
+        UITableViewDiffableDataSource(tableView: tableView) { tableView, indexPath, item in
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: ExchangeRateTableViewCell.identifier,
                 for: indexPath
@@ -111,6 +110,8 @@ final class ExchangeRateViewController: UIViewController {
         snapshot.appendSections([.main])
         snapshot.appendItems(item)
         dataSource?.apply(snapshot, animatingDifferences: true)
+
+        tableView.backgroundView = item.isEmpty ? makeEmptyView() : nil
     }
 }
 
@@ -128,5 +129,16 @@ extension ExchangeRateViewController: UISearchBarDelegate {
 extension ExchangeRateViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         (tableView.cellForRow(at: indexPath) as? ExchangeRateTableViewCell)?.animatedPressed {}
+    }
+}
+
+extension ExchangeRateViewController {
+    private func makeEmptyView() -> UIView {
+        let label = UILabel()
+        label.text = "No data found"
+        label.textColor = .systemGray
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 16, weight: .medium)
+        return label
     }
 }
