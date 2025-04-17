@@ -11,6 +11,12 @@ import UIKit
 final class ListView: UIView {
     // MARK: - Components
 
+    private let searchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.backgroundImage = UIImage()
+        return searchBar
+    }()
+
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(ListCell.self, forCellReuseIdentifier: ListCell.reuseIdentifier)
@@ -45,12 +51,21 @@ extension ListView {
     }
 
     private func setHierachy() {
-        [tableView].forEach { addSubview($0) }
+        [
+            tableView,
+            searchBar,
+        ].forEach { addSubview($0) }
     }
 
     private func setConstraints() {
+        searchBar.snp.makeConstraints { make in
+            make.top.equalTo(safeAreaLayoutGuide)
+            make.horizontalEdges.equalToSuperview()
+        }
+
         tableView.snp.makeConstraints { make in
-            make.edges.equalTo(safeAreaLayoutGuide)
+            make.top.equalTo(searchBar.snp.bottom)
+            make.horizontalEdges.bottom.equalTo(safeAreaLayoutGuide)
         }
     }
 }

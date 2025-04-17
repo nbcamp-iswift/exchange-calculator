@@ -9,20 +9,23 @@ import Foundation
 
 final class ListViewModel {
     private let exchangeRatesUseCase: ExchangeRatesUseCase
-    @Published private(set) var rates: [ExchangeRate] = []
+    private var originalRates: [ExchangeRate] = []
     @Published private(set) var error: Bool = false
+    @Published private(set) var filteredRates: [ExchangeRate] = []
 
     init(exchangeRatesUseCase: ExchangeRatesUseCase) {
         self.exchangeRatesUseCase = exchangeRatesUseCase
+        loadList()
     }
 
-    func loadItems() {
+    private func loadList() {
         Task {
             let result = await exchangeRatesUseCase.execute()
 
             switch result {
             case let .success(data):
-                self.rates = data
+                originalRates = data
+                filteredRates = originalRates
             case .failure:
                 error = true
             }

@@ -49,11 +49,12 @@ final class ListViewController: UIViewController {
     }
 }
 
+// MARK: - Methods
+
 extension ListViewController {
     private func configure() {
         configureDataSource()
         setBindings()
-        viewModel.loadItems()
     }
 
     private func configureDataSource() {
@@ -77,13 +78,11 @@ extension ListViewController {
     }
 
     private func setBindings() {
-        viewModel.$rates
+        viewModel.$filteredRates
             .receive(on: DispatchQueue.main)
             .sink { [weak self] rates in
-                guard let self, var snapshot = dataSource?.snapshot() else { return }
                 let items = rates.map { ListItem.rate($0) }
-                snapshot.appendItems(items, toSection: .list)
-                dataSource?.apply(snapshot)
+                self?.updateSnapshot(with: items)
             }
             .store(in: &cancellables)
 
@@ -107,5 +106,12 @@ extension ListViewController {
         alertView.addAction(confirmAction)
 
         present(alertView, animated: true)
+    }
+
+    private func updateSnapshot(with items: [ListItem]) {
+        var snapshot = NSDiffableDataSourceSnapshot<ListSection, ListItem>()
+        snapshot.appendSections([.list])
+        snapshot.appendItems(items, toSection: .list)
+        dataSource?.apply(snapshot)
     }
 }
