@@ -6,6 +6,7 @@
 //
 
 import Combine
+import CombineCocoa
 import UIKit
 
 final class ListViewController: UIViewController {
@@ -78,6 +79,13 @@ extension ListViewController {
     }
 
     private func setBindings() {
+        listView.searchBar.textDidChangePublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] text in
+                self?.viewModel.filterRates(with: text)
+            }
+            .store(in: &cancellables)
+
         viewModel.$filteredRates
             .receive(on: DispatchQueue.main)
             .sink { [weak self] rates in
@@ -91,6 +99,13 @@ extension ListViewController {
             .filter { $0 }
             .sink { [weak self] _ in
                 self?.showAlert()
+            }
+            .store(in: &cancellables)
+
+        viewModel.$hasMatches
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] has in
+                self?.listView.isHiddenNoMatchLabel(hasMatch: has)
             }
             .store(in: &cancellables)
     }

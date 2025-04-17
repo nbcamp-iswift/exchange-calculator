@@ -11,7 +11,7 @@ import UIKit
 final class ListView: UIView {
     // MARK: - Components
 
-    private let searchBar: UISearchBar = {
+    let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.backgroundImage = UIImage()
         return searchBar
@@ -22,6 +22,14 @@ final class ListView: UIView {
         tableView.register(ListCell.self, forCellReuseIdentifier: ListCell.reuseIdentifier)
         tableView.separatorStyle = .none
         return tableView
+    }()
+
+    private let noMatchLabel: UILabel = {
+        let label = UILabel()
+        label.text = Constant.Text.noMatch
+        label.textColor = .gray
+        label.isHidden = true
+        return label
     }()
 
     // MARK: - Life Cycles
@@ -54,6 +62,7 @@ extension ListView {
         [
             tableView,
             searchBar,
+            noMatchLabel,
         ].forEach { addSubview($0) }
     }
 
@@ -67,5 +76,13 @@ extension ListView {
             make.top.equalTo(searchBar.snp.bottom)
             make.horizontalEdges.bottom.equalTo(safeAreaLayoutGuide)
         }
+
+        noMatchLabel.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+    }
+
+    func isHiddenNoMatchLabel(hasMatch: Bool) {
+        noMatchLabel.isHidden = hasMatch
     }
 }
