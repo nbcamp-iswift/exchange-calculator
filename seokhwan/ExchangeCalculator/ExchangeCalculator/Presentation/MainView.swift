@@ -39,20 +39,11 @@ private extension MainView {
         setAttributes()
         setHierarchy()
         setConstraints()
+        setDataSource()
     }
 
     func setAttributes() {
         backgroundColor = .background
-
-        dataSource = DataSource(tableView: tableView) { tableView, indexPath, exchangeRate in
-            guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: ExchangeRateCell.identifier,
-                for: indexPath
-            ) as? ExchangeRateCell else { return UITableViewCell() }
-            cell.update(with: exchangeRate)
-
-            return cell
-        }
     }
 
     func setHierarchy() {
@@ -62,6 +53,18 @@ private extension MainView {
     func setConstraints() {
         tableView.snp.makeConstraints { make in
             make.edges.equalTo(safeAreaLayoutGuide)
+        }
+    }
+
+    func setDataSource() {
+        dataSource = DataSource(tableView: tableView) { tableView, indexPath, exchangeRate in
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: ExchangeRateCell.identifier,
+                for: indexPath
+            ) as? ExchangeRateCell else { return UITableViewCell() }
+            cell.update(with: exchangeRate)
+
+            return cell
         }
     }
 }
