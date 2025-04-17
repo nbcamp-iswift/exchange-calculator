@@ -10,9 +10,8 @@ import RxSwift
 import RxCocoa
 
 final class MainViewModel {
-
     let networkManager = NetworkManager(service: ExchangeRateService())
-    var disposeBag: DisposeBag = DisposeBag()
+    var disposeBag: DisposeBag = .init()
 
     var exchangeRates = BehaviorSubject<[ExchangeRate]>(value: [])
     var filteredExchangeRates = BehaviorSubject<[ExchangeRate]>(value: [])
@@ -35,12 +34,12 @@ final class MainViewModel {
 
                 switch result {
                 case .success(let data):
-                    self.exchangeRates.onNext(data)
+                    exchangeRates.onNext(data)
                 case .failure(let error):
-                    self.errorSubject.onNext(error)
+                    errorSubject.onNext(error)
                 }
             }
-            .disposed(by: self.disposeBag)
+            .disposed(by: disposeBag)
     }
 
     private func bindFilteredExchangeRates() {
@@ -51,13 +50,13 @@ final class MainViewModel {
                 } else {
                     return exchangeRates.filter {
                         $0.currenyCode.lowercased().contains(searchbarText.lowercased()) ||
-                        $0.country.contains(searchbarText)
+                            $0.country.contains(searchbarText)
                     }
                 }
             }
             .subscribe {
                 self.filteredExchangeRates.onNext($0)
             }
-            .disposed(by: self.disposeBag)
+            .disposed(by: disposeBag)
     }
 }

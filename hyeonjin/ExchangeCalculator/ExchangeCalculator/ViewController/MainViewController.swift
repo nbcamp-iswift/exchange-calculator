@@ -10,15 +10,12 @@ import RxSwift
 import RxCocoa
 
 final class MainViewController: UIViewController {
-
     private let viewModel = MainViewModel()
 
-    var disposeBag: DisposeBag = DisposeBag()
+    var disposeBag: DisposeBag = .init()
 
-    private lazy var mainView: MainView = {
-        return MainView()
-    }()
-    
+    private lazy var mainView: MainView = .init()
+
     override func loadView() {
         view = mainView
     }
@@ -34,14 +31,14 @@ final class MainViewController: UIViewController {
         let alert = UIAlertController(
             title: "오류",
             message: "데이터를 불러올 수 없습니다.",
-            preferredStyle: .alert)
+            preferredStyle: .alert
+        )
         alert.addAction(UIAlertAction(title: "확인", style: .default))
         present(alert, animated: true)
     }
 }
 
 extension MainViewController {
-
     private func setAttributes() {
         view.backgroundColor = .systemBackground
     }
@@ -53,27 +50,27 @@ extension MainViewController {
                     cellIdentifier: ExchangeRateTableViewCell.identifier,
                     cellType: ExchangeRateTableViewCell.self
                 )
-            ) { (_, item, cell) in
+            ) { _, item, cell in
                 cell.setupCell(item: item)
             }
-            .disposed(by: self.disposeBag)
+            .disposed(by: disposeBag)
 
         viewModel.filteredExchangeRates
-            .map { $0.isEmpty }
+            .map(\.isEmpty)
             .observe(on: MainScheduler.instance)
             .subscribe { [weak self] emptyItems in
                 guard let self else { return }
-                self.mainView.emptyLabel.isHidden = !emptyItems
-            }.disposed(by: self.disposeBag)
+                mainView.emptyLabel.isHidden = !emptyItems
+            }.disposed(by: disposeBag)
 
         viewModel.errorSubject
             .compactMap { $0 }
             .observe(on: MainScheduler.instance)
             .subscribe { [weak self] _ in
                 guard let self else { return }
-                self.showAlert()
+                showAlert()
             }
-            .disposed(by: self.disposeBag)
+            .disposed(by: disposeBag)
 
         mainView.searchBar.rx.text
             .orEmpty
@@ -82,6 +79,6 @@ extension MainViewController {
                 guard let self else { return }
                 viewModel.searchBarText.accept(text)
             }
-            .disposed(by: self.disposeBag)
+            .disposed(by: disposeBag)
     }
 }

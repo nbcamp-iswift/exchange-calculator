@@ -13,9 +13,8 @@ enum MockExchangeRateServiceType {
 }
 
 extension MockExchangeRateServiceType: ServiceTypeProtocol {
-
     var baseURL: String {
-        return "invalid-url"
+        "invalid-url"
     }
 
     var path: String {

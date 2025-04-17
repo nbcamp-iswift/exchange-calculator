@@ -1,5 +1,5 @@
 //
-//  ExchangeRateEntity.swift
+//  ExchangeRate.swift
 //  ExchangeCalulator
 //
 //  Created by 유현진 on 4/16/25.

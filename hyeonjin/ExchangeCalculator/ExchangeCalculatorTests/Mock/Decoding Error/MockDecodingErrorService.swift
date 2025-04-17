@@ -9,9 +9,7 @@
 import Foundation
 
 final class MockDecodingErrorService: ServiceProtocol {
-
     func request<T: Decodable>(_ type: ServiceTypeProtocol) async throws -> T {
-
         let invalidJSON = Data("invalid json".utf8)
 
         do {

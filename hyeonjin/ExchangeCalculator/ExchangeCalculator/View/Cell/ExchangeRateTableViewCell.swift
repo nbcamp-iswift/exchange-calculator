@@ -9,7 +9,6 @@ import UIKit
 import SnapKit
 
 final class ExchangeRateTableViewCell: UITableViewCell {
-
     static let identifier: String = "ExchangeRateTableViewCell"
 
     private lazy var labelStackView: UIStackView = {

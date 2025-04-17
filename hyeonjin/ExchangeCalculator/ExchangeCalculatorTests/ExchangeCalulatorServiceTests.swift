@@ -1,5 +1,5 @@
 //
-//  ExchangeCalculatorServiceTests.swift
+//  ExchangeCalulatorServiceTests.swift
 //  ExchangeCalculatorTests
 //
 //  Created by 유현진 on 4/16/25.
@@ -31,7 +31,7 @@ final class ExchangeCalculatorServiceTests: XCTestCase {
                 }
 
                 expectation.fulfill()
-            }.disposed(by: self.disposeBag)
+            }.disposed(by: disposeBag)
 
         wait(for: [expectation], timeout: 5.0)
     }

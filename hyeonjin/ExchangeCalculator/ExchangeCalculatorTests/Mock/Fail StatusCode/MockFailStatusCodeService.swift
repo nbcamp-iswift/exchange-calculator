@@ -10,18 +10,17 @@ import Foundation
 
 final class MockFailStatusCodeService: ServiceProtocol {
     func request<T: Decodable>(_ type: ServiceTypeProtocol) async throws -> T {
-
         let invalidURL = URL(string: "https://example.com")
 
         let response = HTTPURLResponse(
-                    url: invalidURL,
-                    statusCode: 404,
-                    httpVersion: nil,
-                    headerFields: nil
-                )
+            url: invalidURL,
+            statusCode: 404,
+            httpVersion: nil,
+            headerFields: nil
+        )
 
         let dummyData = Data("dummy data".utf8)
-        
+
         if response.statusCode != 200 {
             throw ExchangeRateServiceError.statusCodeError(response.statusCode)
         }

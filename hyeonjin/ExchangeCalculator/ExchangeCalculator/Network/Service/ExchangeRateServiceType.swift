@@ -12,9 +12,8 @@ enum ExchangeRateServiceType {
 }
 
 extension ExchangeRateServiceType: ServiceTypeProtocol {
-
     var baseURL: String {
-        return "https://open.er-api.com/v6/"
+        "https://open.er-api.com/v6/"
     }
 
     var path: String {

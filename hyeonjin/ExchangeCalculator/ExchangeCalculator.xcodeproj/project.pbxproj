@@ -110,6 +110,7 @@
 				9F42A6F12DACDF9F00ADD007 /* Frameworks */,
 				9F42A6F22DACDF9F00ADD007 /* Resources */,
 				9F7CA4912DAF49E900B64BF0 /* SwiftLint Script */,
+				9FF49B332DB1890C003E56BC /* SwiftFormat Script */,
 			);
 			buildRules = (
 			);
@@ -233,6 +234,25 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "sh\nif [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nCONFIG_PATH=\"../../.swiftlint.yml\"\n\nif which swiftlint > /dev/null; then\n  if [ -f \"$CONFIG_PATH\" ]; then\n    swiftlint --config \"$CONFIG_PATH\"\n  else\n    echo \"warning: SwiftLint config file not found\"\n  fi\nelse\n  echo \"warning: SwiftLint not installed\"\nfi\n";
+		};
+		9FF49B332DB1890C003E56BC /* SwiftFormat Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "SwiftFormat Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "sh\nif [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nCONFIG_PATH=\"../../.swiftformat\"\n\nif which swiftlint > /dev/null; then\n  if [ -f \"$CONFIG_PATH\" ]; then\n    swiftformat . --config \"$CONFIG_PATH\"\n  else\n    echo \"warning: SwiftFormat config file not found\"\n  fi\nelse\n  echo \"warning: SwiftFormat not installed\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
