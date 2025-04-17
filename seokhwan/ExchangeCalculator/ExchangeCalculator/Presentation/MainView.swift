@@ -18,6 +18,7 @@ final class MainView: UIView {
 
     private lazy var tableView = UITableView().configure {
         $0.register(ExchangeRateCell.self)
+        $0.rowHeight = 60
     }
 
     override init(frame: CGRect) {
