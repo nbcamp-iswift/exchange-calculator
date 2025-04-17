@@ -18,7 +18,7 @@ final class NetworkManager {
     func fetchExchangeRates() -> Single<[ExchangeRate]> {
         Single.create { [weak self] emitter in
 
-            guard let self = self else {
+            guard let self else {
                 return Disposables.create()
             }
 
