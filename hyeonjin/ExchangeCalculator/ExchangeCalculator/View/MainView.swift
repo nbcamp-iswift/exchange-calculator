@@ -67,14 +67,12 @@ private extension MainView {
 
     func setConstraints() {
         searchBar.snp.makeConstraints { make in
-            make.top.equalTo(safeAreaLayoutGuide)
-            make.horizontalEdges.equalToSuperview()
+            make.top.horizontalEdges.equalTo(safeAreaLayoutGuide)
         }
 
         exchangeTableView.snp.makeConstraints { make in
             make.top.equalTo(searchBar.snp.bottom)
-            make.horizontalEdges.equalToSuperview()
-            make.bottom.equalTo(safeAreaLayoutGuide)
+            make.horizontalEdges.bottom.equalTo(safeAreaLayoutGuide)
         }
     }
 }
