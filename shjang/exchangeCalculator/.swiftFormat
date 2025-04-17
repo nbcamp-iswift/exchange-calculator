@@ -1,0 +1,18 @@
+--swiftversion 5.8
+--indent 4
+--linebreaks lf
+
+--wrapternary "before-operators"
+--maxwidth 100
+--wrapcollections "before-first"
+--wraparguments "before-first"
+
+--indentcase "false"
+--self "remove"
+--stripunusedargs "closure-only"
+--elseposition "same-line"
+--guardelse "same-line"
+
+--disable "hoistPatternLet"
+--disable "sortImports"
+--disable "preferForLoop"
