@@ -42,5 +42,6 @@ struct ExchangeRateReponseDTO: Codable {
                 country: CurrencyCodeMap.map[$0.key] ?? "알 수 없음"
             )
         }
+        .sorted { $0.base < $1.base }
     }
 }
