@@ -52,7 +52,7 @@ final class ExchangeRateTableViewCell: UITableViewCell {
     }
 
     func setupCell(item: ExchangeRate) {
-        currencyCodeLabel.text = item.base
+        currencyCodeLabel.text = item.currenyCode
         exchangeRateLabel.text = item.value
         countryLabel.text = item.country
     }

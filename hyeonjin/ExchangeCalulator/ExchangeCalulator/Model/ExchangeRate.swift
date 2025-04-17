@@ -8,7 +8,7 @@
 import Foundation
 
 struct ExchangeRate {
-    let base: String
+    let currenyCode: String
     let value: String
     let country: String
 }
