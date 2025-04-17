@@ -19,4 +19,10 @@ enum Constant {
     enum Digits {
         static let rate: Int = 4
     }
+
+    enum Alert {
+        static let title = "오류"
+        static let message = "데이터를 불러올 수 없습니다."
+        static let confirm = "확인"
+    }
 }

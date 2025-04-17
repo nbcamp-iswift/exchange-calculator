@@ -45,15 +45,17 @@ final class ListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        configure()
+    }
+}
+
+extension ListViewController {
+    private func configure() {
         configureDataSource()
         setBindings()
         viewModel.loadItems()
     }
-}
 
-// MARK: - DataSource
-
-extension ListViewController {
     private func configureDataSource() {
         dataSource = .init(tableView: listView.tableView) { tableView, indexPath, item
             -> UITableViewCell? in
@@ -73,11 +75,7 @@ extension ListViewController {
 
         dataSource?.apply(initialSnapshot)
     }
-}
 
-// MARK: - Set Bindings
-
-extension ListViewController {
     private func setBindings() {
         viewModel.$rates
             .receive(on: DispatchQueue.main)
@@ -88,5 +86,26 @@ extension ListViewController {
                 dataSource?.apply(snapshot)
             }
             .store(in: &cancellables)
+
+        viewModel.$error
+            .receive(on: DispatchQueue.main)
+            .filter { $0 }
+            .sink { [weak self] _ in
+                self?.showAlert()
+            }
+            .store(in: &cancellables)
+    }
+
+    private func showAlert() {
+        let alertView = UIAlertController(
+            title: Constant.Alert.title,
+            message: Constant.Alert.message,
+            preferredStyle: .alert
+        )
+
+        let confirmAction = UIAlertAction(title: Constant.Alert.confirm, style: .default)
+        alertView.addAction(confirmAction)
+
+        present(alertView, animated: true)
     }
 }

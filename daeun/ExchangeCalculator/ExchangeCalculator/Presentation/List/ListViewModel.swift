@@ -6,11 +6,11 @@
 //
 
 import Foundation
-import os
 
 final class ListViewModel {
     private let exchangeRatesUseCase: ExchangeRatesUseCase
     @Published private(set) var rates: [ExchangeRate] = []
+    @Published private(set) var error: Bool = false
 
     init(exchangeRatesUseCase: ExchangeRatesUseCase) {
         self.exchangeRatesUseCase = exchangeRatesUseCase
@@ -24,7 +24,7 @@ final class ListViewModel {
             case let .success(data):
                 self.rates = data
             case .failure:
-                os_log("Show Alert")
+                error = true
             }
         }
     }
