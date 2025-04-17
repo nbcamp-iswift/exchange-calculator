@@ -2,8 +2,11 @@ import UIKit
 import Combine
 import Alamofire
 
-final class MainViewController: UIViewController {
-    private lazy var viewModel = MainViewModel(viewDidLoadPublisher, searchTextDidChangePublisher)
+final class ExchangeRateViewController: UIViewController {
+    private lazy var viewModel = ExchangeRateViewModel(
+        viewDidLoadPublisher,
+        searchTextDidChangePublisher
+    )
     private let viewDidLoadSubject = PassthroughSubject<Void, Never>()
     private let searchTextDidChangeSubject = PassthroughSubject<String, Never>()
     private var cancellables = Set<AnyCancellable>()
@@ -16,10 +19,10 @@ final class MainViewController: UIViewController {
         searchTextDidChangeSubject.eraseToAnyPublisher()
     }
 
-    private lazy var mainView = MainView()
+    private lazy var exchangeRateView = ExchangeRateView()
 
     override func loadView() {
-        view = mainView
+        view = exchangeRateView
     }
 
     override func viewDidLoad() {
@@ -29,7 +32,7 @@ final class MainViewController: UIViewController {
     }
 }
 
-private extension MainViewController {
+private extension ExchangeRateViewController {
     func configure() {
         setBindings()
     }
@@ -38,7 +41,7 @@ private extension MainViewController {
         viewModel.exchangeRatesPublisher
             .receive(on: DispatchQueue.main)
             .sink { [weak self] exchangeRates in
-                self?.mainView.update(with: exchangeRates)
+                self?.exchangeRateView.update(with: exchangeRates)
             }
             .store(in: &cancellables)
 
@@ -49,7 +52,7 @@ private extension MainViewController {
             }
             .store(in: &cancellables)
 
-        mainView.searchTextDidChangePublisher
+        exchangeRateView.searchTextDidChangePublisher
             .sink { [weak self] searchText in
                 self?.searchTextDidChangeSubject.send(searchText)
             }

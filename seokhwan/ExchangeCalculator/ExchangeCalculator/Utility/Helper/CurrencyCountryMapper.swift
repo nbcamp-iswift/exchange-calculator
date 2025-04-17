@@ -1,11 +1,11 @@
 import Foundation
 
-enum CountryNameMapper {
-    static func countryName(from currency: String) -> String {
-        map[currency] ?? "-"
+enum CurrencyCountryMapper {
+    static func country(for currency: String) -> String {
+        mapping[currency] ?? "-"
     }
 
-    private static let map = [
+    private static let mapping = [
         "USD": "미국",
         "AED": "아랍에미리트",
         "AFN": "아프가니스탄",

@@ -2,7 +2,7 @@ import UIKit
 import Combine
 import SnapKit
 
-final class MainView: UIView {
+final class ExchangeRateView: UIView {
     enum Section {
         case main
     }
@@ -43,7 +43,7 @@ final class MainView: UIView {
         fatalError()
     }
 
-    func update(with exchangeRates: [ExchangeRate]) {
+    func update(with exchangeRates: ExchangeRates) {
         var snapshot = Snapshot()
         snapshot.appendSections([.main])
         snapshot.appendItems(exchangeRates)
@@ -59,7 +59,7 @@ final class MainView: UIView {
     }
 }
 
-private extension MainView {
+private extension ExchangeRateView {
     func configure() {
         setAttributes()
         setHierarchy()
@@ -109,7 +109,7 @@ private extension MainView {
     }
 }
 
-extension MainView: UISearchBarDelegate {
+extension ExchangeRateView: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         searchTextDidChangeSubject.send(searchText)
     }

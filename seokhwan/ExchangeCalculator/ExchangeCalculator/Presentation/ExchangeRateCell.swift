@@ -32,9 +32,9 @@ final class ExchangeRateCell: UITableViewCell {
     }
 
     func update(with exchangeRate: ExchangeRate) {
-        currencyLabel.text = exchangeRate.currencyCode
-        countryLabel.text = CountryNameMapper.countryName(from: exchangeRate.currencyCode)
-        rateLabel.text = String(format: "%.4f", exchangeRate.rate)
+        currencyLabel.text = exchangeRate.currency
+        countryLabel.text = CurrencyCountryMapper.country(for: exchangeRate.currency)
+        rateLabel.text = String(format: "%.4f", exchangeRate.value)
     }
 }
 
