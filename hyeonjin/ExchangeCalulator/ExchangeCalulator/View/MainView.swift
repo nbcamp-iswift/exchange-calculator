@@ -10,6 +10,12 @@ import SnapKit
 
 final class MainView: UIView {
 
+    lazy var searchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.backgroundImage = UIImage()
+        return searchBar
+    }()
+
     lazy var exchangeTableView: UITableView = {
         let tableView = UITableView()
         tableView.rowHeight = 60
@@ -43,12 +49,21 @@ private extension MainView {
     }
 
     func setHierarchy() {
-        addSubview(exchangeTableView)
+        [searchBar, exchangeTableView].forEach {
+            addSubview($0)
+        }
     }
 
     func setConstraints() {
+        searchBar.snp.makeConstraints { make in
+            make.top.equalTo(safeAreaLayoutGuide)
+            make.horizontalEdges.equalToSuperview()
+        }
+
         exchangeTableView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.equalTo(searchBar.snp.bottom)
+            make.horizontalEdges.equalToSuperview()
+            make.bottom.equalTo(safeAreaLayoutGuide)
         }
     }
 }

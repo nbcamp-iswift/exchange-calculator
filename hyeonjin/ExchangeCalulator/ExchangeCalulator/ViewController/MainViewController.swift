@@ -11,14 +11,14 @@ import RxCocoa
 
 final class MainViewController: UIViewController {
 
+    private let viewModel = MainViewModel()
+
     var disposeBag: DisposeBag = DisposeBag()
 
     private lazy var mainView: MainView = {
         return MainView()
     }()
-
-    let viewModel = MainViewModel()
-
+    
     override func loadView() {
         view = mainView
     }
@@ -27,29 +27,7 @@ final class MainViewController: UIViewController {
         super.viewDidLoad()
         setAttributes()
         setBindings()
-    }
-
-    private func setAttributes() {
-        view.backgroundColor = .systemBackground
-    }
-
-    private func setBindings() {
-        viewModel.exchangeRates
-            .bind(
-                to: mainView.exchangeTableView.rx.items(
-                    cellIdentifier: ExchangeRateTableViewCell.identifier,
-                    cellType: ExchangeRateTableViewCell.self
-                )
-            ) { (_, item, cell) in
-                cell.setupCell(item: item)
-            }.disposed(by: self.disposeBag)
-
-        viewModel.errorSubject
-            .compactMap { $0 }
-            .observe(on: MainScheduler.instance)
-            .subscribe { [weak self] _ in
-                self?.showAlert()
-            }.disposed(by: self.disposeBag)
+        hideKeyboardWhenTouchUpBackground()
     }
 
     private func showAlert() {
@@ -59,5 +37,43 @@ final class MainViewController: UIViewController {
             preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "확인", style: .default))
         present(alert, animated: true)
+    }
+}
+
+extension MainViewController {
+
+    private func setAttributes() {
+        view.backgroundColor = .systemBackground
+    }
+
+    private func setBindings() {
+        viewModel.filteredExchangeRates
+            .bind(
+                to: mainView.exchangeTableView.rx.items(
+                    cellIdentifier: ExchangeRateTableViewCell.identifier,
+                    cellType: ExchangeRateTableViewCell.self
+                )
+            ) { (_, item, cell) in
+                cell.setupCell(item: item)
+            }
+            .disposed(by: self.disposeBag)
+
+        viewModel.errorSubject
+            .compactMap { $0 }
+            .observe(on: MainScheduler.instance)
+            .subscribe { [weak self] _ in
+                guard let self else { return }
+                self.showAlert()
+            }
+            .disposed(by: self.disposeBag)
+
+        mainView.searchBar.rx.text
+            .orEmpty
+            .distinctUntilChanged()
+            .subscribe { [weak self] text in
+                guard let self else { return }
+                viewModel.searchBarText.accept(text)
+            }
+            .disposed(by: self.disposeBag)
     }
 }
