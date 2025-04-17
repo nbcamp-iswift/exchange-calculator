@@ -18,6 +18,7 @@ final class ExchangeRateViewController: UIViewController {
     }
 
     private lazy var searchBar = UISearchBar().then {
+        $0.delegate = self
         $0.searchBarStyle = .minimal
         $0.placeholder = "Search currency"
     }

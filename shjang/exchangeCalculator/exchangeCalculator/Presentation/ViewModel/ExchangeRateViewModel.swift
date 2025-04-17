@@ -10,6 +10,7 @@ final class ExchangeRateViewModel {
     }
 
     @Published private(set) var state: State = .idle
+    private(set) var filteredRates: [ExchangeRate] = []
 
     private let repository: ExchangeRateRepository
     private var baseCurrency: String = "USD"
@@ -28,11 +29,24 @@ final class ExchangeRateViewModel {
                 case .success(let data):
                     self?.state = .loaded
                     self?.rates = data
+                    self?.filteredRates = data
                 case .failure(let error):
                     print("Failed to fetch exchange rates: \(error)")
                     self?.state = .failed(error.localizedDescription)
                 }
             }
+        }
+    }
+
+    func filter(with keyword: String) {
+        guard !keyword.isEmpty else {
+            filteredRates = rates
+            return
+        }
+
+        filteredRates = rates.filter {
+            $0.currency.lowercased().contains(keyword.lowercased()) ||
+                $0.country.lowercased().contains(keyword.lowercased())
         }
     }
 

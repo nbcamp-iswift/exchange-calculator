@@ -12,12 +12,14 @@ struct ExchangeRateDto: Codable {
 
 extension ExchangeRateDto {
     func toDomain(using mapper: (String) -> String = CurrencyNameMapper.name) -> [ExchangeRate] {
-        rates.map {
-            ExchangeRate(
-                currency: $0.key,
-                country: mapper($0.key),
-                rate: $0.value
-            )
-        }
+        rates
+            .sorted { $0.key < $1.key }
+            .map {
+                ExchangeRate(
+                    currency: $0.key,
+                    country: mapper($0.key),
+                    rate: $0.value
+                )
+            }
     }
 }
