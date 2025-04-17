@@ -15,4 +15,8 @@ enum Constant {
         static let cellVertical: CGFloat = 12
         static let cellHorizontal: CGFloat = 20
     }
+
+    enum Digits {
+        static let rate: Int = 4
+    }
 }

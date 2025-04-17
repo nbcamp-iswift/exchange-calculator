@@ -18,7 +18,7 @@ final class ListViewModel {
 
     func loadItems() {
         Task {
-            let result = await useCase.fetchExchangeRates(of: Constant.baseCurrency)
+            let result = await useCase.execute(for: Constant.baseCurrency)
 
             switch result {
             case let .success(data):

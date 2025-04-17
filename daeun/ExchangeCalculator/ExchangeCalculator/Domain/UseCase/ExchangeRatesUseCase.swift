@@ -9,5 +9,5 @@ import Alamofire
 import Foundation
 
 protocol ExchangeRatesUseCase {
-    func fetchExchangeRates(of baseCurrency: String) async -> Result<ExchangeRates, AFError>
+    func execute(for baseCurrency: String) async -> Result<ExchangeRates, AFError>
 }

@@ -51,7 +51,7 @@ final class ListViewController: UIViewController {
     }
 }
 
-// MARK: DataSource
+// MARK: - DataSource
 
 extension ListViewController {
     private func configureDataSource() {
@@ -76,7 +76,7 @@ extension ListViewController {
     }
 }
 
-// MARK: Set Bindings
+// MARK: - Set Bindings
 
 extension ListViewController {
     private func setBindings() {
