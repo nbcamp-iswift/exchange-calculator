@@ -9,17 +9,35 @@ import SnapKit
 import UIKit
 
 final class ListCell: UITableViewCell, ReuseIdentifying {
+    typealias Size = Constant.Layout.Size
+    typealias Spacing = Constant.Layout.Spacing
+
     // MARK: - Components
 
-    private let currencyCodeLabel: UILabel = {
+    private let labelStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = Spacing.labelStack
+        return stackView
+    }()
+
+    private let currencyLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 16)
+        label.font = .systemFont(ofSize: Constant.FontSize.medium, weight: .medium)
         return label
     }()
 
-    private let exchangeRateLabel: UILabel = {
+    private let countryLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 16)
+        label.textColor = .gray
+        label.font = .systemFont(ofSize: Constant.FontSize.small)
+        return label
+    }()
+
+    private let rateLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: Constant.FontSize.medium)
+        label.textAlignment = .right
         return label
     }()
 
@@ -50,23 +68,36 @@ extension ListCell {
     }
 
     private func setHierachy() {
-        [currencyCodeLabel, exchangeRateLabel].forEach { addSubview($0) }
+        [
+            labelStackView,
+            rateLabel,
+        ].forEach { addSubview($0) }
+
+        [
+            currencyLabel,
+            countryLabel,
+        ].forEach { labelStackView.addArrangedSubview($0) }
     }
 
     private func setConstraints() {
-        currencyCodeLabel.snp.makeConstraints { make in
-            make.verticalEdges.equalToSuperview().inset(Constant.Spacing.cellVertical)
-            make.leading.equalToSuperview().inset(Constant.Spacing.cellHorizontal)
+        labelStackView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(Spacing.cellHorizontal)
+            make.centerY.equalToSuperview()
         }
 
-        exchangeRateLabel.snp.makeConstraints { make in
-            make.verticalEdges.equalToSuperview().inset(Constant.Spacing.cellVertical)
-            make.trailing.equalToSuperview().inset(Constant.Spacing.cellHorizontal)
+        rateLabel.snp.makeConstraints { make in
+            make.leading
+                .greaterThanOrEqualTo(labelStackView.snp.trailing)
+                .offset(Spacing.cellHorizontal)
+            make.trailing.equalToSuperview().inset(Spacing.cellHorizontal)
+            make.centerY.equalToSuperview()
+            make.width.equalTo(Size.rateLabelWidth)
         }
     }
 
-    func updateCell(for data: ExchangeRate) {
-        currencyCodeLabel.text = data.code
-        exchangeRateLabel.text = String(data.rate)
+    func updateCell(for data: ExchangeRate, _ countryName: String) {
+        currencyLabel.text = data.code
+        countryLabel.text = countryName
+        rateLabel.text = String(data.rate)
     }
 }

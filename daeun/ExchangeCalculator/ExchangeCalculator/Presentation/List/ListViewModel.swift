@@ -9,6 +9,7 @@ import Foundation
 
 final class ListViewModel {
     private let exchangeRatesUseCase: ExchangeRatesUseCase
+    private let countryCodeMapper = CountryCodeMapper()
     private var originalRates: [ExchangeRate] = []
     @Published private(set) var error: Bool = false
     @Published private(set) var filteredRates: [ExchangeRate] = []
@@ -40,5 +41,9 @@ final class ListViewModel {
             filteredRates = originalRates.filter { $0.code.hasPrefix(searchQuery.uppercased()) }
             hasMatches = !filteredRates.isEmpty
         }
+    }
+
+    func countryName(for code: String) -> String {
+        countryCodeMapper.name(for: code)
     }
 }

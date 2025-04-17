@@ -20,7 +20,7 @@ final class ListView: UIView {
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(ListCell.self, forCellReuseIdentifier: ListCell.reuseIdentifier)
-        tableView.separatorStyle = .none
+        tableView.rowHeight = Constant.Layout.Size.cellHeight
         return tableView
     }()
 

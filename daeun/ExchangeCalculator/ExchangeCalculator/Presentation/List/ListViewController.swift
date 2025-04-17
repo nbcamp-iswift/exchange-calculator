@@ -59,15 +59,18 @@ extension ListViewController {
     }
 
     private func configureDataSource() {
-        dataSource = .init(tableView: listView.tableView) { tableView, indexPath, item
-            -> UITableViewCell? in
+        dataSource = .init(
+            tableView: listView.tableView
+        ) { [weak self] tableView, indexPath, item -> UITableViewCell? in
+            guard let self else { return nil }
+
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: ListCell.reuseIdentifier,
                 for: indexPath
             ) as? ListCell
 
             guard case let ListItem.rate(exchangeRate) = item else { return nil }
-            cell?.updateCell(for: exchangeRate)
+            cell?.updateCell(for: exchangeRate, viewModel.countryName(for: exchangeRate.code))
 
             return cell
         }
