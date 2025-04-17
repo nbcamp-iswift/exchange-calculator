@@ -12,6 +12,7 @@ final class MainView: UIView {
 
     lazy var exchangeTableView: UITableView = {
         let tableView = UITableView()
+        tableView.rowHeight = 60
         tableView.register(
             ExchangeRateTableViewCell.self,
             forCellReuseIdentifier: ExchangeRateTableViewCell.identifier

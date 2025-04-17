@@ -12,15 +12,32 @@ final class ExchangeRateTableViewCell: UITableViewCell {
 
     static let identifier: String = "ExchangeRateTableViewCell"
 
-    private lazy var countryLabel: UILabel = {
+    private lazy var labelStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = 4
+        return stackView
+    }()
+
+    private lazy var currencyCodeLabel: UILabel = {
         let label = UILabel()
         label.textColor = .label
+        label.font = .systemFont(ofSize: 16, weight: .medium)
+        return label
+    }()
+
+    private lazy var countryLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .secondaryLabel
+        label.font = .systemFont(ofSize: 14)
         return label
     }()
 
     private lazy var exchangeRateLabel: UILabel = {
         let label = UILabel()
         label.textColor = .label
+        label.font = .systemFont(ofSize: 16)
+        label.textAlignment = .right
         return label
     }()
 
@@ -35,8 +52,9 @@ final class ExchangeRateTableViewCell: UITableViewCell {
     }
 
     func setupCell(item: ExchangeRate) {
-        countryLabel.text = item.base
+        currencyCodeLabel.text = item.base
         exchangeRateLabel.text = item.value
+        countryLabel.text = item.country
     }
 }
 
@@ -52,20 +70,26 @@ private extension ExchangeRateTableViewCell {
     }
 
     func setHierarchy() {
-        [countryLabel, exchangeRateLabel].forEach {
+        [currencyCodeLabel, countryLabel].forEach {
+            labelStackView.addArrangedSubview($0)
+        }
+
+        [labelStackView, exchangeRateLabel].forEach {
             addSubview($0)
         }
     }
 
     func setConstraints() {
-        countryLabel.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview().inset(10)
-            make.leading.equalToSuperview().inset(20)
+        labelStackView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(16)
+            make.centerY.equalToSuperview()
         }
 
         exchangeRateLabel.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview().inset(10)
-            make.trailing.equalToSuperview().inset(20)
+            make.leading.greaterThanOrEqualTo(labelStackView.snp.trailing).offset(16)
+            make.trailing.equalToSuperview().inset(16)
+            make.centerY.equalToSuperview()
+            make.width.equalTo(120)
         }
     }
 }

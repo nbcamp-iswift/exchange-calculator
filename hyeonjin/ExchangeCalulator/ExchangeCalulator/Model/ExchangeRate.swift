@@ -10,4 +10,5 @@ import Foundation
 struct ExchangeRate {
     let base: String
     let value: String
+    let country: String
 }

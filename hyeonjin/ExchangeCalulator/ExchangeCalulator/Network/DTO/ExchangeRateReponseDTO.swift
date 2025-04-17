@@ -35,6 +35,12 @@ struct ExchangeRateReponseDTO: Codable {
     }
 
     func toEntity() -> [ExchangeRate] {
-        rates.map { ExchangeRate(base: $0.key, value: String(format: "%.4f", $0.value)) }
+        rates.map {
+            ExchangeRate(
+                base: $0.key,
+                value: String(format: "%.4f", $0.value),
+                country: CurrencyCodeMap.map[$0.key] ?? "알 수 없음"
+            )
+        }
     }
 }
