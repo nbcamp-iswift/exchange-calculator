@@ -164,7 +164,7 @@ enum CurrencyNameMapper {
         "YER": "예멘",
         "ZAR": "남아프리카 공화국",
         "ZMW": "잠비아",
-        "ZWL": "짐바브웨",
+        "ZWL": "짐바브웨"
     ]
 
     static func name(for code: String) -> String {
