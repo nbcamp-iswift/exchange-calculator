@@ -11,17 +11,15 @@ import RxSwift
 
 final class ExchangeCalulatorServiceTests: XCTestCase {
     var disposeBag: DisposeBag!
-    var networkManage: NetworkManager!
 
     override func setUp() {
         super.setUp()
-        networkManage = NetworkManager(service: MockExchangeRateSerivce())
         disposeBag = DisposeBag()
     }
 
-
     func test_fetchExchangeRate_returnMockData() {
         let expectation = XCTestExpectation(description: "환율 정보 가져오기 완료")
+        let networkManage = NetworkManager(service: MockReturnResponseDataSerivce())
 
         networkManage.fetchExchangeRates()
             .subscribe{ result in
@@ -36,5 +34,59 @@ final class ExchangeCalulatorServiceTests: XCTestCase {
             }.disposed(by: self.disposeBag)
 
         wait(for: [expectation], timeout: 5.0)
+    }
+
+    func test_fetchExchangeRate_InvaildURL() async {
+        let service = ExchangeRateService()
+
+        do {
+            _ = try await service.request(MockExchangeRateServiceType.testFetchExchangeRate) as ExchangeRateReponseDTO
+            XCTFail("Expected to throw invaildURL error, but succeeded")
+        } catch let error as ExchangeRateServiceError {
+            switch error {
+            case .invaildURL:
+                XCTAssert(true)
+            default:
+                XCTFail("Unexpected error: \(error)")
+            }
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+    
+    func test_fetchExchangeRate_StatusCodeError() async {
+        let service = MockFailStatusCodeService()
+
+        do {
+            _ = try await service.request(ExchangeRateServiceType.fetchExchangeRate) as ExchangeRateReponseDTO
+            XCTFail("Expected to throw statusCodeError error, but succeeded")
+        } catch let error as ExchangeRateServiceError {
+            switch error {
+            case .statusCodeError(let code):
+                XCTAssertEqual(code, 404)
+            default:
+                XCTFail("Unexpected error: \(error)")
+            }
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+
+    func test_fetchExchangeRate_DecodingError() async {
+        let service = MockDecodingErrorService()
+
+        do {
+            _ = try await service.request(MockExchangeRateServiceType.testFetchExchangeRate) as ExchangeRateReponseDTO
+            XCTFail("Expected to throw statusCodeError error, but succeeded")
+        } catch let error as ExchangeRateServiceError {
+            switch error {
+            case .decodingError:
+                XCTAssertTrue(true)
+            default:
+                XCTFail("Unexpected error: \(error)")
+            }
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
     }
 }

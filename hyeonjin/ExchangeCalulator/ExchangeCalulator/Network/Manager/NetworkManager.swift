@@ -9,9 +9,9 @@ import Foundation
 import RxSwift
 
 final class NetworkManager {
-    private let service: ExchangeRateServiceProtocol
+    private let service: ServiceProtocol
 
-    init(service: ExchangeRateServiceProtocol) {
+    init(service: ServiceProtocol) {
         self.service = service
     }
 
@@ -25,7 +25,7 @@ final class NetworkManager {
             Task {
                 do {
                     let responseData: ExchangeRateReponseDTO = try await self.service
-                        .request(.fetchExchangeRate)
+                        .request(ExchangeRateServiceType.fetchExchangeRate)
                     emitter(.success(responseData.toEntity()))
                 } catch {
                     emitter(.failure(error))

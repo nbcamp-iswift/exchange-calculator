@@ -7,10 +7,11 @@
 
 import Foundation
 
-final class ExchangeRateService: ExchangeRateServiceProtocol {
+final class ExchangeRateService: ServiceProtocol {
 
-    func request<T: Decodable>(_ type: ExchangeRateServiceType) async throws -> T {
-        guard let url = URL(string: type.baseURL + type.path) else {
+    func request<T: Decodable>(_ type: ServiceTypeProtocol) async throws -> T {
+        guard let url = URL(string: type.baseURL + type.path),
+              url.scheme == "https" || url.scheme == "http" else {
             throw ExchangeRateServiceError.invaildURL
         }
 

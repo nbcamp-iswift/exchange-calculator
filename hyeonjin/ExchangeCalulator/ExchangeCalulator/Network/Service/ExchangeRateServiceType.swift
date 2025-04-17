@@ -11,7 +11,7 @@ enum ExchangeRateServiceType {
     case fetchExchangeRate
 }
 
-extension ExchangeRateServiceType {
+extension ExchangeRateServiceType: ServiceTypeProtocol {
 
     var baseURL: String {
         return "https://open.er-api.com/v6/"

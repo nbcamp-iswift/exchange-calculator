@@ -8,9 +8,10 @@
 @testable import ExchangeCalulator
 import Foundation
 
-final class MockExchangeRateSerivce: ExchangeRateServiceProtocol {
+final class MockReturnResponseDataSerivce: ServiceProtocol {
 
-    func request<T: Decodable>(_ type: ExchangeRateServiceType) async throws -> T {
+    func request<T: Decodable>(_ type: ServiceTypeProtocol) async throws -> T {
+
         let mockResponse = ExchangeRateReponseDTO(
             result: "success",
             provider: "TestProvider",
