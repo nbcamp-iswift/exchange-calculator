@@ -7,7 +7,7 @@ enum ExchangeRateError: Error {
 }
 
 extension ExchangeRateError: LocalizedError {
-    var localizedDescription: String {
+    private var errorDescription: String {
         switch self {
         case .inValidURL: return "Invalid URL"
         case .decodeFailed: return "Decode failed"

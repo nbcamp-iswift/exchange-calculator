@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		588577DF2DB0A56300B9B203 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 588577DE2DB0A56300B9B203 /* Then */; };
+		588577E22DB0A56D00B9B203 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 588577E12DB0A56D00B9B203 /* SnapKit */; };
 		58A6D1E62DACFD25005FE392 /* .swiftformat in Resources */ = {isa = PBXBuildFile; fileRef = 58A6D1E52DACFD1F005FE392 /* .swiftformat */; };
 		58EC91C12DACCB31006F03C4 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 58EC91C02DACCB31006F03C4 /* .swiftlint.yml */; };
-		58EC91CD2DACE3B6006F03C4 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 58EC91CC2DACE3B6006F03C4 /* SnapKit */; };
-		58EC91D02DACE3BF006F03C4 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 58EC91CF2DACE3BF006F03C4 /* Then */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,10 +20,10 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		58EC91B82DACCA9B006F03C4 /* Exceptions for "exchangeCalculator" folder in "exchangeCalculator" target */ = {
+		588577E32DB0A63900B9B203 /* Exceptions for "exchangeCalculator" folder in "exchangeCalculator" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				Resource/Info.plist,
 			);
 			target = 58EC91A52DACCA9A006F03C4 /* exchangeCalculator */;
 		};
@@ -33,7 +33,7 @@
 		58EC91A82DACCA9A006F03C4 /* exchangeCalculator */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				58EC91B82DACCA9B006F03C4 /* Exceptions for "exchangeCalculator" folder in "exchangeCalculator" target */,
+				588577E32DB0A63900B9B203 /* Exceptions for "exchangeCalculator" folder in "exchangeCalculator" target */,
 			);
 			path = exchangeCalculator;
 			sourceTree = "<group>";
@@ -45,8 +45,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				58EC91CD2DACE3B6006F03C4 /* SnapKit in Frameworks */,
-				58EC91D02DACE3BF006F03C4 /* Then in Frameworks */,
+				588577DF2DB0A56300B9B203 /* Then in Frameworks */,
+				588577E22DB0A56D00B9B203 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,8 +93,8 @@
 			);
 			name = exchangeCalculator;
 			packageProductDependencies = (
-				58EC91CC2DACE3B6006F03C4 /* SnapKit */,
-				58EC91CF2DACE3BF006F03C4 /* Then */,
+				588577DE2DB0A56300B9B203 /* Then */,
+				588577E12DB0A56D00B9B203 /* SnapKit */,
 			);
 			productName = exchangeCalculator;
 			productReference = 58EC91A62DACCA9A006F03C4 /* exchangeCalculator.app */;
@@ -125,8 +125,8 @@
 			mainGroup = 58EC919D2DACCA9A006F03C4;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				58EC91CB2DACE3B6006F03C4 /* XCRemoteSwiftPackageReference "SnapKit" */,
-				58EC91CE2DACE3BF006F03C4 /* XCRemoteSwiftPackageReference "Then" */,
+				588577DD2DB0A56300B9B203 /* XCRemoteSwiftPackageReference "Then" */,
+				588577E02DB0A56D00B9B203 /* XCRemoteSwiftPackageReference "SnapKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 58EC91A72DACCA9A006F03C4 /* Products */;
@@ -213,7 +213,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = exchangeCalculator/Info.plist;
+				INFOPLIST_FILE = exchangeCalculator/Resource/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
@@ -241,7 +241,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = exchangeCalculator/Info.plist;
+				INFOPLIST_FILE = exchangeCalculator/Resource/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
@@ -407,15 +407,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		58EC91CB2DACE3B6006F03C4 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.7.1;
-			};
-		};
-		58EC91CE2DACE3BF006F03C4 /* XCRemoteSwiftPackageReference "Then" */ = {
+		588577DD2DB0A56300B9B203 /* XCRemoteSwiftPackageReference "Then" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/devxoul/Then.git";
 			requirement = {
@@ -423,18 +415,26 @@
 				minimumVersion = 3.0.0;
 			};
 		};
+		588577E02DB0A56D00B9B203 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		58EC91CC2DACE3B6006F03C4 /* SnapKit */ = {
+		588577DE2DB0A56300B9B203 /* Then */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 58EC91CB2DACE3B6006F03C4 /* XCRemoteSwiftPackageReference "SnapKit" */;
-			productName = SnapKit;
-		};
-		58EC91CF2DACE3BF006F03C4 /* Then */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 58EC91CE2DACE3BF006F03C4 /* XCRemoteSwiftPackageReference "Then" */;
+			package = 588577DD2DB0A56300B9B203 /* XCRemoteSwiftPackageReference "Then" */;
 			productName = Then;
+		};
+		588577E12DB0A56D00B9B203 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 588577E02DB0A56D00B9B203 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
