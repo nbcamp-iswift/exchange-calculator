@@ -3,12 +3,17 @@ import Combine
 import Alamofire
 
 final class MainViewController: UIViewController {
-    private lazy var viewModel = MainViewModel(viewDidLoadPublisher)
+    private lazy var viewModel = MainViewModel(viewDidLoadPublisher, searchTextDidChangePublisher)
     private let viewDidLoadSubject = PassthroughSubject<Void, Never>()
+    private let searchTextDidChangeSubject = PassthroughSubject<String, Never>()
     private var cancellables = Set<AnyCancellable>()
 
     var viewDidLoadPublisher: AnyPublisher<Void, Never> {
         viewDidLoadSubject.eraseToAnyPublisher()
+    }
+
+    var searchTextDidChangePublisher: AnyPublisher<String, Never> {
+        searchTextDidChangeSubject.eraseToAnyPublisher()
     }
 
     private lazy var mainView = MainView()
@@ -41,6 +46,12 @@ private extension MainViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.showAlert(title: "오류", message: "데이터를 불러올 수 없습니다")
+            }
+            .store(in: &cancellables)
+
+        mainView.searchTextDidChangePublisher
+            .sink { [weak self] searchText in
+                self?.searchTextDidChangeSubject.send(searchText)
             }
             .store(in: &cancellables)
     }

@@ -4,6 +4,11 @@ struct ExchangeRates: Hashable {
     let lastUpdated: Date
     let rates: [ExchangeRate]
 
+    init() {
+        lastUpdated = Date.now
+        rates = []
+    }
+
     init(from dto: ExchangeRatesDTO) {
         lastUpdated = Date(timeIntervalSince1970: dto.lastUpdated)
         rates = Array(dto.rates)
