@@ -52,9 +52,9 @@ final class CustomTableViewCell: UITableViewCell {
         }
     }
 
-    func update(with currency: String, with rate: Double) {
+    func update(with currency: String, with rate: String) {
         currencyLabel.text = currency
-        rateLabel.text = String(format: "%.4f", rate)
+        rateLabel.text = rate
     }
 
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {

@@ -2,5 +2,5 @@ import Foundation
 
 struct ExchangeRate: Codable {
     let currency: String
-    let rate: Double
+    let rate: String
 }

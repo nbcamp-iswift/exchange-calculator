@@ -48,7 +48,8 @@ final class DefaultExchangeRateRepository: ExchangeRateRepository {
                 return
             }
 
-            completion(.success(dto.toDomain()))
+            let domainModel = ExchangeRateMapper.map(dto: dto)
+            completion(.success(domainModel))
         }.resume()
     }
 }
