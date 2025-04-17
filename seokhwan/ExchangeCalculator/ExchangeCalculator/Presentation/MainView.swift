@@ -11,6 +11,11 @@ final class MainView: UIView {
 
     private var dataSource: DataSource?
 
+    private lazy var searchBar = UISearchBar().configure {
+        $0.removeBorder()
+        $0.placeholder = "통화 검색"
+    }
+
     private lazy var tableView = UITableView().configure {
         $0.register(ExchangeRateCell.self)
     }
@@ -47,12 +52,18 @@ private extension MainView {
     }
 
     func setHierarchy() {
-        addSubview(tableView)
+        addSubviews(searchBar, tableView)
     }
 
     func setConstraints() {
+        searchBar.snp.makeConstraints { make in
+            make.top.equalTo(safeAreaLayoutGuide)
+            make.directionalHorizontalEdges.equalToSuperview()
+        }
+
         tableView.snp.makeConstraints { make in
-            make.edges.equalTo(safeAreaLayoutGuide)
+            make.top.equalTo(searchBar.snp.bottom)
+            make.directionalHorizontalEdges.bottom.equalTo(safeAreaLayoutGuide)
         }
     }
 
