@@ -35,8 +35,13 @@ final class ListView: UIView {
 
 extension ListView {
     private func configure() {
+        setAttributes()
         setHierachy()
         setConstraints()
+    }
+
+    private func setAttributes() {
+        backgroundColor = .white
     }
 
     private func setHierachy() {
@@ -45,7 +50,7 @@ extension ListView {
 
     private func setConstraints() {
         tableView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.edges.equalTo(safeAreaLayoutGuide)
         }
     }
 }

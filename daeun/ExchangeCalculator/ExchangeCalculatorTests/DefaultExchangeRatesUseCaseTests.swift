@@ -24,7 +24,7 @@ final class DefaultExchangeRatesUseCaseTests: XCTestCase {
         )
 
         // when
-        let result = await useCase.fetchExchangeRates(baseCurrency: "USD")
+        let result = await useCase.fetchExchangeRates(of baseCurrency: "USD")
 
         // then
         switch result {

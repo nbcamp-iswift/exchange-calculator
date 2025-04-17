@@ -9,6 +9,7 @@ import Foundation
 
 enum Constant {
     static let baseURL = "https://open.er-api.com/v6/latest/"
+    static let baseCurrency = "USD"
 
     enum Spacing {
         static let cellVertical: CGFloat = 12
