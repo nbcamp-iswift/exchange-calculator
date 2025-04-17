@@ -8,4 +8,4 @@ extension UIView {
     }
 }
 
-extension UIView: Configurable { }
+extension UIView: Configurable {}

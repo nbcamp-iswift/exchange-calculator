@@ -8,7 +8,7 @@ final class MainViewController: UIViewController {
     private var cancellables = Set<AnyCancellable>()
 
     var viewDidLoadPublisher: AnyPublisher<Void, Never> {
-        return viewDidLoadSubject.eraseToAnyPublisher()
+        viewDidLoadSubject.eraseToAnyPublisher()
     }
 
     private lazy var mainView = MainView()

@@ -9,11 +9,11 @@ final class MainViewModel {
     private var cancellables = Set<AnyCancellable>()
 
     var exchangeRatesPublisher: AnyPublisher<ExchangeRates, Never> {
-        return exchangeRatesSubject.eraseToAnyPublisher()
+        exchangeRatesSubject.eraseToAnyPublisher()
     }
 
     var errorPublisher: AnyPublisher<AFError, Never> {
-        return errorSubject.eraseToAnyPublisher()
+        errorSubject.eraseToAnyPublisher()
     }
 
     init(_ viewDidLoadPublisher: AnyPublisher<Void, Never>) {
