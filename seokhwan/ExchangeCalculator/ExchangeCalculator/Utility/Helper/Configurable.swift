@@ -1,6 +1,6 @@
 import UIKit
 
-protocol Configurable { }
+protocol Configurable {}
 
 extension Configurable {
     func configure(_ block: (Self) -> Void) -> Self {
