@@ -43,7 +43,7 @@ final class ExchangeRateViewController: UIViewController {
         setAttributes()
         setHierarchy()
         setConstraints()
-        dataSource = configureDataSource()
+        setDataSource()
         setBindings()
     }
 
@@ -54,6 +54,10 @@ final class ExchangeRateViewController: UIViewController {
     private func setHierarchy() {
         view.addSubview(searchBar)
         view.addSubview(tableView)
+    }
+
+    private func setDataSource() {
+        dataSource = configureDataSource()
     }
 
     private func setBindings() {

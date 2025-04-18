@@ -43,9 +43,10 @@ final class ExchangeRateViewModel {
             return
         }
 
+        let normalizedKeyword = normalize(keyword)
         let filtered = rates.filter {
-            $0.currency.lowercased().contains(keyword.lowercased()) ||
-                $0.country.lowercased().contains(keyword.lowercased())
+            normalize($0.currency).contains(normalizedKeyword)
+                || normalize($0.country).contains(normalizedKeyword)
         }
         state = .loaded(filtered.map { ExchangeRateCellViewModel(from: $0) })
     }
@@ -56,5 +57,11 @@ final class ExchangeRateViewModel {
 
     func getNumberOfRates() -> Int {
         rates.count
+    }
+
+    private func normalize(_ text: String) -> String {
+        text.folding(options: .diacriticInsensitive, locale: .current)
+            .replacingOccurrences(of: " ", with: "")
+            .lowercased()
     }
 }
