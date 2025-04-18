@@ -12,10 +12,15 @@ final class ExchangeRateView: UIView {
 
     private var dataSource: DataSource?
     private let searchTextDidChangeSubject = PassthroughSubject<String, Never>()
+    private let cellDidTapSubject = PassthroughSubject<Void, Never>()
     private var cancellables = Set<AnyCancellable>()
 
     var searchTextDidChangePublisher: AnyPublisher<String, Never> {
         searchTextDidChangeSubject.eraseToAnyPublisher()
+    }
+
+    var cellDidTapPublisher: AnyPublisher<Void, Never> {
+        cellDidTapSubject.eraseToAnyPublisher()
     }
 
     private lazy var searchBar = UISearchBar().configure {
@@ -94,6 +99,7 @@ private extension ExchangeRateView {
 
     func setDelegate() {
         searchBar.delegate = self
+        tableView.delegate = self
     }
 
     func setDataSource() {
@@ -112,5 +118,12 @@ private extension ExchangeRateView {
 extension ExchangeRateView: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         searchTextDidChangeSubject.send(searchText)
+    }
+}
+
+extension ExchangeRateView: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        cellDidTapSubject.send(())
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }

@@ -61,5 +61,12 @@ private extension ExchangeRateViewController {
                 self?.searchTextDidChangeSubject.send(searchText)
             }
             .store(in: &cancellables)
+
+        exchangeRateView.cellDidTapPublisher
+            .sink { [weak self] in
+                let viewController = CalculatorViewController(nibName: nil, bundle: nil)
+                self?.navigationController?.pushViewController(viewController, animated: true)
+            }
+            .store(in: &cancellables)
     }
 }
