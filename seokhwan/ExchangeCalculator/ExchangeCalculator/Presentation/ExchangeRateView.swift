@@ -19,7 +19,7 @@ final class ExchangeRateView: UIView {
     }
 
     private lazy var searchBar = UISearchBar().configure {
-        $0.removeBorder()
+        $0.searchBarStyle = .minimal
         $0.placeholder = "통화 검색"
     }
 
