@@ -2,12 +2,14 @@ import UIKit
 import Combine
 
 final class ExchangeRateViewController: UIViewController {
-    private lazy var viewModel = ExchangeRateViewModel(
-        viewDidLoadPublisher,
-        searchTextDidChangePublisher
-    )
+    private let viewModel: ExchangeRateViewModel
+//    private let viewModel = ExchangeRateViewModel(
+//        viewDidLoadPublisher,
+//        searchTextDidChangePublisher
+//    )
     private let viewDidLoadSubject = PassthroughSubject<Void, Never>()
     private let searchTextDidChangeSubject = PassthroughSubject<String, Never>()
+    private let cellDidTapSubject = PassthroughSubject<Void, Never>()
     private var cancellables = Set<AnyCancellable>()
 
     var viewDidLoadPublisher: AnyPublisher<Void, Never> {
@@ -18,7 +20,21 @@ final class ExchangeRateViewController: UIViewController {
         searchTextDidChangeSubject.eraseToAnyPublisher()
     }
 
+    var cellDidTapPublisher: AnyPublisher<Void, Never> {
+        cellDidTapSubject.eraseToAnyPublisher()
+    }
+
     private lazy var exchangeRateView = ExchangeRateView()
+
+    init(viewModel: ExchangeRateViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError()
+    }
 
     override func loadView() {
         view = exchangeRateView
@@ -64,8 +80,7 @@ private extension ExchangeRateViewController {
 
         exchangeRateView.cellDidTapPublisher
             .sink { [weak self] in
-                let viewController = CalculatorViewController(nibName: nil, bundle: nil)
-                self?.navigationController?.pushViewController(viewController, animated: true)
+                self?.cellDidTapSubject.send(())
             }
             .store(in: &cancellables)
     }

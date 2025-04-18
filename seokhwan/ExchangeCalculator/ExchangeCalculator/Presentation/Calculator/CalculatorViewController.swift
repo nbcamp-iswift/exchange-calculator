@@ -1,9 +1,19 @@
 import UIKit
 
 final class CalculatorViewController: UIViewController {
-    private lazy var viewModel = CalculatorViewModel()
+    private let viewModel: CalculatorViewModel
 
     private lazy var calculatorView = CalculatorView()
+
+    init(viewModel: CalculatorViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError()
+    }
 
     override func loadView() {
         view = calculatorView

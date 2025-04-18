@@ -11,7 +11,7 @@ final class ExchangeRateService {
         switch result {
         case .success(let dto):
             return .success(dto)
-        case .failure(let error):
+        case .failure:
             return .failure(.unknownError)
         }
     }

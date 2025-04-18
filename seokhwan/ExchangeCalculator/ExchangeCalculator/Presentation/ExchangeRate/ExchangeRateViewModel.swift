@@ -2,8 +2,10 @@ import Foundation
 import Combine
 
 final class ExchangeRateViewModel {
-    private let service = ExchangeRateService()
-    private var exchangeRateInfoSubject = CurrentValueSubject<ExchangeRateInfo, Never>(
+    let useCase: ExchangeRateUseCase
+
+    // TODO: Info를 repository와 VM 두 곳에서 가지고 있는 것 괜찮은지 고민해 보기
+    private let exchangeRateInfoSubject = CurrentValueSubject<ExchangeRateInfo, Never>(
         ExchangeRateInfo()
     )
     private let filteredExchangeRatesSubject = PassthroughSubject<ExchangeRates, Never>()
@@ -18,35 +20,36 @@ final class ExchangeRateViewModel {
         errorMessageSubject.eraseToAnyPublisher()
     }
 
-    init(
-        _ viewDidLoadPublisher: AnyPublisher<Void, Never>,
-        _ searchTextDidChangePublisher: AnyPublisher<String, Never>
-    ) {
-        viewDidLoadPublisher
-            .sink { [weak self] _ in
-                self?.fetchExchangeRates(for: "USD")
-            }
-            .store(in: &cancellables)
-
-        searchTextDidChangePublisher
-            .sink { [weak self] searchText in
-                self?.filterExchangeRates(by: searchText)
-            }
-            .store(in: &cancellables)
+    init(exchangeRateUseCase: ExchangeRateUseCase) {
+        useCase = exchangeRateUseCase
     }
 
-    private func fetchExchangeRates(for currency: String) {
-        Task {
-            let result = await service.fetchExchangeRateInfo(for: currency)
+//    init(
+//        _ viewDidLoadPublisher: AnyPublisher<Void, Never>,
+//        _ searchTextDidChangePublisher: AnyPublisher<String, Never>
+//    ) {
+//        viewDidLoadPublisher
+//            .sink { [weak self] _ in
+//                self?.fetchExchangeRates(for: "USD")
+//            }
+//            .store(in: &cancellables)
+//
+//        searchTextDidChangePublisher
+//            .sink { [weak self] searchText in
+//                self?.filterExchangeRates(by: searchText)
+//            }
+//            .store(in: &cancellables)
+//    }
 
-            switch result {
-            case .success(let value):
-                let exchangeRatesInfo = ExchangeRateInfo(from: value)
-                exchangeRateInfoSubject.send(exchangeRatesInfo)
-                filteredExchangeRatesSubject.send(exchangeRatesInfo.exchangeRates)
-            case .failure(let error):
-                errorMessageSubject.send(error.localizedDescription)
-            }
+    private func fetchExchangeRates(for currency: String) async {
+        let result = await useCase.fetchExchangeRates(for: currency)
+
+        switch result {
+        case .success(let info):
+            exchangeRateInfoSubject.send(info)
+            filteredExchangeRatesSubject.send(info.exchangeRates)
+        case .failure(let error):
+            errorMessageSubject.send(error.localizedDescription)
         }
     }
 
@@ -56,7 +59,6 @@ final class ExchangeRateViewModel {
             filteredExchangeRatesSubject.send(exchangeRateInfoSubject.value.exchangeRates)
             return
         }
-
         let result = exchangeRateInfoSubject.value.exchangeRates
             .filter {
                 let currencyCode = $0.currency.lowercased()
