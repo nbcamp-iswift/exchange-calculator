@@ -95,8 +95,7 @@ final class ExchangeRateViewController: UIViewController {
     }
 
     private func configureDataSource()
-        -> UITableViewDiffableDataSource<Section, ExchangeRateCellViewModel>
-    {
+        -> UITableViewDiffableDataSource<Section, ExchangeRateCellViewModel> {
         UITableViewDiffableDataSource(tableView: tableView) { tableView, indexPath, item in
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: ExchangeRateTableViewCell.identifier,
@@ -133,6 +132,22 @@ extension ExchangeRateViewController: UISearchBarDelegate {
 extension ExchangeRateViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         (tableView.cellForRow(at: indexPath) as? ExchangeRateTableViewCell)?.animatedPressed {}
+
+        guard let item = dataSource?.itemIdentifier(for: indexPath) else { return }
+
+        let calculatorViewModel = ExchangeRateCalculatorViewModel(
+            currency: item.title,
+            countryName: item.subtitle,
+            exchangeRate: item.trailingText
+        )
+
+        let calculatorViewController = ExchangeRateCalculatorViewController(
+            viewModel: calculatorViewModel)
+
+        navigationController?.pushViewController(
+            calculatorViewController,
+            animated: true
+        )
     }
 }
 
