@@ -13,7 +13,7 @@ final class ListView: UIView {
 
     let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
-        searchBar.backgroundImage = UIImage()
+        searchBar.searchBarStyle = .minimal
         return searchBar
     }()
 
@@ -27,6 +27,7 @@ final class ListView: UIView {
     private let noMatchLabel: UILabel = {
         let label = UILabel()
         label.text = Constant.Text.noMatch
+        label.backgroundColor = .orange
         label.textColor = .gray
         label.isHidden = true
         return label
@@ -69,12 +70,12 @@ extension ListView {
     private func setConstraints() {
         searchBar.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide)
-            make.horizontalEdges.equalToSuperview()
+            make.directionalHorizontalEdges.equalToSuperview()
         }
 
         tableView.snp.makeConstraints { make in
             make.top.equalTo(searchBar.snp.bottom)
-            make.horizontalEdges.bottom.equalTo(safeAreaLayoutGuide)
+            make.directionalHorizontalEdges.bottom.equalTo(safeAreaLayoutGuide)
         }
 
         noMatchLabel.snp.makeConstraints { make in

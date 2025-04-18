@@ -35,11 +35,10 @@ final class ListViewModel {
     }
 
     func filterRates(with searchQuery: String) {
-        if searchQuery.isEmpty {
-            filteredRates = originalRates
-        } else {
-            filteredRates = originalRates.filter { matchesQuery($0, query: searchQuery) }
-        }
+        filteredRates = searchQuery.isEmpty
+        ? originalRates
+        : originalRates.filter { matchesQuery($0, query: searchQuery) }
+
         hasMatches = !filteredRates.isEmpty
     }
 

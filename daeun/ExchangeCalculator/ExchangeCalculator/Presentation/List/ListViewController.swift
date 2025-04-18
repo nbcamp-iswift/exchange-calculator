@@ -54,11 +54,11 @@ final class ListViewController: UIViewController {
 
 extension ListViewController {
     private func configure() {
-        configureDataSource()
+        setDataSource()
         setBindings()
     }
 
-    private func configureDataSource() {
+    private func setDataSource() {
         dataSource = .init(
             tableView: listView.tableView
         ) { [weak self] tableView, indexPath, item -> UITableViewCell? in
