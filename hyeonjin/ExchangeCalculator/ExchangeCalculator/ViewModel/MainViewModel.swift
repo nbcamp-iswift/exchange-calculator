@@ -13,7 +13,7 @@ final class MainViewModel {
     let networkManager = NetworkManager(service: ExchangeRateService())
     var disposeBag: DisposeBag = .init()
 
-    var exchangeRates = BehaviorSubject<[ExchangeRate]>(value: [])
+    var originalExchangeRates = BehaviorSubject<[ExchangeRate]>(value: [])
     var filteredExchangeRates = BehaviorSubject<[ExchangeRate]>(value: [])
     var errorSubject = BehaviorSubject<Error?>(value: nil)
     var searchBarText = BehaviorRelay<String>(value: "")
@@ -34,7 +34,7 @@ final class MainViewModel {
 
                 switch result {
                 case .success(let data):
-                    exchangeRates.onNext(data)
+                    originalExchangeRates.onNext(data)
                 case .failure(let error):
                     errorSubject.onNext(error)
                 }
@@ -43,7 +43,7 @@ final class MainViewModel {
     }
 
     private func bindFilteredExchangeRates() {
-        Observable.combineLatest(searchBarText, exchangeRates)
+        Observable.combineLatest(searchBarText, originalExchangeRates)
             .map { searchbarText, exchangeRates in
                 if searchbarText.isEmpty {
                     return exchangeRates
