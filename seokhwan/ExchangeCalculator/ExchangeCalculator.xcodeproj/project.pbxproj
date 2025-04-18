@@ -7,11 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		445E6F4D2DB22DC900DB825E /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 445E6F4C2DB22DC900DB825E /* README.md */; };
+		445E6F4F2DB22DD200DB825E /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 445E6F4E2DB22DD200DB825E /* .swiftlint.yml */; };
+		445E6F512DB22DD800DB825E /* .swiftFormat in Resources */ = {isa = PBXBuildFile; fileRef = 445E6F502DB22DD800DB825E /* .swiftFormat */; };
 		44EB79F42DAD0274004B9935 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 44EB79F32DAD0274004B9935 /* SnapKit */; };
 		44EB79F72DAD0284004B9935 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 44EB79F62DAD0284004B9935 /* Alamofire */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		445E6F4C2DB22DC900DB825E /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = SOURCE_ROOT; };
+		445E6F4E2DB22DD200DB825E /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = .swiftlint.yml; path = "/Users/youseokhwan/Develop/nbcamp/exchange-calculator/.swiftlint.yml"; sourceTree = "<absolute>"; };
+		445E6F502DB22DD800DB825E /* .swiftFormat */ = {isa = PBXFileReference; lastKnownFileType = text; name = .swiftFormat; path = "/Users/youseokhwan/Develop/nbcamp/exchange-calculator/.swiftFormat"; sourceTree = "<absolute>"; };
 		44EB79412DACF2FD004B9935 /* ExchangeCalculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExchangeCalculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -52,6 +58,9 @@
 		44EB79382DACF2FD004B9935 = {
 			isa = PBXGroup;
 			children = (
+				445E6F4C2DB22DC900DB825E /* README.md */,
+				445E6F4E2DB22DD200DB825E /* .swiftlint.yml */,
+				445E6F502DB22DD800DB825E /* .swiftFormat */,
 				44EB79432DACF2FD004B9935 /* ExchangeCalculator */,
 				44EB79422DACF2FD004B9935 /* Products */,
 			);
@@ -137,6 +146,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				445E6F512DB22DD800DB825E /* .swiftFormat in Resources */,
+				445E6F4F2DB22DD200DB825E /* .swiftlint.yml in Resources */,
+				445E6F4D2DB22DC900DB825E /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
