@@ -3,26 +3,7 @@ import Combine
 
 final class ExchangeRateViewController: UIViewController {
     private let viewModel: ExchangeRateViewModel
-//    private let viewModel = ExchangeRateViewModel(
-//        viewDidLoadPublisher,
-//        searchTextDidChangePublisher
-//    )
-    private let viewDidLoadSubject = PassthroughSubject<Void, Never>()
-    private let searchTextDidChangeSubject = PassthroughSubject<String, Never>()
-    private let cellDidTapSubject = PassthroughSubject<Void, Never>()
     private var cancellables = Set<AnyCancellable>()
-
-    var viewDidLoadPublisher: AnyPublisher<Void, Never> {
-        viewDidLoadSubject.eraseToAnyPublisher()
-    }
-
-    var searchTextDidChangePublisher: AnyPublisher<String, Never> {
-        searchTextDidChangeSubject.eraseToAnyPublisher()
-    }
-
-    var cellDidTapPublisher: AnyPublisher<Void, Never> {
-        cellDidTapSubject.eraseToAnyPublisher()
-    }
 
     private lazy var exchangeRateView = ExchangeRateView()
 
@@ -43,7 +24,7 @@ final class ExchangeRateViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
-        viewDidLoadSubject.send(())
+        viewModel.action.send(.viewDidLoad)
     }
 }
 
@@ -58,14 +39,14 @@ private extension ExchangeRateViewController {
     }
 
     func setBindings() {
-        viewModel.exchangeRatesPublisher
+        viewModel.state.filteredExchangeRates
             .receive(on: DispatchQueue.main)
             .sink { [weak self] exchangeRates in
                 self?.exchangeRateView.update(with: exchangeRates)
             }
             .store(in: &cancellables)
 
-        viewModel.errorMessagePublisher
+        viewModel.state.errorMessage
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.showAlert(title: "오류", message: "데이터를 불러올 수 없습니다")
@@ -74,13 +55,13 @@ private extension ExchangeRateViewController {
 
         exchangeRateView.searchTextDidChangePublisher
             .sink { [weak self] searchText in
-                self?.searchTextDidChangeSubject.send(searchText)
+                self?.viewModel.action.send(.searchTextDidChange(searchText: searchText))
             }
             .store(in: &cancellables)
 
         exchangeRateView.cellDidTapPublisher
             .sink { [weak self] in
-                self?.cellDidTapSubject.send(())
+                self?.viewModel.action.send(.cellDidTap)
             }
             .store(in: &cancellables)
     }
