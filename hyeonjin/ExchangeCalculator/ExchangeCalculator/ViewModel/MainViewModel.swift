@@ -19,10 +19,10 @@ final class MainViewModel {
     var searchBarText = BehaviorRelay<String>(value: "")
 
     init() {
-        setbindings()
+        setBindings()
     }
 
-    private func setbindings() {
+    private func setBindings() {
         fetchExchangeRates()
         bindFilteredExchangeRates()
     }
