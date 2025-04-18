@@ -11,11 +11,26 @@ import UIKit
 final class ListView: UIView {
     // MARK: - Components
 
+    let searchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.searchBarStyle = .minimal
+        return searchBar
+    }()
+
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.register(ListCell.self, forCellReuseIdentifier: ListCell.reuseIdentifier)
-        tableView.separatorStyle = .none
+        tableView.rowHeight = Constant.Size.cellHeight
         return tableView
+    }()
+
+    private let noMatchLabel: UILabel = {
+        let label = UILabel()
+        label.text = Constant.Text.noMatch
+        label.backgroundColor = .orange
+        label.textColor = .gray
+        label.isHidden = true
+        return label
     }()
 
     // MARK: - Life Cycles
@@ -45,12 +60,30 @@ extension ListView {
     }
 
     private func setHierachy() {
-        [tableView].forEach { addSubview($0) }
+        [
+            tableView,
+            searchBar,
+            noMatchLabel,
+        ].forEach { addSubview($0) }
     }
 
     private func setConstraints() {
-        tableView.snp.makeConstraints { make in
-            make.edges.equalTo(safeAreaLayoutGuide)
+        searchBar.snp.makeConstraints { make in
+            make.top.equalTo(safeAreaLayoutGuide)
+            make.directionalHorizontalEdges.equalToSuperview()
         }
+
+        tableView.snp.makeConstraints { make in
+            make.top.equalTo(searchBar.snp.bottom)
+            make.directionalHorizontalEdges.bottom.equalTo(safeAreaLayoutGuide)
+        }
+
+        noMatchLabel.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+    }
+
+    func isHiddenNoMatchLabel(hasMatch: Bool) {
+        noMatchLabel.isHidden = hasMatch
     }
 }

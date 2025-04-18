@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C9273A172DAFF4AE00CAD4A4 /* .swiftFormat in Resources */ = {isa = PBXBuildFile; fileRef = C9273A162DAFF4AE00CAD4A4 /* .swiftFormat */; };
-		C9273A192DAFF4B400CAD4A4 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = C9273A182DAFF4B400CAD4A4 /* .swiftlint.yml */; };
+		C92A83922DB11C540012C2E4 /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = C92A83912DB11C540012C2E4 /* CombineCocoa */; };
 		C969EE522DAF672800109D2F /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = C969EE512DAF672800109D2F /* SnapKit */; };
 		C969EE8A2DAF83D100109D2F /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = C969EE892DAF83D100109D2F /* Alamofire */; };
 /* End PBXBuildFile section */
@@ -31,8 +30,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		C9273A162DAFF4AE00CAD4A4 /* .swiftFormat */ = {isa = PBXFileReference; lastKnownFileType = text; path = .swiftFormat; sourceTree = "<group>"; };
-		C9273A182DAFF4B400CAD4A4 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		C950711B2DAE3D55002B4DD8 /* ExchangeCalculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExchangeCalculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C95071342DAE3D57002B4DD8 /* ExchangeCalculatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExchangeCalculatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C950713E2DAE3D57002B4DD8 /* ExchangeCalculatorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExchangeCalculatorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -75,6 +72,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C969EE522DAF672800109D2F /* SnapKit in Frameworks */,
+				C92A83922DB11C540012C2E4 /* CombineCocoa in Frameworks */,
 				C969EE8A2DAF83D100109D2F /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -99,8 +97,6 @@
 		C95071122DAE3D55002B4DD8 = {
 			isa = PBXGroup;
 			children = (
-				C9273A162DAFF4AE00CAD4A4 /* .swiftFormat */,
-				C9273A182DAFF4B400CAD4A4 /* .swiftlint.yml */,
 				C950711D2DAE3D55002B4DD8 /* ExchangeCalculator */,
 				C95071372DAE3D57002B4DD8 /* ExchangeCalculatorTests */,
 				C95071412DAE3D57002B4DD8 /* ExchangeCalculatorUITests */,
@@ -150,6 +146,7 @@
 			packageProductDependencies = (
 				C969EE512DAF672800109D2F /* SnapKit */,
 				C969EE892DAF83D100109D2F /* Alamofire */,
+				C92A83912DB11C540012C2E4 /* CombineCocoa */,
 			);
 			productName = ExchangeCalculator;
 			productReference = C950711B2DAE3D55002B4DD8 /* ExchangeCalculator.app */;
@@ -236,6 +233,7 @@
 			packageReferences = (
 				C95071542DAE43D5002B4DD8 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				C969EE882DAF83B300109D2F /* XCRemoteSwiftPackageReference "Alamofire" */,
+				C92A83902DB11C390012C2E4 /* XCRemoteSwiftPackageReference "CombineCocoa" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C950711C2DAE3D55002B4DD8 /* Products */;
@@ -254,8 +252,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C9273A192DAFF4B400CAD4A4 /* .swiftlint.yml in Resources */,
-				C9273A172DAFF4AE00CAD4A4 /* .swiftFormat in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -293,7 +289,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n  swiftlint lint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nCONFIG_PATH=\"../../.swiftlint.yml\"\n\nif which swiftlint > /dev/null; then\n  if [ -f \"$CONFIG_PATH\" ]; then\n    swiftlint --config \"$CONFIG_PATH\"\n  else\n    echo \"warning: SwiftLint config file not found\"\n  fi\nelse\n  echo \"warning: SwiftLint not installed\"\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		C94F36102DAE500400CB6BB8 /* SwiftFormat */ = {
@@ -313,7 +309,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nif which swiftformat > /dev/null; then\n  swiftformat .\nelse\n  echo \"warning: SwiftFormat not installed, download from https://github.com/nicklockwood/SwiftFormat\"\nfi\n";
+			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nCONFIG_PATH=\"../../.swiftformat\"\n\nif which swiftlint > /dev/null; then\n  if [ -f \"$CONFIG_PATH\" ]; then\n    swiftformat . --config \"$CONFIG_PATH\"\n  else\n    echo \"warning: SwiftFormat config file not found\"\n  fi\nelse\n  echo \"warning: SwiftFormat not installed\"\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -645,6 +641,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		C92A83902DB11C390012C2E4 /* XCRemoteSwiftPackageReference "CombineCocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CombineCommunity/CombineCocoa";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.4.1;
+			};
+		};
 		C95071542DAE43D5002B4DD8 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
@@ -664,6 +668,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		C92A83912DB11C540012C2E4 /* CombineCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C92A83902DB11C390012C2E4 /* XCRemoteSwiftPackageReference "CombineCocoa" */;
+			productName = CombineCocoa;
+		};
 		C969EE512DAF672800109D2F /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C95071542DAE43D5002B4DD8 /* XCRemoteSwiftPackageReference "SnapKit" */;

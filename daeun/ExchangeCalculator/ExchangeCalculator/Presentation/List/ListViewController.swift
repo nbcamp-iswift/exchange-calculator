@@ -6,6 +6,7 @@
 //
 
 import Combine
+import CombineCocoa
 import UIKit
 
 final class ListViewController: UIViewController {
@@ -45,25 +46,31 @@ final class ListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureDataSource()
-        setBindings()
-        viewModel.loadItems()
+        configure()
     }
 }
 
-// MARK: - DataSource
+// MARK: - Methods
 
 extension ListViewController {
-    private func configureDataSource() {
-        dataSource = .init(tableView: listView.tableView) { tableView, indexPath, item
-            -> UITableViewCell? in
+    private func configure() {
+        setDataSource()
+        setBindings()
+    }
+
+    private func setDataSource() {
+        dataSource = .init(
+            tableView: listView.tableView
+        ) { [weak self] tableView, indexPath, item -> UITableViewCell? in
+            guard let self else { return nil }
+
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: ListCell.reuseIdentifier,
                 for: indexPath
             ) as? ListCell
 
             guard case let ListItem.rate(exchangeRate) = item else { return nil }
-            cell?.updateCell(for: exchangeRate)
+            cell?.updateCell(for: exchangeRate, viewModel.countryName(for: exchangeRate.code))
 
             return cell
         }
@@ -73,20 +80,56 @@ extension ListViewController {
 
         dataSource?.apply(initialSnapshot)
     }
-}
 
-// MARK: - Set Bindings
-
-extension ListViewController {
     private func setBindings() {
-        viewModel.$rates
+        listView.searchBar.textDidChangePublisher
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] rates in
-                guard let self, var snapshot = dataSource?.snapshot() else { return }
-                let items = rates.map { ListItem.rate($0) }
-                snapshot.appendItems(items, toSection: .list)
-                dataSource?.apply(snapshot)
+            .sink { [weak self] text in
+                self?.viewModel.filterRates(with: text)
             }
             .store(in: &cancellables)
+
+        viewModel.$filteredRates
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] rates in
+                let items = rates.map { ListItem.rate($0) }
+                self?.updateSnapshot(with: items)
+            }
+            .store(in: &cancellables)
+
+        viewModel.$error
+            .receive(on: DispatchQueue.main)
+            .filter { $0 }
+            .sink { [weak self] _ in
+                self?.showAlert()
+            }
+            .store(in: &cancellables)
+
+        viewModel.$hasMatches
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] has in
+                self?.listView.isHiddenNoMatchLabel(hasMatch: has)
+            }
+            .store(in: &cancellables)
+    }
+
+    private func showAlert() {
+        let alertView = UIAlertController(
+            title: Constant.Alert.title,
+            message: Constant.Alert.message,
+            preferredStyle: .alert
+        )
+
+        let confirmAction = UIAlertAction(title: Constant.Alert.confirm, style: .default)
+        alertView.addAction(confirmAction)
+
+        present(alertView, animated: true)
+    }
+
+    private func updateSnapshot(with items: [ListItem]) {
+        var snapshot = NSDiffableDataSourceSnapshot<ListSection, ListItem>()
+        snapshot.appendSections([.list])
+        snapshot.appendItems(items, toSection: .list)
+        dataSource?.apply(snapshot)
     }
 }

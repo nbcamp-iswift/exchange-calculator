@@ -19,7 +19,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         let repository = DefaultExchangeRatesRepository()
         let useCase = DefaultExchangeRatesUseCase(repository: repository)
-        let viewModel = ListViewModel(useCase: useCase)
+        let viewModel = ListViewModel(exchangeRatesUseCase: useCase)
         window?.rootViewController = ListViewController(listViewModel: viewModel)
         window?.makeKeyAndVisible()
     }
