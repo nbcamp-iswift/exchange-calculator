@@ -73,9 +73,16 @@ but since, `base_code` key should be matched with `json`. You create enum `Codin
 ### Repostiory(DataService) -> ViewModel -> ViewController
 This can be done normally on DIContainers, but for the simplicity, I used this in `SceneDelegate`.
 
-## Key
+## Log
+### Lvl 1. Complete
+
+### Lvl 2. Complete
+* AutoLayout
+![alt text](<Resource/Screen Recording 2025-04-17 at 1.16.52 AM.gif>)
 
 
 ## Resource
 * [Closure, Observable, Combine](https://ios-daniel-yang.tistory.com/entry/iOSSwift-Data-Binding%EC%97%90-%EB%8C%80%ED%95%98%EC%97%AC-%EC%95%8C%EC%95%84%EB%B3%B4%EC%9E%90-Closure-Observable-Combine-MVVM)
 * [CustomTableViewCell](https://ios-development.tistory.com/1753)
+* [SearchBar](https://zeddios.tistory.com/1196)
+* [Case Sensitivity String](https://zeddios.tistory.com/463)

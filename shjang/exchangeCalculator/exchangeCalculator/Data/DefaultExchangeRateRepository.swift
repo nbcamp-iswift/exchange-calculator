@@ -39,11 +39,7 @@ final class DefaultExchangeRateRepository: ExchangeRateRepository {
             }
 
             guard let data,
-                  let dto = try? JSONDecoder().decode(
-                      ExchangeRateDto.self,
-                      from: data
-                  ) else
-            {
+                  let dto = try? JSONDecoder().decode(ExchangeRateDto.self, from: data) else {
                 completion(.failure(ExchangeRateError.decodeFailed))
                 return
             }
