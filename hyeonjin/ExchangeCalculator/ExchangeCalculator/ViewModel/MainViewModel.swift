@@ -49,7 +49,7 @@ final class MainViewModel {
                     return exchangeRates
                 } else {
                     return exchangeRates.filter {
-                        $0.currenyCode.lowercased().contains(searchbarText.lowercased()) ||
+                        $0.currencyCode.lowercased().contains(searchbarText.lowercased()) ||
                             $0.country.contains(searchbarText)
                     }
                 }
