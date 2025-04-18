@@ -33,7 +33,12 @@ final class ExchangeRateViewController: UIViewController {
 
 private extension ExchangeRateViewController {
     func configure() {
+        setAttributes()
         setBindings()
+    }
+
+    func setAttributes() {
+        title = "환율 정보"
     }
 
     func setBindings() {
