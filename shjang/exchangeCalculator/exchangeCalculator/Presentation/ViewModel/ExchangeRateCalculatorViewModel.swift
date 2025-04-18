@@ -5,7 +5,7 @@ final class ExchangeRateCalculatorViewModel {
     private let countryName: String
     private let exchangeRate: String
 
-    @Published private(set) var amount: String = ""
+    @Published private(set) var result: String = ""
 
     init(currency: String, countryName: String, exchangeRate: String) {
         self.currency = currency
@@ -25,5 +25,11 @@ final class ExchangeRateCalculatorViewModel {
         exchangeRate
     }
 
-    func convert(amount: Double) {}
+    func convert(amount: Double) {
+        guard let rate = Double(exchangeRate) else {
+            result = ""
+            return
+        }
+        result = String(format: "%.2f", amount * rate)
+    }
 }

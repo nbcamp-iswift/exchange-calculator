@@ -77,7 +77,13 @@ final class ExchangeRateCalculatorViewController: UIViewController {
     }
 
     private func setHierarchy() {
-        [titleLabel, labelStackView, amountTextField, convertButton].forEach {
+        [
+            titleLabel,
+            labelStackView,
+            amountTextField,
+            convertButton,
+            resultLabel
+        ].forEach {
             view.addSubview($0)
         }
     }
@@ -119,7 +125,38 @@ final class ExchangeRateCalculatorViewController: UIViewController {
     private func setBindings() {
         currencyLabel.text = viewModel.getCurrency()
         countryLabel.text = viewModel.getCountryName()
+
+        viewModel.$result
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] result in
+                guard
+                    let self,
+                    let amountText = amountTextField.text,
+                    let amount = Double(amountText),
+                    !result.isEmpty else {
+                    self?.resultLabel.text = nil
+                    return
+                }
+
+                let formatted = String(
+                    format: "$%.2f -> %@ %@",
+                    amount,
+                    result,
+                    viewModel.getCurrency()
+                )
+
+                resultLabel.text = formatted
+            }
+            .store(in: &cancellables)
     }
 
-    @objc private func convertedTapped() {}
+    @objc private func convertedTapped() {
+        guard let text = amountTextField.text,
+              let amount = Double(text) else {
+            resultLabel.text = "Please enter a valid amount"
+            return
+        }
+
+        viewModel.convert(amount: amount)
+    }
 }
