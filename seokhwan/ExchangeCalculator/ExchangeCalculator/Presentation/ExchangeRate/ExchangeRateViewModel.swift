@@ -17,11 +17,11 @@ final class ExchangeRateViewModel: ViewModelProtocol {
 
     let action = PassthroughSubject<Action, Never>()
     let state = State()
-    let useCase: ExchangeRateUseCase
+    let useCase: FetchExchangeRateUseCase
 
     private var cancellables = Set<AnyCancellable>()
 
-    init(exchangeRateUseCase: ExchangeRateUseCase) {
+    init(exchangeRateUseCase: FetchExchangeRateUseCase) {
         useCase = exchangeRateUseCase
 
         action
@@ -41,7 +41,7 @@ final class ExchangeRateViewModel: ViewModelProtocol {
     }
 
     private func fetchExchangeRates(for currency: String? = nil) async {
-        let result = await useCase.fetchExchangeRates(for: currency)
+        let result = await useCase.execute(for: currency)
 
         switch result {
         case .success(let info):

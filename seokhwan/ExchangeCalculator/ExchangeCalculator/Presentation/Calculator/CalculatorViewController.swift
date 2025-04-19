@@ -46,16 +46,23 @@ private extension CalculatorViewController {
             }
             .store(in: &cancellables)
 
-        viewModel.state.result
+        viewModel.state.convertedAmount
             .receive(on: DispatchQueue.main)
             .sink { [weak self] result in
                 self?.calculatorView.update(result: result)
             }
             .store(in: &cancellables)
 
+        viewModel.state.errorMessage
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] message in
+                self?.showAlert(title: "오류", message: message)
+            }
+            .store(in: &cancellables)
+
         calculatorView.convertButtonDidTapPublisher
             .sink { [weak self] amount in
-                self?.viewModel.action.send(.convert(amount: amount))
+                self?.viewModel.action.send(.convert(input: amount))
             }
             .store(in: &cancellables)
     }

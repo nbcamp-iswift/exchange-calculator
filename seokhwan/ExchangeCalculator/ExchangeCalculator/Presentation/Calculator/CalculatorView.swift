@@ -42,6 +42,7 @@ final class CalculatorView: UIView {
     }
 
     private lazy var resultLabel = UILabel().configure {
+        $0.text = "계산 결과가 여기에 표시됩니다"
         $0.font = .systemFont(ofSize: 20, weight: .medium)
         $0.textAlignment = .center
         $0.numberOfLines = 0
@@ -62,8 +63,8 @@ final class CalculatorView: UIView {
         countryLabel.text = exchangeRate.country
     }
 
-    func update(result: String) {
-        resultLabel.text = result
+    func update(result: Double) {
+        resultLabel.text = "\(result)"
     }
 
     @objc
@@ -74,7 +75,6 @@ final class CalculatorView: UIView {
 
         guard let text = amountTextField.text else { return }
         let trimmedText = text.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !trimmedText.isEmpty else { return }
 
         convertButtonDidTapSubject.send(trimmedText)
     }

@@ -3,8 +3,6 @@ import Foundation
 final class ExchangeRateRepository {
     let service: ExchangeRateService
 
-    // TODO: fetch한 데이터를 저장하고 있어야함
-
     init(exchangeRateService: ExchangeRateService) {
         service = exchangeRateService
     }
