@@ -12,7 +12,7 @@ final class ExchangeRateService {
         case .success(let dto):
             return .success(dto)
         case .failure:
-            return .failure(.unknownError)
+            return .failure(.dataLoadFailed)
         }
     }
 }

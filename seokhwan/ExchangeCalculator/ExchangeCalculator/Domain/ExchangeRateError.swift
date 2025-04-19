@@ -1,19 +1,18 @@
 import Foundation
 
 enum ExchangeRateError: LocalizedError {
-    // TODO: Error Case 구체화해야 함
+    case dataLoadFailed
     case emptyInput
-    case invalidInput
-    case unknownError
+    case invalidNumber
 
     var errorDescription: String? {
         switch self {
+        case .dataLoadFailed:
+            return "데이터를 불러올 수 없습니다"
         case .emptyInput:
             return "금액을 입력해 주세요"
-        case .invalidInput:
+        case .invalidNumber:
             return "올바른 숫자를 입력해 주세요"
-        case .unknownError:
-            return "unknownError"
         }
     }
 }

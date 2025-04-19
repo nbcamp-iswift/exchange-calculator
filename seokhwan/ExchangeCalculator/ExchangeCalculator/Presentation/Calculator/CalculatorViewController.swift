@@ -56,7 +56,7 @@ private extension CalculatorViewController {
         viewModel.state.errorMessage
             .receive(on: DispatchQueue.main)
             .sink { [weak self] message in
-                self?.showAlert(title: "오류", message: message)
+                self?.presentErrorAlert(with: message)
             }
             .store(in: &cancellables)
 

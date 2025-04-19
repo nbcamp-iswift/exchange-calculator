@@ -60,8 +60,8 @@ private extension ExchangeRateViewController {
 
         viewModel.state.errorMessage
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                self?.showAlert(title: "오류", message: "데이터를 불러올 수 없습니다")
+            .sink { [weak self] message in
+                self?.presentErrorAlert(with: message)
             }
             .store(in: &cancellables)
 
