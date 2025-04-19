@@ -42,8 +42,8 @@ final class ExchangeRateViewModel: ViewModelProtocol {
             .store(in: &cancellables)
     }
 
-    private func fetchExchangeRates(for currency: String? = nil) async {
-        let result = await useCase.execute(for: currency)
+    private func fetchExchangeRates() async {
+        let result = await useCase.execute()
 
         switch result {
         case .success(let info):

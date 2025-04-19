@@ -2,18 +2,15 @@ import Foundation
 
 struct ExchangeRateInfo: Hashable {
     let lastUpdated: Date
-    let baseCurrency: String
     let exchangeRates: ExchangeRates
 
     init() {
         lastUpdated = Date.now
-        baseCurrency = ""
         exchangeRates = []
     }
 
     init(from dto: ExchangeRateInfoDTO, with countries: [String: String]) {
         lastUpdated = Date(timeIntervalSince1970: dto.timeLastUpdateUnix)
-        baseCurrency = dto.baseCode
         exchangeRates = dto.rates
             .map { currency, value in
                 let country = countries[currency] ?? "-"

@@ -7,10 +7,8 @@ final class ExchangeRateRepository {
         service = exchangeRateService
     }
 
-    func fetchExchangeRates(
-        for currency: String
-    ) async -> Result<ExchangeRateInfo, ExchangeRateError> {
-        let result = await service.fetchExchangeRateInfo(for: currency)
+    func fetchExchangeRates() async -> Result<ExchangeRateInfo, ExchangeRateError> {
+        let result = await service.fetchExchangeRateInfo()
 
         switch result {
         case .success(let dto):
