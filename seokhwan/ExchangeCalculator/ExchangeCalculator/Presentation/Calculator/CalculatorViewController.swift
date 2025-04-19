@@ -42,7 +42,20 @@ private extension CalculatorViewController {
         viewModel.state.exchangeRate
             .receive(on: DispatchQueue.main)
             .sink { [weak self] exchangeRate in
-                self?.calculatorView.update(with: exchangeRate)
+                self?.calculatorView.update(exchangeRate: exchangeRate)
+            }
+            .store(in: &cancellables)
+
+        viewModel.state.result
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] result in
+                self?.calculatorView.update(result: result)
+            }
+            .store(in: &cancellables)
+
+        calculatorView.convertButtonDidTapPublisher
+            .sink { [weak self] amount in
+                self?.viewModel.action.send(.convert(amount: amount))
             }
             .store(in: &cancellables)
     }
