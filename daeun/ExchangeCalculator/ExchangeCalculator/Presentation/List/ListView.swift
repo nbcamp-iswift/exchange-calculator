@@ -27,7 +27,6 @@ final class ListView: UIView {
     private let noMatchLabel: UILabel = {
         let label = UILabel()
         label.text = Constant.Text.noMatch
-        label.backgroundColor = .orange
         label.textColor = .gray
         label.isHidden = true
         return label

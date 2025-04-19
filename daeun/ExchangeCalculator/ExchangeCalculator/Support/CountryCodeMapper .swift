@@ -7,13 +7,13 @@
 
 import Foundation
 
-struct CountryCodeMapper {
-    func name(for code: String) -> String {
+enum CountryCodeMapper {
+    static func name(for code: String) -> String {
         guard let countryName = countryName[code] else { return "unknown" }
         return countryName
     }
 
-    private let countryName: [String: String] = [
+    static let countryName: [String: String] = [
         "USD": "미국",
         "AED": "아랍에미리트",
         "AFN": "아프가니스탄",

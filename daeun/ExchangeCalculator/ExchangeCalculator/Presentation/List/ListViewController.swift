@@ -70,7 +70,8 @@ extension ListViewController {
             ) as? ListCell
 
             guard case let ListItem.rate(exchangeRate) = item else { return nil }
-            cell?.updateCell(for: exchangeRate, viewModel.countryName(for: exchangeRate.code))
+
+            cell?.updateCell(for: exchangeRate)
 
             return cell
         }

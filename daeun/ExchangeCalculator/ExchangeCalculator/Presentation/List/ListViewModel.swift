@@ -9,7 +9,6 @@ import Foundation
 
 final class ListViewModel {
     private let exchangeRatesUseCase: ExchangeRatesUseCase
-    private let countryCodeMapper = CountryCodeMapper()
     private var originalRates: [ExchangeRate] = []
     @Published private(set) var error: Bool = false
     @Published private(set) var filteredRates: [ExchangeRate] = []
@@ -36,20 +35,8 @@ final class ListViewModel {
 
     func filterRates(with searchQuery: String) {
         filteredRates = searchQuery.isEmpty
-        ? originalRates
-        : originalRates.filter { matchesQuery($0, query: searchQuery) }
-
+            ? originalRates
+            : originalRates.filter { $0.matches(query: searchQuery) }
         hasMatches = !filteredRates.isEmpty
-    }
-
-    func countryName(for code: String) -> String {
-        countryCodeMapper.name(for: code)
-    }
-
-    private func matchesQuery(_ rate: ExchangeRate, query: String) -> Bool {
-        let countryCode = rate.code
-        let countryName = countryCodeMapper.name(for: rate.code)
-
-        return countryCode.hasPrefix(query.uppercased()) || countryName.hasPrefix(query)
     }
 }
