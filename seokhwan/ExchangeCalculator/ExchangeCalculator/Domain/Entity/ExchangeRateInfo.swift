@@ -2,17 +2,23 @@ import Foundation
 
 struct ExchangeRateInfo: Hashable {
     let lastUpdated: Date
+    let baseCurrency: String
     let exchangeRates: ExchangeRates
 
     init() {
         lastUpdated = Date.now
+        baseCurrency = ""
         exchangeRates = []
     }
 
-    init(from dto: ExchangeRateInfoDTO) {
+    init(from dto: ExchangeRateInfoDTO, with countries: [String: String]) {
         lastUpdated = Date(timeIntervalSince1970: dto.timeLastUpdateUnix)
-        exchangeRates = Array(dto.rates)
-            .map { ExchangeRate(currency: $0.key, value: $0.value) }
+        baseCurrency = dto.baseCode
+        exchangeRates = dto.rates
+            .map { currency, value in
+                let country = countries[currency] ?? "-"
+                return ExchangeRate(currency: currency, country: country, value: value)
+            }
             .sorted { $0.currency < $1.currency }
     }
 }
@@ -21,5 +27,6 @@ typealias ExchangeRates = [ExchangeRate]
 
 struct ExchangeRate: Hashable {
     let currency: String
+    let country: String
     let value: Double
 }

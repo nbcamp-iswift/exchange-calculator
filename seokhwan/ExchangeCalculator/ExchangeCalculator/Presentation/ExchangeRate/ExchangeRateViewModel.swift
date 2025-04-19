@@ -59,10 +59,10 @@ final class ExchangeRateViewModel: ViewModelProtocol {
         }
         let result = state.exchangeRateInfo.value.exchangeRates
             .filter {
-                let currencyCode = $0.currency.lowercased()
-                let countryName = CurrencyCountryMapper.country(for: $0.currency).lowercased()
+                let currency = $0.currency.lowercased()
+                let country = $0.country.lowercased()
 
-                return currencyCode.contains(text) || countryName.contains(text)
+                return currency.contains(text) || country.contains(text)
             }
 
         state.filteredExchangeRates.send(result)

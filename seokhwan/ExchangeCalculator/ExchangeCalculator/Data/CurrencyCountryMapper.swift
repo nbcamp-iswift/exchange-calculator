@@ -5,6 +5,16 @@ enum CurrencyCountryMapper {
         mapping[currency] ?? "-"
     }
 
+    static func countries(for currencies: [String]) -> [String: String] {
+        var result = [String: String]()
+
+        currencies.forEach {
+            result[$0] = mapping[$0] ?? "-"
+        }
+
+        return result
+    }
+
     private static let mapping = [
         "USD": "미국",
         "AED": "아랍에미리트",
