@@ -61,7 +61,7 @@ extension ListViewController {
 
     private func setAttributes() {
         title = Constant.Title.exchangeInfo
-        navigationController?.isNavigationBarHidden = true
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
 
     private func setDataSource() {

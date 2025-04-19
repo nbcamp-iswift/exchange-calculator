@@ -60,8 +60,8 @@ extension ListView {
 
     private func setHierachy() {
         [
-            tableView,
             searchBar,
+            tableView,
             noMatchLabel,
         ].forEach { addSubview($0) }
     }
