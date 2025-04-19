@@ -20,7 +20,9 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let repository = DefaultExchangeRatesRepository()
         let useCase = DefaultExchangeRatesUseCase(repository: repository)
         let viewModel = ListViewModel(exchangeRatesUseCase: useCase)
-        window?.rootViewController = ListViewController(listViewModel: viewModel)
+        let rootViewController = ListViewController(listViewModel: viewModel)
+        let navigationController = UINavigationController(rootViewController: rootViewController)
+        window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
 }

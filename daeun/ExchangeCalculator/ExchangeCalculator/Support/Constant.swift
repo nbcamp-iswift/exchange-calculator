@@ -36,6 +36,9 @@ enum Constant {
         static let message = "데이터를 불러올 수 없습니다."
         static let confirm = "확인"
     }
+    enum Title {
+        static let exchangeInfo = "환율 정보"
+    }
 
     enum Text {
         static let noMatch = "검색 결과 없음"

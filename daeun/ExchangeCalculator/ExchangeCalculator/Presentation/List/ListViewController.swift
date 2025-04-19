@@ -54,16 +54,20 @@ final class ListViewController: UIViewController {
 
 extension ListViewController {
     private func configure() {
+        setAttributes()
         setDataSource()
         setBindings()
+    }
+
+    private func setAttributes() {
+        title = Constant.Title.exchangeInfo
+        navigationController?.isNavigationBarHidden = true
     }
 
     private func setDataSource() {
         dataSource = .init(
             tableView: listView.tableView
-        ) { [weak self] tableView, indexPath, item -> UITableViewCell? in
-            guard let self else { return nil }
-
+        ) { tableView, indexPath, item -> UITableViewCell? in
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: ListCell.reuseIdentifier,
                 for: indexPath
@@ -87,6 +91,16 @@ extension ListViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] text in
                 self?.viewModel.filterRates(with: text)
+            }
+            .store(in: &cancellables)
+
+        listView.tableView.didSelectRowPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.navigationController?.pushViewController(
+                    DetailViewController(),
+                    animated: true
+                )
             }
             .store(in: &cancellables)
 
