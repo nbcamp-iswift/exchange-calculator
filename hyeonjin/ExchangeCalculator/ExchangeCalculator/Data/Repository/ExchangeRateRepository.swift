@@ -1,5 +1,5 @@
 //
-//  NetworkManager.swift
+//  ExchangeRateRepository.swift
 //  ExchangeCalulator
 //
 //  Created by 유현진 on 4/16/25.
@@ -8,7 +8,7 @@
 import Foundation
 import RxSwift
 
-final class NetworkManager {
+final class ExchangeRateRepository: ExchangeRateRepositoryProtocol {
     private let service: ServiceProtocol
 
     init(service: ServiceProtocol) {
