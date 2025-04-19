@@ -11,7 +11,7 @@ import SnapKit
 final class MainView: UIView {
     lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
-        searchBar.backgroundImage = UIImage()
+        searchBar.searchBarStyle = .minimal
         return searchBar
     }()
 
