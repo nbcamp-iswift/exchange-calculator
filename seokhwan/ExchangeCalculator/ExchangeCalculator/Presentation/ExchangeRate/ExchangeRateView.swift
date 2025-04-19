@@ -12,14 +12,14 @@ final class ExchangeRateView: UIView {
 
     private var dataSource: DataSource?
     private let searchTextDidChangeSubject = PassthroughSubject<String, Never>()
-    private let cellDidTapSubject = PassthroughSubject<Void, Never>()
+    private let cellDidTapSubject = PassthroughSubject<ExchangeRate, Never>()
     private var cancellables = Set<AnyCancellable>()
 
     var searchTextDidChangePublisher: AnyPublisher<String, Never> {
         searchTextDidChangeSubject.eraseToAnyPublisher()
     }
 
-    var cellDidTapPublisher: AnyPublisher<Void, Never> {
+    var cellDidTapPublisher: AnyPublisher<ExchangeRate, Never> {
         cellDidTapSubject.eraseToAnyPublisher()
     }
 
@@ -123,7 +123,9 @@ extension ExchangeRateView: UISearchBarDelegate {
 
 extension ExchangeRateView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        cellDidTapSubject.send(())
+        guard let exchangeRate = dataSource?.itemIdentifier(for: indexPath) else { return }
+
+        cellDidTapSubject.send(exchangeRate)
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }

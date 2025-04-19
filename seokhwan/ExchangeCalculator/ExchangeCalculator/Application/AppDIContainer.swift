@@ -13,11 +13,11 @@ final class AppDIContainer {
         let useCase = ExchangeRateUseCase(exchangeRateRepository: repository)
         let viewModel = ExchangeRateViewModel(exchangeRateUseCase: useCase)
 
-        return ExchangeRateViewController(viewModel: viewModel)
+        return ExchangeRateViewController(viewModel: viewModel, container: self)
     }
 
-    func makeCalculatorViewController() -> CalculatorViewController {
-        let viewModel = CalculatorViewModel()
+    func makeCalculatorViewController(with exchangeRate: ExchangeRate) -> CalculatorViewController {
+        let viewModel = CalculatorViewModel(exchangeRate: exchangeRate)
 
         return CalculatorViewController(viewModel: viewModel)
     }

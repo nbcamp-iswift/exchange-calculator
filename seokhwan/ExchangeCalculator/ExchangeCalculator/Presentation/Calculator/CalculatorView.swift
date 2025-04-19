@@ -11,6 +11,10 @@ final class CalculatorView: UIView {
     required init?(coder: NSCoder) {
         fatalError()
     }
+
+    func update(with exchangeRate: ExchangeRate) {
+        print(#function, exchangeRate.currency) // TODO: 기능 구현 후 해당 구문 제거
+    }
 }
 
 private extension CalculatorView {

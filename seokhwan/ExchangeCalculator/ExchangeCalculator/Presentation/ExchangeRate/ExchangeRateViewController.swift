@@ -3,12 +3,14 @@ import Combine
 
 final class ExchangeRateViewController: UIViewController {
     private let viewModel: ExchangeRateViewModel
+    private let container: AppDIContainer
     private var cancellables = Set<AnyCancellable>()
 
     private lazy var exchangeRateView = ExchangeRateView()
 
-    init(viewModel: ExchangeRateViewModel) {
+    init(viewModel: ExchangeRateViewModel, container: AppDIContainer) {
         self.viewModel = viewModel
+        self.container = container
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -46,6 +48,16 @@ private extension ExchangeRateViewController {
             }
             .store(in: &cancellables)
 
+        viewModel.state.selectedExchangeRate
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] exchangeRate in
+                guard let viewController = self?.container.makeCalculatorViewController(
+                    with: exchangeRate
+                ) else { return }
+                self?.navigationController?.pushViewController(viewController, animated: true)
+            }
+            .store(in: &cancellables)
+
         viewModel.state.errorMessage
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
@@ -60,8 +72,8 @@ private extension ExchangeRateViewController {
             .store(in: &cancellables)
 
         exchangeRateView.cellDidTapPublisher
-            .sink { [weak self] in
-                self?.viewModel.action.send(.cellDidTap)
+            .sink { [weak self] exchangeRate in
+                self?.viewModel.action.send(.cellDidTap(exchangeRate: exchangeRate))
             }
             .store(in: &cancellables)
     }

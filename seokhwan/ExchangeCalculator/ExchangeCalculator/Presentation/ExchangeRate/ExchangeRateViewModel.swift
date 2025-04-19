@@ -5,12 +5,13 @@ final class ExchangeRateViewModel: ViewModelProtocol {
     enum Action {
         case viewDidLoad
         case searchTextDidChange(searchText: String)
-        case cellDidTap
+        case cellDidTap(exchangeRate: ExchangeRate)
     }
 
     struct State {
         let exchangeRateInfo = CurrentValueSubject<ExchangeRateInfo, Never>(ExchangeRateInfo())
         let filteredExchangeRates = PassthroughSubject<ExchangeRates, Never>()
+        let selectedExchangeRate = PassthroughSubject<ExchangeRate, Never>()
         let errorMessage = PassthroughSubject<String, Never>()
     }
 
@@ -32,8 +33,8 @@ final class ExchangeRateViewModel: ViewModelProtocol {
                     }
                 case .searchTextDidChange(let searchText):
                     self?.filterExchangeRates(by: searchText)
-                case .cellDidTap:
-                    () // TODO: Cell 탭 이벤트 구현
+                case .cellDidTap(let exchangeRate):
+                    self?.state.selectedExchangeRate.send(exchangeRate)
                 }
             }
             .store(in: &cancellables)
