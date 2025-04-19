@@ -1,5 +1,6 @@
 import UIKit
 import Combine
+import Then
 import SnapKit
 
 final class ExchangeRateView: UIView {
@@ -23,17 +24,17 @@ final class ExchangeRateView: UIView {
         cellDidTapSubject.eraseToAnyPublisher()
     }
 
-    private lazy var searchBar = UISearchBar().configure {
+    private lazy var searchBar = UISearchBar().then {
         $0.searchBarStyle = .minimal
         $0.placeholder = "통화 검색"
     }
 
-    private lazy var tableView = UITableView().configure {
+    private lazy var tableView = UITableView().then {
         $0.register(ExchangeRateCell.self)
         $0.rowHeight = 60
     }
 
-    private lazy var noSearchResultsLabel = UILabel().configure {
+    private lazy var noSearchResultsLabel = UILabel().then {
         $0.text = "검색 결과 없음"
         $0.textColor = .gray
     }

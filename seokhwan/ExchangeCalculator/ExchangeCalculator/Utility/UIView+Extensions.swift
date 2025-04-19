@@ -11,5 +11,3 @@ extension UIView {
         }
     }
 }
-
-extension UIView: Configurable {}

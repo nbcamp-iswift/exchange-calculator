@@ -1,22 +1,23 @@
 import UIKit
+import Then
 import SnapKit
 
 final class ExchangeRateCell: UITableViewCell {
-    private lazy var labelStackView = UIStackView().configure {
+    private lazy var labelStackView = UIStackView().then {
         $0.axis = .vertical
         $0.spacing = 4
     }
 
-    private lazy var currencyLabel = UILabel().configure {
+    private lazy var currencyLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 16, weight: .medium)
     }
 
-    private lazy var countryLabel = UILabel().configure {
+    private lazy var countryLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 14)
         $0.textColor = .gray
     }
 
-    private lazy var rateLabel = UILabel().configure {
+    private lazy var rateLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 16)
         $0.textAlignment = .right
     }

@@ -1,5 +1,6 @@
 import UIKit
 import Combine
+import Then
 import SnapKit
 
 final class CalculatorView: UIView {
@@ -10,29 +11,29 @@ final class CalculatorView: UIView {
         convertButtonDidTapSubject.eraseToAnyPublisher()
     }
 
-    private lazy var labelStackView = UIStackView().configure {
+    private lazy var labelStackView = UIStackView().then {
         $0.axis = .vertical
         $0.spacing = 4
         $0.alignment = .center
     }
 
-    private lazy var currencyLabel = UILabel().configure {
+    private lazy var currencyLabel = UILabel().then {
         $0.font = .boldSystemFont(ofSize: 24)
     }
 
-    private lazy var countryLabel = UILabel().configure {
+    private lazy var countryLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 16)
         $0.textColor = .gray
     }
 
-    private lazy var amountTextField = UITextField().configure {
+    private lazy var amountTextField = UITextField().then {
         $0.borderStyle = .roundedRect
         $0.keyboardType = .decimalPad
         $0.textAlignment = .center
         $0.placeholder = "금액을 입력하세요"
     }
 
-    private lazy var convertButton = UIButton().configure {
+    private lazy var convertButton = UIButton().then {
         $0.backgroundColor = .systemBlue
         $0.setTitle("환율 계산", for: .normal)
         $0.titleLabel?.textColor = .white
@@ -41,7 +42,7 @@ final class CalculatorView: UIView {
         $0.addTarget(self, action: #selector(convertButtonDidTap), for: .touchUpInside)
     }
 
-    private lazy var resultLabel = UILabel().configure {
+    private lazy var resultLabel = UILabel().then {
         $0.text = "계산 결과가 여기에 표시됩니다"
         $0.font = .systemFont(ofSize: 20, weight: .medium)
         $0.textAlignment = .center
