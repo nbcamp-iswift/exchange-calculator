@@ -42,27 +42,31 @@ private extension CalculatorViewController {
         viewModel.state.exchangeRate
             .receive(on: DispatchQueue.main)
             .sink { [weak self] exchangeRate in
-                self?.calculatorView.update(exchangeRate: exchangeRate)
+                guard let self else { return }
+                calculatorView.update(exchangeRate: exchangeRate)
             }
             .store(in: &cancellables)
 
         viewModel.state.convertedAmount
             .receive(on: DispatchQueue.main)
             .sink { [weak self] result in
-                self?.calculatorView.update(result: result)
+                guard let self else { return }
+                calculatorView.update(result: result)
             }
             .store(in: &cancellables)
 
         viewModel.state.errorMessage
             .receive(on: DispatchQueue.main)
             .sink { [weak self] message in
-                self?.presentErrorAlert(with: message)
+                guard let self else { return }
+                presentErrorAlert(with: message)
             }
             .store(in: &cancellables)
 
         calculatorView.convertButtonDidTapPublisher
             .sink { [weak self] amount in
-                self?.viewModel.action.send(.convert(input: amount))
+                guard let self else { return }
+                viewModel.action.send(.convert(input: amount))
             }
             .store(in: &cancellables)
     }

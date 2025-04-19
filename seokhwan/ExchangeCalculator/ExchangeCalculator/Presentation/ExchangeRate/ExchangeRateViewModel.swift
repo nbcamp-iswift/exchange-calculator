@@ -26,15 +26,17 @@ final class ExchangeRateViewModel: ViewModelProtocol {
 
         action
             .sink { [weak self] action in
+                guard let self else { return }
+
                 switch action {
                 case .viewDidLoad:
                     Task {
-                        await self?.fetchExchangeRates()
+                        await self.fetchExchangeRates()
                     }
                 case .searchTextDidChange(let searchText):
-                    self?.filterExchangeRates(by: searchText)
+                    filterExchangeRates(by: searchText)
                 case .cellDidTap(let exchangeRate):
-                    self?.state.selectedExchangeRate.send(exchangeRate)
+                    state.selectedExchangeRate.send(exchangeRate)
                 }
             }
             .store(in: &cancellables)

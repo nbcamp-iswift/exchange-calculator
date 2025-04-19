@@ -44,36 +44,40 @@ private extension ExchangeRateViewController {
         viewModel.state.filteredExchangeRates
             .receive(on: DispatchQueue.main)
             .sink { [weak self] exchangeRates in
-                self?.exchangeRateView.update(with: exchangeRates)
+                guard let self else { return }
+                exchangeRateView.update(with: exchangeRates)
             }
             .store(in: &cancellables)
 
         viewModel.state.selectedExchangeRate
             .receive(on: DispatchQueue.main)
             .sink { [weak self] exchangeRate in
-                guard let viewController = self?.container.makeCalculatorViewController(
-                    with: exchangeRate
-                ) else { return }
-                self?.navigationController?.pushViewController(viewController, animated: true)
+                guard let self else { return }
+                let viewController = container.makeCalculatorViewController(with: exchangeRate)
+
+                navigationController?.pushViewController(viewController, animated: true)
             }
             .store(in: &cancellables)
 
         viewModel.state.errorMessage
             .receive(on: DispatchQueue.main)
             .sink { [weak self] message in
-                self?.presentErrorAlert(with: message)
+                guard let self else { return }
+                presentErrorAlert(with: message)
             }
             .store(in: &cancellables)
 
         exchangeRateView.searchTextDidChangePublisher
             .sink { [weak self] searchText in
-                self?.viewModel.action.send(.searchTextDidChange(searchText: searchText))
+                guard let self else { return }
+                viewModel.action.send(.searchTextDidChange(searchText: searchText))
             }
             .store(in: &cancellables)
 
         exchangeRateView.cellDidTapPublisher
             .sink { [weak self] exchangeRate in
-                self?.viewModel.action.send(.cellDidTap(exchangeRate: exchangeRate))
+                guard let self else { return }
+                viewModel.action.send(.cellDidTap(exchangeRate: exchangeRate))
             }
             .store(in: &cancellables)
     }
