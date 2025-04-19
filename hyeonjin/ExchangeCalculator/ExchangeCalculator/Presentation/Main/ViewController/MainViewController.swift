@@ -10,11 +10,23 @@ import RxSwift
 import RxCocoa
 
 final class MainViewController: UIViewController {
-    private let viewModel = MainViewModel()
+    let coordinator: Coordinator
+    private let viewModel: MainViewModel
 
     var disposeBag: DisposeBag = .init()
 
     private lazy var mainView: MainView = .init()
+
+    init(viewModel: MainViewModel, coordinator: Coordinator) {
+        self.viewModel = viewModel
+        self.coordinator = coordinator
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError()
+    }
 
     override func loadView() {
         view = mainView

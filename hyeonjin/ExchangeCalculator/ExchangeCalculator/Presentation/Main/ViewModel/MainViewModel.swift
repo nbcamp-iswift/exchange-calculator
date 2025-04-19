@@ -10,15 +10,17 @@ import RxSwift
 import RxCocoa
 
 final class MainViewModel {
-    let networkManager = NetworkManager(service: ExchangeRateService())
     var disposeBag: DisposeBag = .init()
+
+    let exchangeUseCase: ExchangeRateUseCaseProtocol
 
     var originalExchangeRates = BehaviorSubject<[ExchangeRate]>(value: [])
     var filteredExchangeRates = BehaviorSubject<[ExchangeRate]>(value: [])
     var errorSubject = BehaviorSubject<Error?>(value: nil)
     var searchBarText = BehaviorRelay<String>(value: "")
 
-    init() {
+    init(exchangeUseCase: ExchangeRateUseCaseProtocol) {
+        self.exchangeUseCase = exchangeUseCase
         setBindings()
     }
 
@@ -28,7 +30,7 @@ final class MainViewModel {
     }
 
     private func fetchExchangeRates() {
-        networkManager.fetchExchangeRates()
+        exchangeUseCase.fetchExchangeRates()
             .subscribe { [weak self] result in
                 guard let self else { return }
 
