@@ -79,6 +79,11 @@ final class DetailView: UIView {
     required init?(coder: NSCoder) {
         fatalError()
     }
+
+    func updateView(for rate: ExchangeRate) {
+        currencyLabel.text = rate.currencyCode
+        countryLabel.text = rate.countryName
+    }
 }
 
 // MARK: - Configure

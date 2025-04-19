@@ -88,19 +88,15 @@ extension ListViewController {
 
     private func setBindings() {
         listView.searchBar.textDidChangePublisher
-            .receive(on: DispatchQueue.main)
             .sink { [weak self] text in
                 self?.viewModel.filterRates(with: text)
             }
             .store(in: &cancellables)
 
         listView.tableView.didSelectRowPublisher
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                self?.navigationController?.pushViewController(
-                    DetailViewController(),
-                    animated: true
-                )
+            .map(\.row)
+            .sink { [weak self] row in
+                self?.viewModel.selectRate(at: row)
             }
             .store(in: &cancellables)
 
@@ -124,6 +120,13 @@ extension ListViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] has in
                 self?.listView.isHiddenNoMatchLabel(hasMatch: has)
+            }
+            .store(in: &cancellables)
+
+        viewModel.showDetailVC
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] detailVC in
+                self?.navigationController?.pushViewController(detailVC, animated: true)
             }
             .store(in: &cancellables)
     }

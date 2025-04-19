@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 final class ListViewModel {
     private let exchangeRatesUseCase: ExchangeRatesUseCase
@@ -13,6 +14,7 @@ final class ListViewModel {
     @Published private(set) var error: Bool = false
     @Published private(set) var filteredRates: [ExchangeRate] = []
     @Published private(set) var hasMatches: Bool = true
+    let showDetailVC = PassthroughSubject<DetailViewController, Never>()
 
     init(exchangeRatesUseCase: ExchangeRatesUseCase) {
         self.exchangeRatesUseCase = exchangeRatesUseCase
@@ -38,5 +40,12 @@ final class ListViewModel {
             ? originalRates
             : originalRates.filter { $0.matches(query: searchQuery) }
         hasMatches = !filteredRates.isEmpty
+    }
+
+    func selectRate(at row: Int) {
+        let exchangeRate = filteredRates[row]
+        let detailViewModel = DetailViewModel(exchangeRate: exchangeRate)
+        let detailVC = DetailViewController(viewModel: detailViewModel)
+        showDetailVC.send(detailVC)
     }
 }
