@@ -13,7 +13,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
 
         let rootViewController = container.makeExchangeRateViewController()
-        let navigationController = NavigationController(rootViewController: rootViewController)
+        let navigationController = UINavigationController(rootViewController: rootViewController)
+        navigationController.navigationBar.prefersLargeTitles = true
 
         window = UIWindow(windowScene: windowScene)
         window?.rootViewController = navigationController

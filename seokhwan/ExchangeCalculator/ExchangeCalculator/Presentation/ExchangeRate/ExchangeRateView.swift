@@ -24,7 +24,7 @@ final class ExchangeRateView: UIView {
     }
 
     private lazy var tableView = UITableView().then {
-        $0.register(ExchangeRateCell.self)
+        $0.register(ExchangeRateCell.self, forCellReuseIdentifier: ExchangeRateCell.identifier)
         $0.rowHeight = 60
     }
 
