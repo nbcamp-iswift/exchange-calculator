@@ -24,7 +24,7 @@ final class DefaultConvertCurrencyUseCase: ConvertCurrencyUseCase {
         amount: String?,
         with rate: ExchangeRate
     ) -> Result<ConversionResult, ConvertError> {
-        guard let text = amount else {
+        guard let text = amount, !text.isEmpty else {
             return .failure(.emptyInput)
         }
         guard let amountValue = Double(text) else {

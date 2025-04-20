@@ -112,7 +112,10 @@ extension ListViewController {
             .receive(on: DispatchQueue.main)
             .filter { $0 }
             .sink { [weak self] _ in
-                self?.showAlert()
+                self?.showAlert(
+                    title: Constant.Alert.title,
+                    message: Constant.Alert.fetchErrorMessage
+                )
             }
             .store(in: &cancellables)
 
@@ -129,19 +132,6 @@ extension ListViewController {
                 self?.navigationController?.pushViewController(detailVC, animated: true)
             }
             .store(in: &cancellables)
-    }
-
-    private func showAlert() {
-        let alertView = UIAlertController(
-            title: Constant.Alert.title,
-            message: Constant.Alert.message,
-            preferredStyle: .alert
-        )
-
-        let confirmAction = UIAlertAction(title: Constant.Alert.confirm, style: .default)
-        alertView.addAction(confirmAction)
-
-        present(alertView, animated: true)
     }
 
     private func updateSnapshot(with items: [ListItem]) {

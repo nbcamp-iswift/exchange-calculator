@@ -12,6 +12,8 @@ final class DetailViewModel {
     let convertCurrencyUseCase: ConvertCurrencyUseCase
     let exchangeRate = CurrentValueSubject<ExchangeRate?, Never>(nil)
     let convertedResultText = PassthroughSubject<String, Never>()
+    let inputError = PassthroughSubject<Void, Never>()
+    let invalidNumberFormatError = PassthroughSubject<Void, Never>()
 
     init(exchangeRate: ExchangeRate, convertCurrencyUseCase: ConvertCurrencyUseCase) {
         self.exchangeRate.value = exchangeRate
@@ -31,12 +33,12 @@ final class DetailViewModel {
 
             let displayText = "\(baseSymbol)\(formattedInput) ⇨ \(formattedOutput)\(targetCode)"
             convertedResultText.send(displayText)
-        case .failure(let failure):
-            switch failure {
+        case .failure(let error):
+            switch error {
             case .emptyInput:
-                break
+                inputError.send(())
             case .invalidNumberFormat:
-                break
+                invalidNumberFormatError.send(())
             }
         }
     }

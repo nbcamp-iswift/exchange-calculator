@@ -74,5 +74,25 @@ extension DetailViewController {
                 self?.detailView.updateResultLabel(for: result)
             }
             .store(in: &cancellables)
+
+        viewModel.inputError
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.showAlert(
+                    title: Constant.Alert.title,
+                    message: Constant.Alert.emptyInputErrorMessage
+                )
+            }
+            .store(in: &cancellables)
+
+        viewModel.invalidNumberFormatError
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.showAlert(
+                    title: Constant.Alert.title,
+                    message: Constant.Alert.invalidNumberErrorMessage
+                )
+            }
+            .store(in: &cancellables)
     }
 }
