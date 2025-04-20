@@ -56,12 +56,12 @@ final class CalculatorView: UIView {
         fatalError()
     }
 
-    func update(exchangeRate: ExchangeRate) {
+    func update(with exchangeRate: ExchangeRate) {
         currencyLabel.text = exchangeRate.currency
         countryLabel.text = exchangeRate.country
     }
 
-    func update(result: Double) {
+    func update(with result: Double) {
         let amount = Double(amountTextField.text ?? "") ?? 0.0
         let formattedAmount = String(format: "%.2f", amount)
         let formattedResult = String(format: "%.2f", result)

@@ -42,14 +42,14 @@ private extension CalculatorViewController {
         viewModel.state.exchangeRate
             .observe(on: MainScheduler.instance)
             .bind { [weak self] exchangeRate in
-                self?.calculatorView.update(exchangeRate: exchangeRate)
+                self?.calculatorView.update(with: exchangeRate)
             }
             .disposed(by: disposeBag)
 
         viewModel.state.convertedAmount
             .observe(on: MainScheduler.instance)
             .bind { [weak self] result in
-                self?.calculatorView.update(result: result)
+                self?.calculatorView.update(with: result)
             }
             .disposed(by: disposeBag)
 
