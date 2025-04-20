@@ -1,5 +1,6 @@
 import Foundation
-import Combine
+import RxSwift
+import RxRelay
 
 final class CalculatorViewModel: ViewModelProtocol {
     enum Action {
@@ -8,16 +9,16 @@ final class CalculatorViewModel: ViewModelProtocol {
     }
 
     struct State {
-        let exchangeRate = PassthroughSubject<ExchangeRate, Never>()
-        let convertedAmount = PassthroughSubject<Double, Never>()
-        let errorMessage = PassthroughSubject<String, Never>()
+        let exchangeRate = PublishRelay<ExchangeRate>()
+        let convertedAmount = PublishRelay<Double>()
+        let errorMessage = PublishRelay<String>()
     }
 
-    let action = PassthroughSubject<Action, Never>()
+    let action = PublishRelay<Action>()
     let state = State()
     let useCase: ConvertExchangeRateUseCase
 
-    private var cancellables = Set<AnyCancellable>()
+    private let disposeBag = DisposeBag()
 
     init(
         exchangeRate: ExchangeRate,
@@ -26,23 +27,23 @@ final class CalculatorViewModel: ViewModelProtocol {
         useCase = convertExchangeRateUseCase
 
         action
-            .sink { [weak self] action in
+            .bind { [weak self] action in
                 guard let self else { return }
 
                 switch action {
                 case .viewDidLoad:
-                    state.exchangeRate.send(exchangeRate)
+                    state.exchangeRate.accept(exchangeRate)
                 case .convert(let input):
                     let result = useCase.execute(input: input, rate: exchangeRate.value)
 
                     switch result {
                     case .success(let amount):
-                        state.convertedAmount.send(amount)
+                        state.convertedAmount.accept(amount)
                     case .failure(let error):
-                        state.errorMessage.send(error.localizedDescription)
+                        state.errorMessage.accept(error.localizedDescription)
                     }
                 }
             }
-            .store(in: &cancellables)
+            .disposed(by: disposeBag)
     }
 }

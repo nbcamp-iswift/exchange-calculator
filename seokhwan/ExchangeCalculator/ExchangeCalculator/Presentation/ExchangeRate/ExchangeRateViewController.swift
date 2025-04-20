@@ -1,10 +1,11 @@
 import UIKit
-import Combine
+import RxSwift
+import RxRelay
 
 final class ExchangeRateViewController: UIViewController {
     private let viewModel: ExchangeRateViewModel
     private let container: AppDIContainer
-    private var cancellables = Set<AnyCancellable>()
+    private let disposeBag = DisposeBag()
 
     private lazy var exchangeRateView = ExchangeRateView()
 
@@ -26,7 +27,7 @@ final class ExchangeRateViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
-        viewModel.action.send(.viewDidLoad)
+        viewModel.action.accept(.viewDidLoad)
     }
 }
 
@@ -42,43 +43,40 @@ private extension ExchangeRateViewController {
 
     func setBindings() {
         viewModel.state.filteredExchangeRates
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] exchangeRates in
-                guard let self else { return }
-                exchangeRateView.update(with: exchangeRates)
+            .observe(on: MainScheduler.instance)
+            .bind { [weak self] exchangeRates in
+                self?.exchangeRateView.update(with: exchangeRates)
             }
-            .store(in: &cancellables)
+            .disposed(by: disposeBag)
 
         viewModel.state.selectedExchangeRate
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] exchangeRate in
-                guard let self else { return }
-                let viewController = container.makeCalculatorViewController(with: exchangeRate)
+            .observe(on: MainScheduler.instance)
+            .bind { [weak self] exchangeRate in
+                guard let viewController = self?.container.makeCalculatorViewController(
+                    with: exchangeRate
+                ) else { return }
 
-                navigationController?.pushViewController(viewController, animated: true)
+                self?.navigationController?.pushViewController(viewController, animated: true)
             }
-            .store(in: &cancellables)
+            .disposed(by: disposeBag)
 
         viewModel.state.errorMessage
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] message in
-                guard let self else { return }
-                presentErrorAlert(with: message)
+            .observe(on: MainScheduler.instance)
+            .bind { [weak self] message in
+                self?.presentErrorAlert(with: message)
             }
-            .store(in: &cancellables)
+            .disposed(by: disposeBag)
 
-        exchangeRateView.searchTextDidChangePublisher
-            .sink { [weak self] searchText in
-                guard let self else { return }
-                viewModel.action.send(.searchTextDidChange(searchText: searchText))
+        exchangeRateView.didChangeSearchText
+            .bind { [weak self] searchText in
+                self?.viewModel.action.accept(.didChangeSearchText(searchText: searchText))
             }
-            .store(in: &cancellables)
+            .disposed(by: disposeBag)
 
-        exchangeRateView.cellDidTapPublisher
-            .sink { [weak self] exchangeRate in
-                guard let self else { return }
-                viewModel.action.send(.cellDidTap(exchangeRate: exchangeRate))
+        exchangeRateView.didTapCell
+            .bind { [weak self] exchangeRate in
+                self?.viewModel.action.accept(.didTapCell(exchangeRate: exchangeRate))
             }
-            .store(in: &cancellables)
+            .disposed(by: disposeBag)
     }
 }

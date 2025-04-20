@@ -1,7 +1,8 @@
 import UIKit
-import Combine
 import Then
 import SnapKit
+import RxSwift
+import RxCocoa
 
 final class ExchangeRateView: UIView {
     enum Section {
@@ -11,18 +12,11 @@ final class ExchangeRateView: UIView {
     typealias DataSource = UITableViewDiffableDataSource<Section, ExchangeRate>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, ExchangeRate>
 
+    let didChangeSearchText = PublishRelay<String>()
+    let didTapCell = PublishRelay<ExchangeRate>()
+
     private var dataSource: DataSource?
-    private let searchTextDidChangeSubject = PassthroughSubject<String, Never>()
-    private let cellDidTapSubject = PassthroughSubject<ExchangeRate, Never>()
-    private var cancellables = Set<AnyCancellable>()
-
-    var searchTextDidChangePublisher: AnyPublisher<String, Never> {
-        searchTextDidChangeSubject.eraseToAnyPublisher()
-    }
-
-    var cellDidTapPublisher: AnyPublisher<ExchangeRate, Never> {
-        cellDidTapSubject.eraseToAnyPublisher()
-    }
+    private let disposeBag = DisposeBag()
 
     private lazy var searchBar = UISearchBar().then {
         $0.searchBarStyle = .minimal
@@ -59,8 +53,8 @@ final class ExchangeRateView: UIView {
             with: noSearchResultsLabel,
             duration: 0.5,
             options: .transitionCrossDissolve
-        ) {
-            self.noSearchResultsLabel.isHidden = !exchangeRates.isEmpty
+        ) { [weak self] in
+            self?.noSearchResultsLabel.isHidden = !exchangeRates.isEmpty
         }
     }
 }
@@ -70,8 +64,8 @@ private extension ExchangeRateView {
         setAttributes()
         setHierarchy()
         setConstraints()
-        setDelegate()
         setDataSource()
+        setBindings()
     }
 
     func setAttributes() {
@@ -98,11 +92,6 @@ private extension ExchangeRateView {
         }
     }
 
-    func setDelegate() {
-        searchBar.delegate = self
-        tableView.delegate = self
-    }
-
     func setDataSource() {
         dataSource = DataSource(tableView: tableView) { tableView, indexPath, exchangeRate in
             guard let cell = tableView.dequeueReusableCell(
@@ -114,19 +103,25 @@ private extension ExchangeRateView {
             return cell
         }
     }
-}
 
-extension ExchangeRateView: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        searchTextDidChangeSubject.send(searchText)
-    }
-}
+    func setBindings() {
+        searchBar.rx.text
+            .orEmpty
+            .bind(to: didChangeSearchText)
+            .disposed(by: disposeBag)
 
-extension ExchangeRateView: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let exchangeRate = dataSource?.itemIdentifier(for: indexPath) else { return }
-
-        cellDidTapSubject.send(exchangeRate)
-        tableView.deselectRow(at: indexPath, animated: true)
+        tableView.rx.itemSelected
+            .compactMap { [weak self] indexPath -> (ExchangeRate, IndexPath)? in
+                guard let exchangeRate = self?.dataSource?.itemIdentifier(for: indexPath) else {
+                    return nil
+                }
+                return (exchangeRate, indexPath)
+            }
+            .do { [weak self] _, indexPath in
+                self?.tableView.deselectRow(at: indexPath, animated: true)
+            }
+            .map(\.0)
+            .bind(to: didTapCell)
+            .disposed(by: disposeBag)
     }
 }

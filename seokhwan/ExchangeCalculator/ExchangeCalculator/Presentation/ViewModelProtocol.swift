@@ -1,10 +1,10 @@
 import Foundation
-import Combine
+import RxRelay
 
 protocol ViewModelProtocol {
     associatedtype Action
     associatedtype State
 
-    var action: PassthroughSubject<Action, Never> { get }
+    var action: PublishRelay<Action> { get }
     var state: State { get }
 }

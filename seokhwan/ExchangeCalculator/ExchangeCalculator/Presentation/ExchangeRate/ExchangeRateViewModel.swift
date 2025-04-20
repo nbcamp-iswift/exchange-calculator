@@ -1,45 +1,44 @@
 import Foundation
-import Combine
+import RxSwift
+import RxRelay
 
 final class ExchangeRateViewModel: ViewModelProtocol {
     enum Action {
         case viewDidLoad
-        case searchTextDidChange(searchText: String)
-        case cellDidTap(exchangeRate: ExchangeRate)
+        case didChangeSearchText(searchText: String)
+        case didTapCell(exchangeRate: ExchangeRate)
     }
 
     struct State {
-        let exchangeRateInfo = CurrentValueSubject<ExchangeRateInfo, Never>(ExchangeRateInfo())
-        let filteredExchangeRates = PassthroughSubject<ExchangeRates, Never>()
-        let selectedExchangeRate = PassthroughSubject<ExchangeRate, Never>()
-        let errorMessage = PassthroughSubject<String, Never>()
+        let exchangeRateInfo = BehaviorRelay<ExchangeRateInfo>(value: ExchangeRateInfo())
+        let filteredExchangeRates = PublishRelay<ExchangeRates>()
+        let selectedExchangeRate = PublishRelay<ExchangeRate>()
+        let errorMessage = PublishRelay<String>()
     }
 
-    let action = PassthroughSubject<Action, Never>()
+    let action = PublishRelay<Action>()
     let state = State()
     let useCase: FetchExchangeRateUseCase
 
-    private var cancellables = Set<AnyCancellable>()
+    private let disposeBag = DisposeBag()
 
     init(exchangeRateUseCase: FetchExchangeRateUseCase) {
         useCase = exchangeRateUseCase
 
         action
-            .sink { [weak self] action in
-                guard let self else { return }
-
+            .subscribe { [weak self] action in
                 switch action {
                 case .viewDidLoad:
                     Task {
-                        await self.fetchExchangeRates()
+                        await self?.fetchExchangeRates()
                     }
-                case .searchTextDidChange(let searchText):
-                    filterExchangeRates(by: searchText)
-                case .cellDidTap(let exchangeRate):
-                    state.selectedExchangeRate.send(exchangeRate)
+                case .didChangeSearchText(let text):
+                    self?.filterExchangeRates(by: text)
+                case .didTapCell(let exchangeRate):
+                    self?.state.selectedExchangeRate.accept(exchangeRate)
                 }
             }
-            .store(in: &cancellables)
+            .disposed(by: disposeBag)
     }
 
     private func fetchExchangeRates() async {
@@ -47,17 +46,19 @@ final class ExchangeRateViewModel: ViewModelProtocol {
 
         switch result {
         case .success(let info):
-            state.exchangeRateInfo.send(info)
-            state.filteredExchangeRates.send(info.exchangeRates)
+            state.exchangeRateInfo.accept(info)
+            state.filteredExchangeRates.accept(info.exchangeRates)
         case .failure(let error):
-            state.errorMessage.send(error.localizedDescription)
+            state.errorMessage.accept(error.localizedDescription)
         }
     }
 
     private func filterExchangeRates(by searchText: String) {
         let text = searchText.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         guard !text.isEmpty else {
-            state.filteredExchangeRates.send(state.exchangeRateInfo.value.exchangeRates)
+            let exchangeRates = state.exchangeRateInfo.value.exchangeRates
+            state.filteredExchangeRates.accept(exchangeRates)
+
             return
         }
         let result = state.exchangeRateInfo.value.exchangeRates
@@ -68,6 +69,6 @@ final class ExchangeRateViewModel: ViewModelProtocol {
                 return currency.contains(text) || country.contains(text)
             }
 
-        state.filteredExchangeRates.send(result)
+        state.filteredExchangeRates.accept(result)
     }
 }

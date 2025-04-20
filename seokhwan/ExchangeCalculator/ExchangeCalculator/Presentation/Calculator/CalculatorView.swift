@@ -1,15 +1,13 @@
 import UIKit
-import Combine
 import Then
 import SnapKit
+import RxSwift
+import RxCocoa
 
 final class CalculatorView: UIView {
-    private var convertButtonDidTapSubject = PassthroughSubject<String, Never>()
-    private var cancellables = Set<AnyCancellable>()
+    var didTapConvertButton = PublishRelay<String>()
 
-    var convertButtonDidTapPublisher: AnyPublisher<String, Never> {
-        convertButtonDidTapSubject.eraseToAnyPublisher()
-    }
+    private let disposeBag = DisposeBag()
 
     private lazy var labelStackView = UIStackView().then {
         $0.axis = .vertical
@@ -39,7 +37,6 @@ final class CalculatorView: UIView {
         $0.titleLabel?.textColor = .white
         $0.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         $0.layer.cornerRadius = 8
-        $0.addTarget(self, action: #selector(convertButtonDidTap), for: .touchUpInside)
     }
 
     private lazy var resultLabel = UILabel().then {
@@ -67,18 +64,6 @@ final class CalculatorView: UIView {
     func update(result: Double) {
         resultLabel.text = "\(result)"
     }
-
-    @objc
-    func convertButtonDidTap() {
-        defer {
-            amountTextField.text = ""
-        }
-
-        guard let text = amountTextField.text else { return }
-        let trimmedText = text.trimmingCharacters(in: .whitespacesAndNewlines)
-
-        convertButtonDidTapSubject.send(trimmedText)
-    }
 }
 
 private extension CalculatorView {
@@ -86,6 +71,7 @@ private extension CalculatorView {
         setAttributes()
         setHierarchy()
         setConstraints()
+        setBindings()
     }
 
     func setAttributes() {
@@ -119,5 +105,17 @@ private extension CalculatorView {
             make.top.equalTo(convertButton.snp.bottom).offset(32)
             make.directionalHorizontalEdges.equalToSuperview().inset(24)
         }
+    }
+
+    func setBindings() {
+        convertButton.rx.tap
+            .map { [weak self] in
+                self?.amountTextField.text?.trimmingCharacters(in: .whitespaces) ?? ""
+            }
+            .do { [weak self] _ in
+                self?.amountTextField.text = ""
+            }
+            .bind(to: didTapConvertButton)
+            .disposed(by: disposeBag)
     }
 }

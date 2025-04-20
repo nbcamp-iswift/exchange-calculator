@@ -1,9 +1,9 @@
 import UIKit
-import Combine
+import RxSwift
 
 final class CalculatorViewController: UIViewController {
     private let viewModel: CalculatorViewModel
-    private var cancellables = Set<AnyCancellable>()
+    private let disposeBag = DisposeBag()
 
     private lazy var calculatorView = CalculatorView()
 
@@ -24,7 +24,7 @@ final class CalculatorViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
-        viewModel.action.send(.viewDidLoad)
+        viewModel.action.accept(.viewDidLoad)
     }
 }
 
@@ -40,34 +40,30 @@ private extension CalculatorViewController {
 
     func setBindings() {
         viewModel.state.exchangeRate
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] exchangeRate in
-                guard let self else { return }
-                calculatorView.update(exchangeRate: exchangeRate)
+            .observe(on: MainScheduler.instance)
+            .bind { [weak self] exchangeRate in
+                self?.calculatorView.update(exchangeRate: exchangeRate)
             }
-            .store(in: &cancellables)
+            .disposed(by: disposeBag)
 
         viewModel.state.convertedAmount
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] result in
-                guard let self else { return }
-                calculatorView.update(result: result)
+            .observe(on: MainScheduler.instance)
+            .bind { [weak self] result in
+                self?.calculatorView.update(result: result)
             }
-            .store(in: &cancellables)
+            .disposed(by: disposeBag)
 
         viewModel.state.errorMessage
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] message in
-                guard let self else { return }
-                presentErrorAlert(with: message)
+            .observe(on: MainScheduler.instance)
+            .bind { [weak self] message in
+                self?.presentErrorAlert(with: message)
             }
-            .store(in: &cancellables)
+            .disposed(by: disposeBag)
 
-        calculatorView.convertButtonDidTapPublisher
-            .sink { [weak self] amount in
-                guard let self else { return }
-                viewModel.action.send(.convert(input: amount))
+        calculatorView.didTapConvertButton
+            .bind { [weak self] text in
+                self?.viewModel.action.accept(.convert(input: text))
             }
-            .store(in: &cancellables)
+            .disposed(by: disposeBag)
     }
 }
