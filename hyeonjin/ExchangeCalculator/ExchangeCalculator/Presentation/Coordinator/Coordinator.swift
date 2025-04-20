@@ -24,3 +24,10 @@ final class Coordinator {
         navigationController.pushViewController(mainVC, animated: true)
     }
 }
+
+extension Coordinator {
+    func showDetailView(exchangeRate: ExchangeRate) {
+        let detailVC = DetailViewController(viewModel: DetailViewModel(exchangeRate: exchangeRate))
+        navigationController.pushViewController(detailVC, animated: true)
+    }
+}

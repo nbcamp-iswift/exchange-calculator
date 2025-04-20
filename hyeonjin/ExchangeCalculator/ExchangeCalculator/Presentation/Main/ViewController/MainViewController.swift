@@ -13,7 +13,7 @@ final class MainViewController: UIViewController {
     let coordinator: Coordinator
     private let viewModel: MainViewModel
 
-    var disposeBag: DisposeBag = .init()
+    private var disposeBag: DisposeBag = .init()
 
     private lazy var mainView: MainView = .init()
 
@@ -65,6 +65,7 @@ extension MainViewController {
         setBindingFilteredExchangeRates()
         setBindingError()
         setBindingSearchBarText()
+        setBindingTableView()
     }
 
     private func setBindingFilteredExchangeRates() {
@@ -90,6 +91,18 @@ extension MainViewController {
             .subscribe { [weak self] emptyItems in
                 guard let self else { return }
                 mainView.emptyLabel.isHidden = !emptyItems
+            }.disposed(by: disposeBag)
+    }
+
+    private func setBindingTableView() {
+        mainView.exchangeTableView.rx.itemSelected
+            .asDriver(onErrorDriveWith: .empty())
+            .drive { [weak self] indexPath in
+                guard let self else { return }
+                mainView.exchangeTableView.deselectRow(at: indexPath, animated: true)
+                coordinator.showDetailView(
+                    exchangeRate: viewModel.state.value.filteredExchangeRate[indexPath.row]
+                )
             }.disposed(by: disposeBag)
     }
 
