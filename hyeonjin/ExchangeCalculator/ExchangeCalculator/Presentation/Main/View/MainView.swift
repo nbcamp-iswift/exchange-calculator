@@ -12,6 +12,7 @@ final class MainView: UIView {
     lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
         searchBar.searchBarStyle = .minimal
+        searchBar.placeholder = "통화 검색"
         return searchBar
     }()
 
@@ -71,7 +72,7 @@ private extension MainView {
 
         exchangeTableView.snp.makeConstraints { make in
             make.top.equalTo(searchBar.snp.bottom)
-            make.horizontalEdges.bottom.equalTo(safeAreaLayoutGuide)
+            make.leading.trailing.bottom.equalTo(safeAreaLayoutGuide)
         }
     }
 }
