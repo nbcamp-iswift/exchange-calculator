@@ -9,5 +9,9 @@ import Foundation
 import RxSwift
 
 protocol ExchangeRateUseCaseProtocol {
-    func fetchExchangeRates() -> Single<[ExchangeRate]>
+    func fetchExchangeRates() -> Observable<[ExchangeRate]>
+    func filterExchangeRates(
+        text: String,
+        originalExchangeRates: [ExchangeRate]
+    ) -> [ExchangeRate]
 }

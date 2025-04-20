@@ -15,7 +15,21 @@ final class ExchangeRateUseCase: ExchangeRateUseCaseProtocol {
         self.repository = repository
     }
 
-    func fetchExchangeRates() -> Single<[ExchangeRate]> {
-        repository.fetchExchangeRates()
+    func fetchExchangeRates() -> Observable<[ExchangeRate]> {
+        repository.fetchExchangeRates().asObservable()
+    }
+
+    func filterExchangeRates(
+        text: String,
+        originalExchangeRates: [ExchangeRate]
+    ) -> [ExchangeRate] {
+        if text.isEmpty {
+            return originalExchangeRates
+        } else {
+            return originalExchangeRates.filter {
+                $0.currencyCode.lowercased().contains(text.lowercased()) ||
+                    $0.country.contains(text)
+            }
+        }
     }
 }
