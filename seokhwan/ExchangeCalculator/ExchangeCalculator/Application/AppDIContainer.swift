@@ -1,15 +1,9 @@
 import UIKit
 
 final class AppDIContainer {
-    private let service: ExchangeRateService
-    private let repository: ExchangeRateRepository
-
-    init() {
-        service = ExchangeRateService()
-        repository = ExchangeRateRepository(exchangeRateService: service)
-    }
-
     func makeExchangeRateViewController() -> ExchangeRateViewController {
+        let service = ExchangeRateService()
+        let repository = ExchangeRateRepository(exchangeRateService: service)
         let useCase = FetchExchangeRateUseCase(exchangeRateRepository: repository)
         let viewModel = ExchangeRateViewModel(exchangeRateUseCase: useCase)
 
