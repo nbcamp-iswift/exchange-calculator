@@ -7,11 +7,20 @@
 
 import Foundation
 
-enum CountryCodeMapper {
+enum CurrencyCodeMapper {
     static func name(for code: String) -> String {
         guard let countryName = countryName[code] else { return "unknown" }
         return countryName
     }
+
+    static func symbol(for code: String) -> String {
+        guard let symbol = currencySymbol[code] else { return "unknown" }
+        return symbol
+    }
+
+    static let currencySymbol: [String: String] = [
+        "USD": "$"
+    ]
 
     static let countryName: [String: String] = [
         "USD": "미국",

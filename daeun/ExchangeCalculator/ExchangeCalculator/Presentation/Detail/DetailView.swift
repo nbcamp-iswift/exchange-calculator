@@ -37,7 +37,7 @@ final class DetailView: UIView {
         return label
     }()
 
-    private let amountTextField: UITextField = {
+    let amountTextField: UITextField = {
         let textField = UITextField()
         textField.borderStyle = .roundedRect
         textField.keyboardType = .decimalPad
@@ -46,7 +46,7 @@ final class DetailView: UIView {
         return textField
     }()
 
-    private let convertButton: UIButton = {
+    let convertButton: UIButton = {
         let button = UIButton()
         var config = UIButton.Configuration.filled()
         config.attributedTitle = AttributedString(
@@ -80,9 +80,15 @@ final class DetailView: UIView {
         fatalError()
     }
 
+    // MARK: - Methods
+
     func updateView(for rate: ExchangeRate) {
         currencyLabel.text = rate.currencyCode
         countryLabel.text = rate.countryName
+    }
+
+    func updateResultLabel(for result: String) {
+        resultLabel.text = result
     }
 }
 

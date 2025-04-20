@@ -22,7 +22,7 @@ struct ExchangeRatesDTO: Decodable {
                 let roundedValue = value.roundedTo(digits: Constant.Digits.rate)
                 return ExchangeRate(
                     currencyCode: key,
-                    countryName: CountryCodeMapper.name(for: key),
+                    countryName: CurrencyCodeMapper.name(for: key),
                     value: roundedValue
                 )
             }

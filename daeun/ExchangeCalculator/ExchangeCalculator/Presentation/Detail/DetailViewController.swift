@@ -54,11 +54,24 @@ extension DetailViewController {
     }
 
     private func setBindings() {
+        detailView.convertButton.tapPublisher
+            .sink { [weak self] _ in
+                self?.viewModel.convert(amount: self?.detailView.amountTextField.text)
+            }
+            .store(in: &cancellables)
+
         viewModel.exchangeRate
             .receive(on: DispatchQueue.main)
             .sink { [weak self] rate in
                 guard let self, let rate else { return }
                 detailView.updateView(for: rate)
+            }
+            .store(in: &cancellables)
+
+        viewModel.convertedResultText
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] result in
+                self?.detailView.updateResultLabel(for: result)
             }
             .store(in: &cancellables)
     }

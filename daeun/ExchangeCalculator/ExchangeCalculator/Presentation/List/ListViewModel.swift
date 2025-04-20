@@ -44,7 +44,11 @@ final class ListViewModel {
 
     func selectRate(at row: Int) {
         let exchangeRate = filteredRates[row]
-        let detailViewModel = DetailViewModel(exchangeRate: exchangeRate)
+        let convertCurrencyUseCase = DefaultConvertCurrencyUseCase()
+        let detailViewModel = DetailViewModel(
+            exchangeRate: exchangeRate,
+            convertCurrencyUseCase: convertCurrencyUseCase
+        )
         let detailVC = DetailViewController(viewModel: detailViewModel)
         showDetailVC.send(detailVC)
     }
