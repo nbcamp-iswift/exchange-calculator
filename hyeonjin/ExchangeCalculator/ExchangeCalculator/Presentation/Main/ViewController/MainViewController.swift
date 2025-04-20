@@ -53,6 +53,10 @@ final class MainViewController: UIViewController {
 extension MainViewController {
     private func setAttributes() {
         view.backgroundColor = .systemBackground
+
+        title = "환율 정보"
+        navigationItem.largeTitleDisplayMode = .always
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
 
     private func setBindings() {
