@@ -56,9 +56,20 @@ extension MainViewController {
     }
 
     private func setBindings() {
-        viewModel.filteredExchangeRates
-            .bind(
-                to: mainView.exchangeTableView.rx.items(
+        viewModel.action.accept(.fetchExchangeRates)
+
+        setBindingFilteredExchangeRates()
+        setBindingError()
+        setBindingSearchBarText()
+    }
+
+    private func setBindingFilteredExchangeRates() {
+        viewModel.state
+            .map(\.filteredExchangeRate)
+            .distinctUntilChanged()
+            .asDriver(onErrorJustReturn: [])
+            .drive(
+                mainView.exchangeTableView.rx.items(
                     cellIdentifier: ExchangeRateTableViewCell.identifier,
                     cellType: ExchangeRateTableViewCell.self
                 )
@@ -67,29 +78,37 @@ extension MainViewController {
             }
             .disposed(by: disposeBag)
 
-        viewModel.filteredExchangeRates
+        viewModel.state
+            .map(\.filteredExchangeRate)
+            .distinctUntilChanged()
             .map(\.isEmpty)
             .observe(on: MainScheduler.instance)
             .subscribe { [weak self] emptyItems in
                 guard let self else { return }
                 mainView.emptyLabel.isHidden = !emptyItems
             }.disposed(by: disposeBag)
+    }
 
-        viewModel.errorSubject
+    private func setBindingSearchBarText() {
+        mainView.searchBar.rx.text
+            .orEmpty
+            .distinctUntilChanged()
+            .asDriver(onErrorJustReturn: "")
+            .drive { [weak self] text in
+                guard let self else { return }
+                viewModel.action.accept(.updateSearchBarText(text))
+            }
+            .disposed(by: disposeBag)
+    }
+
+    private func setBindingError() {
+        viewModel.state
+            .map(\.error)
             .compactMap { $0 }
             .observe(on: MainScheduler.instance)
             .subscribe { [weak self] _ in
                 guard let self else { return }
                 showAlert()
-            }
-            .disposed(by: disposeBag)
-
-        mainView.searchBar.rx.text
-            .orEmpty
-            .distinctUntilChanged()
-            .subscribe { [weak self] text in
-                guard let self else { return }
-                viewModel.searchBarText.accept(text)
             }
             .disposed(by: disposeBag)
     }
