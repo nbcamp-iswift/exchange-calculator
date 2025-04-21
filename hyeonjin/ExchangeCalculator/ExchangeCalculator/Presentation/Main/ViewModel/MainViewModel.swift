@@ -100,7 +100,10 @@ extension MainViewModel {
         )
         .observe(on: MainScheduler.asyncInstance)
         .map { [weak self] searchbarText, exchangeRates -> [ExchangeRate] in
-            self?.useCase.filterExchangeRates(text: searchbarText, originalExchangeRates: exchangeRates) ?? []
+            self?.useCase.filterExchangeRates(
+                text: searchbarText,
+                originalExchangeRates: exchangeRates
+            ) ?? []
         }
         .subscribe { [weak self] filteredExchangeRate in
             guard let self else { return }
