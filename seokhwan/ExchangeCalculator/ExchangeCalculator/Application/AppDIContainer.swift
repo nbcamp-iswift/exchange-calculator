@@ -17,8 +17,15 @@ final class AppDIContainer {
         ConvertExchangeRateUseCase()
     }
 
+    func makeToggleIsFavoriteUseCase() -> ToggleIsFavoriteUseCase {
+        ToggleIsFavoriteUseCase(exchangeRateRepository: makeExchangeRateRepository())
+    }
+
     func makeExchangeRateViewModel() -> ExchangeRateViewModel {
-        ExchangeRateViewModel(exchangeRateUseCase: makeFetchExchangeRateUseCase())
+        ExchangeRateViewModel(
+            fetchExchangeRateUseCase: makeFetchExchangeRateUseCase(),
+            toggleIsFavoriteUseCase: makeToggleIsFavoriteUseCase()
+        )
     }
 
     func makeCalculatorViewModel(with exchangeRate: ExchangeRate) -> CalculatorViewModel {

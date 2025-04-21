@@ -78,5 +78,11 @@ private extension ExchangeRateViewController {
                 self?.viewModel.action.accept(.didTapCell(exchangeRate: exchangeRate))
             }
             .disposed(by: disposeBag)
+
+        exchangeRateView.didTapFavoriteButton
+            .bind { [weak self] currency in
+                self?.viewModel.action.accept(.didTapFavoriteButton(currency: currency))
+            }
+            .disposed(by: disposeBag)
     }
 }

@@ -14,6 +14,7 @@ final class ExchangeRateView: UIView {
 
     let didChangeSearchText = PublishRelay<String>()
     let didTapCell = PublishRelay<ExchangeRate>()
+    let didTapFavoriteButton = PublishRelay<String>()
 
     private var dataSource: DataSource?
     private let disposeBag = DisposeBag()
@@ -93,12 +94,16 @@ private extension ExchangeRateView {
     }
 
     func setDataSource() {
-        dataSource = DataSource(tableView: tableView) { tableView, indexPath, exchangeRate in
-            guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: ExchangeRateCell.identifier,
-                for: indexPath
-            ) as? ExchangeRateCell else { return UITableViewCell() }
+        dataSource = DataSource(
+            tableView: tableView
+        ) { [weak self] tableView, indexPath, exchangeRate in
+            guard let self,
+                  let cell = tableView.dequeueReusableCell(
+                      withIdentifier: ExchangeRateCell.identifier,
+                      for: indexPath
+                  ) as? ExchangeRateCell else { return UITableViewCell() }
             cell.update(with: exchangeRate)
+            cell.bind(to: didTapFavoriteButton)
 
             return cell
         }
