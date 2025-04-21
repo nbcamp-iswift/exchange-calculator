@@ -5,8 +5,15 @@ final class AppDIContainer {
         ExchangeRateService()
     }
 
+    func makeExchangeRateStorage() -> ExchangeRateStorage {
+        ExchangeRateStorage.shared
+    }
+
     func makeExchangeRateRepository() -> ExchangeRateRepository {
-        ExchangeRateRepository(exchangeRateService: makeExchangeRateService())
+        ExchangeRateRepository(
+            exchangeRateService: makeExchangeRateService(),
+            exchangeRateStorage: makeExchangeRateStorage()
+        )
     }
 
     func makeFetchExchangeRateUseCase() -> FetchExchangeRateUseCase {

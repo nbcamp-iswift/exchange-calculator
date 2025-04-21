@@ -2,28 +2,76 @@ import Foundation
 
 final class ExchangeRateRepository {
     let service: ExchangeRateService
+    let storage: ExchangeRateStorage
 
-    init(exchangeRateService: ExchangeRateService) {
+    init(exchangeRateService: ExchangeRateService, exchangeRateStorage: ExchangeRateStorage) {
         service = exchangeRateService
+        storage = exchangeRateStorage
     }
 
     func fetchExchangeRates() async -> Result<ExchangeRateInfo, ExchangeRateError> {
-        let result = await service.fetchExchangeRateInfo()
+        let serviceResult = await service.fetchExchangeRateInfo()
 
-        switch result {
+        switch serviceResult {
         case .success(let dto):
             let countries = CurrencyCountryMapper.countries(for: Array(dto.rates.keys))
-            // TODO: favorite 값 fetch한 뒤, 합쳐서 toEntity() 호출
-            // TODO: DTO의 toEntity 로직도 이 쪽으로 가지고 오기
+            let storageResult = await storage.fetchAll()
 
-            return .success(dto.toEntity(with: countries))
+            switch storageResult {
+            case .success(let entities):
+                let result = makeExchangeRateInfo(
+                    dto: dto,
+                    countries: countries,
+                    entities: entities
+                )
+                return .success(result)
+            case .failure(let error):
+                return .failure(error)
+            }
         case .failure(let error):
             return .failure(error)
         }
     }
 
     func toggleIsFavorite(for currency: String) async -> Result<Void, ExchangeRateError> {
-        print("currency: \(currency)") // TODO: CoreData에 접근해서 값 업데이트
-        return .success(()) // TODO: 임시 return (구현 후 삭제)
+        let result = await storage.toggleIsFavorite(for: currency)
+
+        switch result {
+        case .success:
+            return .success(())
+        case .failure(let error):
+            return .failure(error)
+        }
+    }
+
+    private func makeExchangeRateInfo(
+        dto: ExchangeRateInfoDTO,
+        countries: [String: String],
+        entities: ExchangeRateEntities
+    ) -> ExchangeRateInfo {
+        let exchangeRates = dto.rates
+            .map { currency, value in
+                let country = countries[currency] ?? "-"
+                let isFavorite = entities.first { $0.currency == currency }?.isFavorite ?? false
+
+                return ExchangeRate(
+                    currency: currency,
+                    country: country,
+                    value: value,
+                    isFavorite: isFavorite
+                )
+            }
+            .sorted {
+                if $0.isFavorite == $1.isFavorite {
+                    return $0.currency < $1.currency
+                } else {
+                    return $0.isFavorite && !$1.isFavorite
+                }
+            }
+
+        return ExchangeRateInfo(
+            lastUpdated: Date(timeIntervalSince1970: dto.timeLastUpdateUnix),
+            exchangeRates: exchangeRates
+        )
     }
 }
