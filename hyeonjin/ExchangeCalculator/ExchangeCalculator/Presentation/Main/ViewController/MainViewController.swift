@@ -15,7 +15,7 @@ final class MainViewController: UIViewController {
 
     private var disposeBag: DisposeBag = .init()
 
-    private lazy var mainView: MainView = .init()
+    private let mainView: MainView = .init()
 
     init(viewModel: MainViewModel, coordinator: Coordinator) {
         self.viewModel = viewModel
