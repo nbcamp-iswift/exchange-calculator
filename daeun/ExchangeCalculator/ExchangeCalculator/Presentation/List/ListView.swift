@@ -27,7 +27,6 @@ final class ListView: UIView {
     private let noMatchLabel: UILabel = {
         let label = UILabel()
         label.text = Constant.Text.noMatch
-        label.backgroundColor = .orange
         label.textColor = .gray
         label.isHidden = true
         return label
@@ -42,7 +41,7 @@ final class ListView: UIView {
 
     @available(*, unavailable)
     required init?(coder _: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError()
     }
 }
 
@@ -61,8 +60,8 @@ extension ListView {
 
     private func setHierachy() {
         [
-            tableView,
             searchBar,
+            tableView,
             noMatchLabel,
         ].forEach { addSubview($0) }
     }

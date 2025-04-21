@@ -6,18 +6,45 @@
 //
 
 import Foundation
+import Combine
 
-final class ListViewModel {
+final class ListViewModel: ViewModelProtocol {
     private let exchangeRatesUseCase: ExchangeRatesUseCase
-    private let countryCodeMapper = CountryCodeMapper()
-    private var originalRates: [ExchangeRate] = []
-    @Published private(set) var error: Bool = false
-    @Published private(set) var filteredRates: [ExchangeRate] = []
-    @Published private(set) var hasMatches: Bool = true
+    private var cancellables = Set<AnyCancellable>()
+    var action = PassthroughSubject<Action, Never>()
+    var state = State()
+
+    enum Action {
+        case viewDidLoad
+        case didTapCell(Int)
+        case didChangeSearchBarText(String)
+    }
+
+    struct State {
+        var originalRates: [ExchangeRate] = []
+        let fetchError = PassthroughSubject<Void, Never>()
+        var filteredRates = CurrentValueSubject<[ExchangeRate], Never>([])
+        var hasMatches = CurrentValueSubject<Bool, Never>(true)
+        let showDetailVC = PassthroughSubject<DetailViewController, Never>()
+    }
 
     init(exchangeRatesUseCase: ExchangeRatesUseCase) {
         self.exchangeRatesUseCase = exchangeRatesUseCase
-        loadList()
+        bindActions()
+    }
+
+    private func bindActions() {
+        action.sink { [weak self] action in
+            switch action {
+            case .viewDidLoad:
+                self?.loadList()
+            case .didTapCell(let row):
+                self?.selectRate(at: row)
+            case .didChangeSearchBarText(let text):
+                self?.filterRates(with: text)
+            }
+        }
+        .store(in: &cancellables)
     }
 
     private func loadList() {
@@ -26,30 +53,30 @@ final class ListViewModel {
 
             switch result {
             case let .success(data):
-                originalRates = data
-                filteredRates = originalRates
+                state.originalRates = data
+                state.filteredRates.send(state.originalRates)
             case .failure:
-                error = true
+                state.fetchError.send(())
             }
         }
     }
 
     func filterRates(with searchQuery: String) {
-        filteredRates = searchQuery.isEmpty
-        ? originalRates
-        : originalRates.filter { matchesQuery($0, query: searchQuery) }
-
-        hasMatches = !filteredRates.isEmpty
+        let filteredRates = searchQuery.isEmpty
+            ? state.originalRates
+            : state.originalRates.filter { $0.matches(query: searchQuery) }
+        state.filteredRates.send(filteredRates)
+        state.hasMatches.send(!state.filteredRates.value.isEmpty)
     }
 
-    func countryName(for code: String) -> String {
-        countryCodeMapper.name(for: code)
-    }
-
-    private func matchesQuery(_ rate: ExchangeRate, query: String) -> Bool {
-        let countryCode = rate.code
-        let countryName = countryCodeMapper.name(for: rate.code)
-
-        return countryCode.hasPrefix(query.uppercased()) || countryName.hasPrefix(query)
+    func selectRate(at row: Int) {
+        let exchangeRate = state.filteredRates.value[row]
+        let convertCurrencyUseCase = DefaultConvertCurrencyUseCase()
+        let detailViewModel = DetailViewModel(
+            exchangeRate: exchangeRate,
+            convertCurrencyUseCase: convertCurrencyUseCase
+        )
+        let detailVC = DetailViewController(viewModel: detailViewModel)
+        state.showDetailVC.send(detailVC)
     }
 }

@@ -46,6 +46,7 @@ final class ListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel.action.send(.viewDidLoad)
         configure()
     }
 }
@@ -54,23 +55,28 @@ final class ListViewController: UIViewController {
 
 extension ListViewController {
     private func configure() {
+        setAttributes()
         setDataSource()
         setBindings()
+    }
+
+    private func setAttributes() {
+        title = Constant.Title.exchangeInfo
+        navigationController?.navigationBar.prefersLargeTitles = true
     }
 
     private func setDataSource() {
         dataSource = .init(
             tableView: listView.tableView
-        ) { [weak self] tableView, indexPath, item -> UITableViewCell? in
-            guard let self else { return nil }
-
+        ) { tableView, indexPath, item -> UITableViewCell? in
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: ListCell.reuseIdentifier,
                 for: indexPath
             ) as? ListCell
 
             guard case let ListItem.rate(exchangeRate) = item else { return nil }
-            cell?.updateCell(for: exchangeRate, viewModel.countryName(for: exchangeRate.code))
+
+            cell?.updateCell(for: exchangeRate)
 
             return cell
         }
@@ -83,13 +89,19 @@ extension ListViewController {
 
     private func setBindings() {
         listView.searchBar.textDidChangePublisher
-            .receive(on: DispatchQueue.main)
             .sink { [weak self] text in
-                self?.viewModel.filterRates(with: text)
+                self?.viewModel.action.send(.didChangeSearchBarText(text))
             }
             .store(in: &cancellables)
 
-        viewModel.$filteredRates
+        listView.tableView.didSelectRowPublisher
+            .map(\.row)
+            .sink { [weak self] row in
+                self?.viewModel.action.send(.didTapCell(row))
+            }
+            .store(in: &cancellables)
+
+        viewModel.state.filteredRates
             .receive(on: DispatchQueue.main)
             .sink { [weak self] rates in
                 let items = rates.map { ListItem.rate($0) }
@@ -97,33 +109,28 @@ extension ListViewController {
             }
             .store(in: &cancellables)
 
-        viewModel.$error
-            .receive(on: DispatchQueue.main)
-            .filter { $0 }
+        viewModel.state.fetchError
             .sink { [weak self] _ in
-                self?.showAlert()
+                self?.showAlert(
+                    title: Constant.Alert.title,
+                    message: Constant.Alert.fetchErrorMessage
+                )
             }
             .store(in: &cancellables)
 
-        viewModel.$hasMatches
+        viewModel.state.hasMatches
             .receive(on: DispatchQueue.main)
             .sink { [weak self] has in
                 self?.listView.isHiddenNoMatchLabel(hasMatch: has)
             }
             .store(in: &cancellables)
-    }
 
-    private func showAlert() {
-        let alertView = UIAlertController(
-            title: Constant.Alert.title,
-            message: Constant.Alert.message,
-            preferredStyle: .alert
-        )
-
-        let confirmAction = UIAlertAction(title: Constant.Alert.confirm, style: .default)
-        alertView.addAction(confirmAction)
-
-        present(alertView, animated: true)
+        viewModel.state.showDetailVC
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] detailVC in
+                self?.navigationController?.pushViewController(detailVC, animated: true)
+            }
+            .store(in: &cancellables)
     }
 
     private func updateSnapshot(with items: [ListItem]) {

@@ -8,6 +8,11 @@
 import Foundation
 
 struct ExchangeRate: Hashable {
-    let code: String
-    let rate: Double
+    let currencyCode: String
+    let countryName: String
+    let value: Double
+
+    func matches(query: String) -> Bool {
+        currencyCode.contains(query.uppercased()) || countryName.contains(query)
+    }
 }

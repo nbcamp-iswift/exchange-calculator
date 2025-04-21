@@ -92,9 +92,9 @@ extension ListCell {
         }
     }
 
-    func updateCell(for data: ExchangeRate, _ countryName: String) {
-        currencyLabel.text = data.code
-        countryLabel.text = countryName
-        rateLabel.text = String(data.rate)
+    func updateCell(for data: ExchangeRate) {
+        currencyLabel.text = data.currencyCode
+        countryLabel.text = data.countryName
+        rateLabel.text = String(data.value)
     }
 }

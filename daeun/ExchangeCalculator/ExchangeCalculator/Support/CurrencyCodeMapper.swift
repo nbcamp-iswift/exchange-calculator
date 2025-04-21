@@ -1,5 +1,5 @@
 //
-//  CountryCodeMapper .swift
+//  CurrencyCodeMapper.swift
 //  ExchangeCalculator
 //
 //  Created by 곽다은 on 4/17/25.
@@ -7,13 +7,22 @@
 
 import Foundation
 
-struct CountryCodeMapper {
-    func name(for code: String) -> String {
+enum CurrencyCodeMapper {
+    static func name(for code: String) -> String {
         guard let countryName = countryName[code] else { return "unknown" }
         return countryName
     }
 
-    private let countryName: [String: String] = [
+    static func symbol(for code: String) -> String {
+        guard let symbol = currencySymbol[code] else { return "unknown" }
+        return symbol
+    }
+
+    static let currencySymbol: [String: String] = [
+        "USD": "$"
+    ]
+
+    static let countryName: [String: String] = [
         "USD": "미국",
         "AED": "아랍에미리트",
         "AFN": "아프가니스탄",
