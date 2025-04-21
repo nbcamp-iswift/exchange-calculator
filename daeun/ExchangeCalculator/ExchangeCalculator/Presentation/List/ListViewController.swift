@@ -46,6 +46,7 @@ final class ListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel.action?(.viewDidLoad)
         configure()
     }
 }
@@ -89,18 +90,18 @@ extension ListViewController {
     private func setBindings() {
         listView.searchBar.textDidChangePublisher
             .sink { [weak self] text in
-                self?.viewModel.filterRates(with: text)
+                self?.viewModel.action?(.didChangeSearchBarText(text))
             }
             .store(in: &cancellables)
 
         listView.tableView.didSelectRowPublisher
             .map(\.row)
             .sink { [weak self] row in
-                self?.viewModel.selectRate(at: row)
+                self?.viewModel.action?(.didTapCell(row))
             }
             .store(in: &cancellables)
 
-        viewModel.$filteredRates
+        viewModel.state.filteredRates
             .receive(on: DispatchQueue.main)
             .sink { [weak self] rates in
                 let items = rates.map { ListItem.rate($0) }
@@ -108,9 +109,8 @@ extension ListViewController {
             }
             .store(in: &cancellables)
 
-        viewModel.$error
+        viewModel.state.fetchError
             .receive(on: DispatchQueue.main)
-            .filter { $0 }
             .sink { [weak self] _ in
                 self?.showAlert(
                     title: Constant.Alert.title,
@@ -119,14 +119,14 @@ extension ListViewController {
             }
             .store(in: &cancellables)
 
-        viewModel.$hasMatches
+        viewModel.state.hasMatches
             .receive(on: DispatchQueue.main)
             .sink { [weak self] has in
                 self?.listView.isHiddenNoMatchLabel(hasMatch: has)
             }
             .store(in: &cancellables)
 
-        viewModel.showDetailVC
+        viewModel.state.showDetailVC
             .receive(on: DispatchQueue.main)
             .sink { [weak self] detailVC in
                 self?.navigationController?.pushViewController(detailVC, animated: true)
