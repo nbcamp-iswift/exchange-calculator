@@ -9,9 +9,15 @@
 /* Begin PBXBuildFile section */
 		588577DF2DB0A56300B9B203 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 588577DE2DB0A56300B9B203 /* Then */; };
 		588577E22DB0A56D00B9B203 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 588577E12DB0A56D00B9B203 /* SnapKit */; };
+		58A2034A2DB5E13000680822 /* ExchangeRatewFav.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 58A203482DB5E13000680822 /* ExchangeRatewFav.xcdatamodeld */; };
+		58A204A12DB67F2000680822 /* ExchangeRatewFav+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A2049F2DB67F2000680822 /* ExchangeRatewFav+CoreDataClass.swift */; };
+		58A204A22DB67F2000680822 /* ExchangeRatewFav+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A204A02DB67F2000680822 /* ExchangeRatewFav+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		58A203492DB5E13000680822 /* ExchangeRatewFav.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ExchangeRatewFav.xcdatamodel; sourceTree = "<group>"; };
+		58A2049F2DB67F2000680822 /* ExchangeRatewFav+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ExchangeRatewFav+CoreDataClass.swift"; sourceTree = "<group>"; };
+		58A204A02DB67F2000680822 /* ExchangeRatewFav+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ExchangeRatewFav+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		58EC91A62DACCA9A006F03C4 /* exchangeCalculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = exchangeCalculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -52,6 +58,9 @@
 		58EC919D2DACCA9A006F03C4 = {
 			isa = PBXGroup;
 			children = (
+				58A2049F2DB67F2000680822 /* ExchangeRatewFav+CoreDataClass.swift */,
+				58A204A02DB67F2000680822 /* ExchangeRatewFav+CoreDataProperties.swift */,
+				58A203482DB5E13000680822 /* ExchangeRatewFav.xcdatamodeld */,
 				58EC91A82DACCA9A006F03C4 /* exchangeCalculator */,
 				58EC91A72DACCA9A006F03C4 /* Products */,
 			);
@@ -190,6 +199,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				58A204A12DB67F2000680822 /* ExchangeRatewFav+CoreDataClass.swift in Sources */,
+				58A204A22DB67F2000680822 /* ExchangeRatewFav+CoreDataProperties.swift in Sources */,
+				58A2034A2DB5E13000680822 /* ExchangeRatewFav.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -431,6 +443,19 @@
 			productName = SnapKit;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		58A203482DB5E13000680822 /* ExchangeRatewFav.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				58A203492DB5E13000680822 /* ExchangeRatewFav.xcdatamodel */,
+			);
+			currentVersion = 58A203492DB5E13000680822 /* ExchangeRatewFav.xcdatamodel */;
+			path = ExchangeRatewFav.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 58EC919E2DACCA9A006F03C4 /* Project object */;
 }

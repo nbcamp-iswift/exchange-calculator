@@ -5,32 +5,34 @@ final class ExchangeRateViewModel {
     enum State {
         case idle
         case loading
-        case loaded([ExchangeRateCellViewModel])
+        case loaded([ExchangeRateTableViewCellModel])
         case failed(String)
     }
 
     @Published private(set) var state: State = .idle
 
-    private let repository: ExchangeRateRepository
+    private let dataRepository: ExchangeRateRepository
+    private let favoriteRepository: ExchangeRatewFavRepository
+
     private var baseCurrency: String = "USD"
     private var rates: [ExchangeRate] = []
+    private var currentFilter: String = ""
 
-    init(repository: ExchangeRateRepository) {
-        self.repository = repository
+    init(dataRepository: ExchangeRateRepository, favoriteRepository: ExchangeRatewFavRepository) {
+        self.dataRepository = dataRepository
+        self.favoriteRepository = favoriteRepository
         loadRates()
     }
 
     func loadRates() {
         state = .loading
-        repository.fetch(baseCurrency: baseCurrency) { [weak self] result in
+        dataRepository.fetch(baseCurrency: baseCurrency) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let data):
-                    let cellViewmodel = data.map { ExchangeRateCellViewModel(from: $0) }
-                    self?.state = .loaded(cellViewmodel)
                     self?.rates = data
+                    self?.updateViewModel()
                 case .failure(let error):
-                    print("Failed to fetch exchange rates: \(error)")
                     self?.state = .failed(error.localizedDescription)
                 }
             }
@@ -38,17 +40,34 @@ final class ExchangeRateViewModel {
     }
 
     func filter(with keyword: String) {
-        guard !keyword.isEmpty else {
-            state = .loaded(rates.map { ExchangeRateCellViewModel(from: $0) })
-            return
+        currentFilter = keyword
+        updateViewModel()
+    }
+
+    private func updateViewModel() {
+        let normalizedKeyword = normalize(currentFilter)
+        let favorites = Set(favoriteRepository.getFavorites().map(\.currency))
+
+        let filtered = rates.filter {
+            currentFilter.isEmpty ||
+                normalize($0.currency).contains(normalizedKeyword) ||
+                normalize($0.country).contains(normalizedKeyword)
         }
 
-        let normalizedKeyword = normalize(keyword)
-        let filtered = rates.filter {
-            normalize($0.currency).contains(normalizedKeyword)
-                || normalize($0.country).contains(normalizedKeyword)
+        let mapped = filtered.map {
+            ExchangeRateTableViewCellModel(
+                from: $0,
+                isFavorite: favorites.contains($0.currency)
+            )
         }
-        state = .loaded(filtered.map { ExchangeRateCellViewModel(from: $0) })
+
+        let sorted = mapped.sorted {
+            if $0.isFavorite == $1.isFavorite {
+                return $0.title < $1.title
+            }
+            return $0.isFavorite && !$1.isFavorite
+        }
+        state = .loaded(sorted)
     }
 
     func getExchangeRate(at index: Int) -> ExchangeRate {
@@ -57,6 +76,16 @@ final class ExchangeRateViewModel {
 
     func getNumberOfRates() -> Int {
         rates.count
+    }
+
+    func toggleFavorite(currency: String, country: String, isFavorite: Bool) {
+        favoriteRepository.updateFavoriteStatus(
+            currency: currency,
+            countryCode: country,
+            isFavorite: isFavorite
+        )
+
+        updateViewModel()
     }
 
     private func normalize(_ text: String) -> String {

@@ -1,8 +1,12 @@
 import UIKit
 import Then
+import Combine
 
 final class ExchangeRateTableViewCell: UITableViewCell {
     static let identifier: String = "ExchangeRateTableViewCell"
+    var onFavoriteTapped: (() -> Void)?
+    private var cancellable: AnyCancellable?
+
     private enum Const {
         static let backgroundColor = UIColor.white
         static let pressedColor = UIColor.gray
@@ -31,6 +35,12 @@ final class ExchangeRateTableViewCell: UITableViewCell {
         $0.textAlignment = .right
     }
 
+    private lazy var starButton = UIButton().then {
+        $0.setImage(UIImage(systemName: "star"), for: .normal)
+        $0.tintColor = .systemYellow
+        $0.addTarget(self, action: #selector(handleFavoriteButtonTapped), for: .touchUpInside)
+    }
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configure()
@@ -49,6 +59,7 @@ final class ExchangeRateTableViewCell: UITableViewCell {
     private func setHierarchy() {
         contentView.addSubview(labelStackView)
         contentView.addSubview(rateLabel)
+        contentView.addSubview(starButton)
     }
 
     private func setConstraints() {
@@ -58,17 +69,23 @@ final class ExchangeRateTableViewCell: UITableViewCell {
         }
 
         rateLabel.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(16)
             make.centerY.equalToSuperview()
             make.leading.greaterThanOrEqualTo(labelStackView.snp.trailing).offset(16)
-            make.width.equalTo(120)
+        }
+        starButton.snp.makeConstraints { make in
+            make.leading.equalTo(rateLabel.snp.trailing).offset(8)
+            make.trailing.equalToSuperview().inset(16)
+            make.centerY.equalToSuperview()
+            make.width.height.equalTo(24)
         }
     }
 
-    func update(with currency: String, with contryName: String, with rate: String) {
-        currencyLabel.text = currency
-        countryLabel.text = contryName
-        rateLabel.text = rate
+    func update(with viewModel: ExchangeRateTableViewCellModel) {
+        currencyLabel.text = viewModel.title
+        countryLabel.text = viewModel.subtitle
+        rateLabel.text = viewModel.trailingText
+        let starIcon = viewModel.isFavorite ? "star.fill" : "star"
+        starButton.setImage(UIImage(systemName: starIcon), for: .normal)
     }
 
     @available(*, unavailable)
@@ -81,6 +98,11 @@ final class ExchangeRateTableViewCell: UITableViewCell {
         contentView.backgroundColor = highlighted ? Const.pressedColor : Const.backgroundColor
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        onFavoriteTapped = nil
+    }
+
     func animatedPressed(completion: @escaping () -> Void) {
         contentView.backgroundColor = Const.pressedColor
         UIView.animate(withDuration: 0.3, animations: {
@@ -89,5 +111,9 @@ final class ExchangeRateTableViewCell: UITableViewCell {
         }, completion: { _ in
             completion()
         })
+    }
+
+    @objc private func handleFavoriteButtonTapped() {
+        onFavoriteTapped?()
     }
 }

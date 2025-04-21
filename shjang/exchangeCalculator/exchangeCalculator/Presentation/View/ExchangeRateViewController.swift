@@ -7,7 +7,7 @@ final class ExchangeRateViewController: UIViewController {
     private enum Section { case main }
     private var viewModel: ExchangeRateViewModel
     private var cancellables = Set<AnyCancellable>()
-    private var dataSource: UITableViewDiffableDataSource<Section, ExchangeRateCellViewModel>?
+    private var dataSource: UITableViewDiffableDataSource<Section, ExchangeRateTableViewCellModel>?
 
     private lazy var tableView = UITableView().then {
         $0.delegate = self
@@ -95,7 +95,7 @@ final class ExchangeRateViewController: UIViewController {
     }
 
     private func configureDataSource()
-        -> UITableViewDiffableDataSource<Section, ExchangeRateCellViewModel> {
+        -> UITableViewDiffableDataSource<Section, ExchangeRateTableViewCellModel> {
         UITableViewDiffableDataSource(tableView: tableView) { tableView, indexPath, item in
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: ExchangeRateTableViewCell.identifier,
@@ -103,18 +103,26 @@ final class ExchangeRateViewController: UIViewController {
             ) as? ExchangeRateTableViewCell else {
                 fatalError("Failed to Cast to CustomTableView Cell")
             }
-            cell.update(with: item.title, with: item.subtitle, with: item.trailingText)
+            cell.update(with: item)
+
+            cell.onFavoriteTapped = { [weak self] in
+                self?.viewModel.toggleFavorite(
+                    currency: item.title,
+                    country: item.subtitle,
+                    isFavorite: !item.isFavorite
+                )
+            }
+
             return cell
         }
     }
 
-    private func updateSnapshot(with item: [ExchangeRateCellViewModel]) {
-        var snapshot = NSDiffableDataSourceSnapshot<Section, ExchangeRateCellViewModel>()
+    private func updateSnapshot(with items: [ExchangeRateTableViewCellModel]) {
+        var snapshot = NSDiffableDataSourceSnapshot<Section, ExchangeRateTableViewCellModel>()
         snapshot.appendSections([.main])
-        snapshot.appendItems(item)
+        snapshot.appendItems(items)
         dataSource?.apply(snapshot, animatingDifferences: true)
-
-        tableView.backgroundView = item.isEmpty ? makeEmptyView() : nil
+        tableView.backgroundView = items.isEmpty ? makeEmptyView() : nil
     }
 }
 
