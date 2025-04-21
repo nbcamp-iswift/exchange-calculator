@@ -56,11 +56,12 @@ extension DetailViewController {
     private func setBindings() {
         detailView.convertButton.tapPublisher
             .sink { [weak self] _ in
-                self?.viewModel.convert(amount: self?.detailView.amountTextField.text)
+                let text = self?.detailView.amountTextField.text
+                self?.viewModel.action?(.didTapConvertButton(text))
             }
             .store(in: &cancellables)
 
-        viewModel.exchangeRate
+        viewModel.state.exchangeRate
             .receive(on: DispatchQueue.main)
             .sink { [weak self] rate in
                 guard let self, let rate else { return }
@@ -68,14 +69,14 @@ extension DetailViewController {
             }
             .store(in: &cancellables)
 
-        viewModel.convertedResultText
+        viewModel.state.convertedResultText
             .receive(on: DispatchQueue.main)
             .sink { [weak self] result in
                 self?.detailView.updateResultLabel(for: result)
             }
             .store(in: &cancellables)
 
-        viewModel.inputError
+        viewModel.state.inputError
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.showAlert(
@@ -85,7 +86,7 @@ extension DetailViewController {
             }
             .store(in: &cancellables)
 
-        viewModel.invalidNumberFormatError
+        viewModel.state.invalidNumberFormatError
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.showAlert(

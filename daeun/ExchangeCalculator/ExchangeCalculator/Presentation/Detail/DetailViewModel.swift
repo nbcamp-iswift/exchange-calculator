@@ -8,20 +8,39 @@
 import Foundation
 import Combine
 
-final class DetailViewModel {
-    let convertCurrencyUseCase: ConvertCurrencyUseCase
-    let exchangeRate = CurrentValueSubject<ExchangeRate?, Never>(nil)
-    let convertedResultText = PassthroughSubject<String, Never>()
-    let inputError = PassthroughSubject<Void, Never>()
-    let invalidNumberFormatError = PassthroughSubject<Void, Never>()
+final class DetailViewModel: ViewModelProtocol {
+    private let convertCurrencyUseCase: ConvertCurrencyUseCase
+    var action: ((Action) -> Void)?
+    let state = State()
 
-    init(exchangeRate: ExchangeRate, convertCurrencyUseCase: ConvertCurrencyUseCase) {
-        self.exchangeRate.value = exchangeRate
-        self.convertCurrencyUseCase = convertCurrencyUseCase
+    enum Action {
+        case didTapConvertButton(String?)
     }
 
-    func convert(amount: String?) {
-        guard let rate = exchangeRate.value else { return }
+    struct State {
+        let exchangeRate = CurrentValueSubject<ExchangeRate?, Never>(nil)
+        let convertedResultText = PassthroughSubject<String, Never>()
+        let inputError = PassthroughSubject<Void, Never>()
+        let invalidNumberFormatError = PassthroughSubject<Void, Never>()
+    }
+
+    init(exchangeRate: ExchangeRate, convertCurrencyUseCase: ConvertCurrencyUseCase) {
+        state.exchangeRate.send(exchangeRate)
+        self.convertCurrencyUseCase = convertCurrencyUseCase
+        bindActions()
+    }
+
+    private func bindActions() {
+        action = { [weak self] action in
+            switch action {
+            case let .didTapConvertButton(text):
+                self?.convert(amount: text)
+            }
+        }
+    }
+
+    private func convert(amount: String?) {
+        guard let rate = state.exchangeRate.value else { return }
         let result = convertCurrencyUseCase.execute(amount: amount, with: rate)
 
         switch result {
@@ -31,14 +50,14 @@ final class DetailViewModel {
             let formattedOutput = String(format: "%.2f", result.converted)
             let targetCode = rate.currencyCode
 
-            let displayText = "\(baseSymbol)\(formattedInput) ⇨ \(formattedOutput)\(targetCode)"
-            convertedResultText.send(displayText)
+            let displayText = "\(baseSymbol)\(formattedInput) → \(formattedOutput) \(targetCode)"
+            state.convertedResultText.send(displayText)
         case .failure(let error):
             switch error {
             case .emptyInput:
-                inputError.send(())
+                state.inputError.send(())
             case .invalidNumberFormat:
-                invalidNumberFormatError.send(())
+                state.invalidNumberFormatError.send(())
             }
         }
     }
