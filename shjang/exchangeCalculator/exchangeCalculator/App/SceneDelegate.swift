@@ -8,15 +8,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         return DefaultExchangeRateRepository(appConfiguration: appConfig)
     }
 
-    private func makeDefaultExchangewFavRepository() ->
-        DefaultExchangeRatewFavRepostitory {
-        DefaultExchangeRatewFavRepostitory(coreDataStorage: CoreDataStorage.shared)
+    private func makeDefaultCoreDataRepository() ->
+        DefaultCoreDataRepostitory {
+        DefaultCoreDataRepostitory(coreDataStack: CoreDataStack.shared)
     }
 
     private func makeViewModel() -> ExchangeRateViewModel {
         ExchangeRateViewModel(
             dataRepository: makeDefaultExchangedRateRepository(),
-            favoriteRepository: makeDefaultExchangewFavRepository()
+            coreDataRepository: makeDefaultCoreDataRepository()
         )
     }
 

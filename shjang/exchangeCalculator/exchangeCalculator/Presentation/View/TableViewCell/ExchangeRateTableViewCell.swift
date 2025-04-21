@@ -35,6 +35,18 @@ final class ExchangeRateTableViewCell: UITableViewCell {
         $0.textAlignment = .right
     }
 
+    private lazy var directionImageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFit
+    }
+
+    private lazy var rateDirectionStackView = UIStackView(
+        arrangedSubviews: [rateLabel, directionImageView]
+    ).then {
+        $0.axis = .horizontal
+        $0.spacing = 4
+        $0.alignment = .center
+    }
+
     private lazy var starButton = UIButton().then {
         $0.setImage(UIImage(systemName: "star"), for: .normal)
         $0.tintColor = .systemYellow
@@ -58,7 +70,7 @@ final class ExchangeRateTableViewCell: UITableViewCell {
 
     private func setHierarchy() {
         contentView.addSubview(labelStackView)
-        contentView.addSubview(rateLabel)
+        contentView.addSubview(rateDirectionStackView)
         contentView.addSubview(starButton)
     }
 
@@ -68,12 +80,18 @@ final class ExchangeRateTableViewCell: UITableViewCell {
             make.centerY.equalToSuperview()
         }
 
-        rateLabel.snp.makeConstraints { make in
+        directionImageView.snp.makeConstraints { make in
+            make.width.equalTo(16)
+            make.height.equalTo(16)
+        }
+
+        rateDirectionStackView.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.leading.greaterThanOrEqualTo(labelStackView.snp.trailing).offset(16)
         }
+
         starButton.snp.makeConstraints { make in
-            make.leading.equalTo(rateLabel.snp.trailing).offset(8)
+            make.leading.equalTo(rateDirectionStackView.snp.trailing).offset(8)
             make.trailing.equalToSuperview().inset(16)
             make.centerY.equalToSuperview()
             make.width.height.equalTo(24)
@@ -86,6 +104,17 @@ final class ExchangeRateTableViewCell: UITableViewCell {
         rateLabel.text = viewModel.trailingText
         let starIcon = viewModel.isFavorite ? "star.fill" : "star"
         starButton.setImage(UIImage(systemName: starIcon), for: .normal)
+
+        switch viewModel.direction {
+        case .up:
+            directionImageView.image = UIImage(systemName: "arrow.up")
+            directionImageView.isHidden = false
+        case .down:
+            directionImageView.image = UIImage(systemName: "arrow.down")
+            directionImageView.isHidden = false
+        case nil:
+            directionImageView.isHidden = true
+        }
     }
 
     @available(*, unavailable)

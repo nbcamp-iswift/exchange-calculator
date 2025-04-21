@@ -12,15 +12,16 @@ final class ExchangeRateViewModel {
     @Published private(set) var state: State = .idle
 
     private let dataRepository: ExchangeRateRepository
-    private let favoriteRepository: ExchangeRatewFavRepository
+    private let coreDataRepository: CoreDataStackProtocol
 
     private var baseCurrency: String = "USD"
-    private var rates: [ExchangeRate] = []
+    private var rates: [ExchangeRate] = [] // current
     private var currentFilter: String = ""
+    private var previousRate: [String: Double] = [:]
 
-    init(dataRepository: ExchangeRateRepository, favoriteRepository: ExchangeRatewFavRepository) {
+    init(dataRepository: ExchangeRateRepository, coreDataRepository: CoreDataStackProtocol) {
         self.dataRepository = dataRepository
-        self.favoriteRepository = favoriteRepository
+        self.coreDataRepository = coreDataRepository
         loadRates()
     }
 
@@ -31,7 +32,9 @@ final class ExchangeRateViewModel {
                 switch result {
                 case .success(let data):
                     self?.rates = data
+                    self?.loadCacheData()
                     self?.updateViewModel()
+                    self?.saveCurrentRatesForNext()
                 case .failure(let error):
                     self?.state = .failed(error.localizedDescription)
                 }
@@ -46,18 +49,27 @@ final class ExchangeRateViewModel {
 
     private func updateViewModel() {
         let normalizedKeyword = normalize(currentFilter)
-        let favorites = Set(favoriteRepository.getFavorites().map(\.currency))
-
+        let favorites = Set(coreDataRepository.getFavorites().map(\.currency))
         let filtered = rates.filter {
             currentFilter.isEmpty ||
                 normalize($0.currency).contains(normalizedKeyword) ||
                 normalize($0.country).contains(normalizedKeyword)
         }
 
-        let mapped = filtered.map {
-            ExchangeRateTableViewCellModel(
-                from: $0,
-                isFavorite: favorites.contains($0.currency)
+        let mapped = filtered.map { rate -> ExchangeRateTableViewCellModel in
+            let current = Double(rate.rate) ?? 0.0
+            let previous = previousRate[rate.currency]
+
+            let direction: Direction? = {
+                guard let previous else { return nil }
+                let diff = abs(current - previous)
+                return diff > 0.01 ? (current > previous ? .up : .down) : nil
+            }()
+
+            return ExchangeRateTableViewCellModel(
+                from: rate,
+                isFavorite: favorites.contains(rate.currency),
+                direction: direction
             )
         }
 
@@ -79,7 +91,7 @@ final class ExchangeRateViewModel {
     }
 
     func toggleFavorite(currency: String, country: String, isFavorite: Bool) {
-        favoriteRepository.updateFavoriteStatus(
+        coreDataRepository.updateFavoriteStatus(
             currency: currency,
             countryCode: country,
             isFavorite: isFavorite
@@ -87,6 +99,15 @@ final class ExchangeRateViewModel {
 
         updateViewModel()
     }
+
+    private func loadCacheData() {
+        // NOTE: danger operation
+        let cachedData = coreDataRepository.getAllExchangedRate()
+        previousRate = Dictionary(uniqueKeysWithValues:
+            cachedData.map { ($0.currency, $0.rate) })
+    }
+
+    private func saveCurrentRatesForNext() {}
 
     private func normalize(_ text: String) -> String {
         text.folding(options: .diacriticInsensitive, locale: .current)

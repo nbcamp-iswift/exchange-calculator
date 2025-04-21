@@ -1,11 +1,3 @@
-//
-//  ExchangeRatewFav+CoreDataProperties.swift
-//  exchangeCalculator
-//
-//  Created by SeunghoJang on 4/21/25.
-//
-//
-
 import Foundation
 import CoreData
 
@@ -18,6 +10,8 @@ public extension ExchangeRatewFav {
     @NSManaged var createdAt: Date
     @NSManaged var currency: String
     @NSManaged var isFavorite: Bool
+    @NSManaged var rate: Double
+    @NSManaged var lastUpdated: Int64
 }
 
 extension ExchangeRatewFav: Identifiable {}

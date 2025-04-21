@@ -121,7 +121,7 @@ final class ExchangeRateViewController: UIViewController {
         var snapshot = NSDiffableDataSourceSnapshot<Section, ExchangeRateTableViewCellModel>()
         snapshot.appendSections([.main])
         snapshot.appendItems(items)
-        dataSource?.apply(snapshot, animatingDifferences: true)
+        dataSource?.apply(snapshot, animatingDifferences: false)
         tableView.backgroundView = items.isEmpty ? makeEmptyView() : nil
     }
 }

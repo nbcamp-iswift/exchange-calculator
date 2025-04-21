@@ -13,8 +13,8 @@ enum StoreType {
 }
 
 // CoreDataStack
-final class CoreDataStorage {
-    static let shared = CoreDataStorage(storeType: .persistent)
+final class CoreDataStack {
+    static let shared = CoreDataStack(storeType: .persistent)
     private let storeType: StoreType
 
     private lazy var persistentContainer: NSPersistentContainer = {

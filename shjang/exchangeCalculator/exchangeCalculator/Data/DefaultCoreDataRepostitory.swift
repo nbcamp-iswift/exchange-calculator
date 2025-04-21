@@ -1,14 +1,47 @@
 import CoreData
 
-final class DefaultExchangeRatewFavRepostitory: ExchangeRatewFavRepository {
-    let coreDataStorage: CoreDataStorage
+final class DefaultCoreDataRepostitory: CoreDataStackProtocol {
+    let coreDataStack: CoreDataStack
 
-    init(coreDataStorage: CoreDataStorage) {
-        self.coreDataStorage = coreDataStorage
+    init(coreDataStack: CoreDataStack) {
+        self.coreDataStack = coreDataStack
+    }
+
+    func loadCachedRates() -> [String: Double] {
+        let context = coreDataStack.taskContext()
+        let request = ExchangeRatewFav.fetchRequest()
+        let result = (try? context.fetch(request)) ?? []
+
+        var map: [String: Double] = [:]
+        for item in result {
+            map[item.currency] = item.rate
+        }
+        return map
+    }
+
+    func saveOrUpdate(rate: ExchangeRate, isFavorite: Bool) {
+        let context = coreDataStack.taskContext()
+        context.performAndWait {
+            let request: NSFetchRequest<ExchangeRatewFav> = ExchangeRatewFav.fetchRequest()
+            request.predicate = NSPredicate(
+                format: "currency == %@ AND countryCode == %@",
+                rate.currency,
+                rate.country
+            )
+
+            let object = (try? context.fetch(request))?.first ?? ExchangeRatewFav(context: context)
+            object.currency = rate.currency
+            object.countryCode = rate.country
+            object.rate = Double(rate.rate) ?? 0.0
+            object.createdAt = Date()
+            object.isFavorite = isFavorite
+            object.lastUpdated = Int64(rate.timeLastUpdated)
+            try? context.save()
+        }
     }
 
     func updateFavoriteStatus(currency: String, countryCode: String, isFavorite: Bool) {
-        let context = coreDataStorage.taskContext()
+        let context = coreDataStack.taskContext()
 
         context.performAndWait {
             let request: NSFetchRequest<ExchangeRatewFav> = ExchangeRatewFav.fetchRequest()
@@ -26,7 +59,8 @@ final class DefaultExchangeRatewFavRepostitory: ExchangeRatewFavRepository {
                 entity.currency = currency
                 entity.countryCode = countryCode
                 entity.createdAt = Date()
-                entity.isFavorite = true
+                entity.isFavorite = isFavorite
+                print(isFavorite)
             }
 
             do {
@@ -35,8 +69,15 @@ final class DefaultExchangeRatewFavRepostitory: ExchangeRatewFavRepository {
         }
     }
 
+    func getAllExchangedRate() -> [ExchangeRatewFav] {
+        let context = coreDataStack.taskContext()
+        let request: NSFetchRequest<ExchangeRatewFav> = ExchangeRatewFav.fetchRequest()
+        guard let result = try? context.fetch(request) else { return [] }
+        return result
+    }
+
     func getFavorites() -> [ExchangeRatewFav] {
-        let context = coreDataStorage.taskContext()
+        let context = coreDataStack.taskContext()
         let request: NSFetchRequest<ExchangeRatewFav> = ExchangeRatewFav.fetchRequest()
         request.predicate = NSPredicate(format: "isFavorite == true")
         request.sortDescriptors = [NSSortDescriptor(key: "createdAt", ascending: false)]
@@ -59,14 +100,14 @@ final class DefaultExchangeRatewFavRepostitory: ExchangeRatewFavRepository {
     }
 
     func removeAll() {
-        let context = coreDataStorage.taskContext()
+        let context = coreDataStack.taskContext()
         let request = NSBatchDeleteRequest(fetchRequest: ExchangeRatewFav.fetchRequest())
         try? context.execute(request)
         try? context.save()
     }
 
     func count() -> Int? {
-        let context = coreDataStorage.taskContext()
+        let context = coreDataStack.taskContext()
         let request: NSFetchRequest<ExchangeRatewFav> = ExchangeRatewFav.fetchRequest()
         return try? context.count(for: request)
     }
