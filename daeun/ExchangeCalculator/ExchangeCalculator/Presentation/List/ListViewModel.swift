@@ -52,7 +52,7 @@ final class ListViewModel: ViewModelProtocol {
             switch result {
             case let .success(data):
                 state.originalRates = data
-                state.filteredRates.value = state.originalRates
+                state.filteredRates.send(state.originalRates)
             case .failure:
                 state.fetchError.send(())
             }
@@ -60,10 +60,11 @@ final class ListViewModel: ViewModelProtocol {
     }
 
     func filterRates(with searchQuery: String) {
-        state.filteredRates.value = searchQuery.isEmpty
+        let filteredRates = searchQuery.isEmpty
             ? state.originalRates
             : state.originalRates.filter { $0.matches(query: searchQuery) }
-        state.hasMatches.value = !state.filteredRates.value.isEmpty
+        state.filteredRates.send(filteredRates)
+        state.hasMatches.send(!state.filteredRates.value.isEmpty)
     }
 
     func selectRate(at row: Int) {
