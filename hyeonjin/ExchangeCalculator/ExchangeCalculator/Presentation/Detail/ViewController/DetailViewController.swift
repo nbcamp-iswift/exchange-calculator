@@ -14,7 +14,7 @@ final class DetailViewController: UIViewController {
 
     private var disposeBag: DisposeBag = .init()
 
-    private lazy var detailView: DetailView = .init()
+    private let detailView: DetailView = .init()
 
     init(viewModel: DetailViewModel) {
         self.viewModel = viewModel
