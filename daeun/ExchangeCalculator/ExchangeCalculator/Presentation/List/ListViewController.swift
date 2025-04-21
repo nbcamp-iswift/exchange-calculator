@@ -74,9 +74,14 @@ extension ListViewController {
                 for: indexPath
             ) as? ListCell
 
-            guard case let ListItem.rate(exchangeRate) = item else { return nil }
+            guard let cell, case let ListItem.rate(exchangeRate) = item else { return nil }
 
-            cell?.updateCell(for: exchangeRate)
+            cell.updateCell(for: exchangeRate)
+            cell.isSelectedFavoriteButton
+                .sink { [weak self] _ in
+                    self?.viewModel.action.send(.didTapFavoriteButton(indexPath.row))
+                }
+                .store(in: &cell.cancellables)
 
             return cell
         }

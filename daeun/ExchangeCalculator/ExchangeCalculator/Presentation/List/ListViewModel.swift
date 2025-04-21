@@ -18,6 +18,7 @@ final class ListViewModel: ViewModelProtocol {
         case viewDidLoad
         case didTapCell(Int)
         case didChangeSearchBarText(String)
+        case didTapFavoriteButton(Int)
     }
 
     struct State {
@@ -42,6 +43,9 @@ final class ListViewModel: ViewModelProtocol {
                 self?.selectRate(at: row)
             case .didChangeSearchBarText(let text):
                 self?.filterRates(with: text)
+            case .didTapFavoriteButton(let row):
+                // TODO: 리스트 재정렬, core data,
+                print(row)
             }
         }
         .store(in: &cancellables)

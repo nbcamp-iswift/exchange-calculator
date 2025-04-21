@@ -7,8 +7,14 @@
 
 import SnapKit
 import UIKit
+import Combine
 
 final class ListCell: UITableViewCell, ReuseIdentifying {
+    // MARK: - Properties
+
+    let isSelectedFavoriteButton = PassthroughSubject<Bool, Never>()
+    var cancellables = Set<AnyCancellable>()
+
     // MARK: - Components
 
     private let labelStackView: UIStackView = {
@@ -38,6 +44,14 @@ final class ListCell: UITableViewCell, ReuseIdentifying {
         return label
     }()
 
+    private let favoriteButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "star"), for: .normal)
+        button.setImage(UIImage(systemName: "star.fill"), for: .selected)
+        button.tintColor = .systemYellow
+        return button
+    }()
+
     // MARK: - Life Cycles
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -58,6 +72,7 @@ extension ListCell {
         setAttributes()
         setHierachy()
         setConstraints()
+        setBindings()
     }
 
     private func setAttributes() {
@@ -68,7 +83,8 @@ extension ListCell {
         [
             labelStackView,
             rateLabel,
-        ].forEach { addSubview($0) }
+            favoriteButton,
+        ].forEach { contentView.addSubview($0) }
 
         [
             currencyLabel,
@@ -86,10 +102,25 @@ extension ListCell {
             make.leading
                 .greaterThanOrEqualTo(labelStackView.snp.trailing)
                 .offset(Constant.Spacing.cellHorizontal)
-            make.trailing.equalToSuperview().inset(Constant.Spacing.cellHorizontal)
             make.centerY.equalToSuperview()
             make.width.equalTo(Constant.Size.rateLabelWidth)
         }
+
+        favoriteButton.snp.makeConstraints { make in
+            make.verticalEdges.equalToSuperview()
+            make.leading.equalTo(rateLabel.snp.trailing).offset(Constant.Spacing.cellHorizontal)
+            make.trailing.equalToSuperview().inset(Constant.Spacing.cellHorizontal)
+        }
+    }
+
+    private func setBindings() {
+        favoriteButton.tapPublisher
+            .sink { [weak self] _ in
+                guard let self else { return }
+                favoriteButton.isSelected.toggle()
+                isSelectedFavoriteButton.send(favoriteButton.isSelected)
+            }
+            .store(in: &cancellables)
     }
 
     func updateCell(for data: ExchangeRate) {
