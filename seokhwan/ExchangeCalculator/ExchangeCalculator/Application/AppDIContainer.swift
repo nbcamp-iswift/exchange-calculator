@@ -1,22 +1,38 @@
 import UIKit
 
 final class AppDIContainer {
-    func makeExchangeRateViewController() -> ExchangeRateViewController {
-        let service = ExchangeRateService()
-        let repository = ExchangeRateRepository(exchangeRateService: service)
-        let useCase = FetchExchangeRateUseCase(exchangeRateRepository: repository)
-        let viewModel = ExchangeRateViewModel(exchangeRateUseCase: useCase)
+    func makeExchangeRateService() -> ExchangeRateService {
+        ExchangeRateService()
+    }
 
-        return ExchangeRateViewController(viewModel: viewModel, container: self)
+    func makeExchangeRateRepository() -> ExchangeRateRepository {
+        ExchangeRateRepository(exchangeRateService: makeExchangeRateService())
+    }
+
+    func makeFetchExchangeRateUseCase() -> FetchExchangeRateUseCase {
+        FetchExchangeRateUseCase(exchangeRateRepository: makeExchangeRateRepository())
+    }
+
+    func makeConvertExchangeRateUseCase() -> ConvertExchangeRateUseCase {
+        ConvertExchangeRateUseCase()
+    }
+
+    func makeExchangeRateViewModel() -> ExchangeRateViewModel {
+        ExchangeRateViewModel(exchangeRateUseCase: makeFetchExchangeRateUseCase())
+    }
+
+    func makeCalculatorViewModel(with exchangeRate: ExchangeRate) -> CalculatorViewModel {
+        CalculatorViewModel(
+            exchangeRate: exchangeRate,
+            convertExchangeRateUseCase: makeConvertExchangeRateUseCase()
+        )
+    }
+
+    func makeExchangeRateViewController() -> ExchangeRateViewController {
+        ExchangeRateViewController(viewModel: makeExchangeRateViewModel(), container: self)
     }
 
     func makeCalculatorViewController(with exchangeRate: ExchangeRate) -> CalculatorViewController {
-        let useCase = ConvertExchangeRateUseCase()
-        let viewModel = CalculatorViewModel(
-            exchangeRate: exchangeRate,
-            convertExchangeRateUseCase: useCase
-        )
-
-        return CalculatorViewController(viewModel: viewModel)
+        CalculatorViewController(viewModel: makeCalculatorViewModel(with: exchangeRate))
     }
 }
