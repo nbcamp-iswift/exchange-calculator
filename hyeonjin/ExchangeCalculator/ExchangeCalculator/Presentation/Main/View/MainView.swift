@@ -9,16 +9,16 @@ import UIKit
 import SnapKit
 
 final class MainView: UIView {
-    lazy var searchBar: UISearchBar = {
+    let searchBar: UISearchBar = {
         let searchBar = UISearchBar()
-        searchBar.backgroundImage = UIImage()
+        searchBar.searchBarStyle = .minimal
+        searchBar.placeholder = "통화 검색"
         return searchBar
     }()
 
-    lazy var exchangeTableView: UITableView = {
+    let exchangeTableView: UITableView = {
         let tableView = UITableView()
         tableView.rowHeight = 60
-        tableView.separatorStyle = .none
         tableView.register(
             ExchangeRateTableViewCell.self,
             forCellReuseIdentifier: ExchangeRateTableViewCell.identifier
@@ -26,7 +26,7 @@ final class MainView: UIView {
         return tableView
     }()
 
-    lazy var emptyLabel: UILabel = {
+    let emptyLabel: UILabel = {
         let label = UILabel()
         label.text = "검색 결과 없음"
         label.textColor = .secondaryLabel
@@ -71,7 +71,7 @@ private extension MainView {
 
         exchangeTableView.snp.makeConstraints { make in
             make.top.equalTo(searchBar.snp.bottom)
-            make.horizontalEdges.bottom.equalTo(safeAreaLayoutGuide)
+            make.leading.trailing.bottom.equalTo(safeAreaLayoutGuide)
         }
     }
 }
