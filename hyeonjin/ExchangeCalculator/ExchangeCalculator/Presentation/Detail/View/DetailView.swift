@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 final class DetailView: UIView {
-    private lazy var labelStackView: UIStackView = {
+    private let labelStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.spacing = 4
         stackView.alignment = .center
@@ -17,21 +17,21 @@ final class DetailView: UIView {
         return stackView
     }()
 
-    lazy var currencyLabel: UILabel = {
+    let currencyLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 24, weight: .bold)
         label.textColor = .label
         return label
     }()
 
-    lazy var countryLabel: UILabel = {
+    let countryLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16)
         label.textColor = .secondaryLabel
         return label
     }()
 
-    lazy var amountTextField: UITextField = {
+    let amountTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "금액을 입력하세요"
         textField.textAlignment = .center
@@ -40,7 +40,7 @@ final class DetailView: UIView {
         return textField
     }()
 
-    lazy var convertButton: UIButton = {
+    let convertButton: UIButton = {
         let button = UIButton()
         button.layer.cornerRadius = 8
         button.setTitle("환율 계산", for: .normal)
@@ -50,7 +50,7 @@ final class DetailView: UIView {
         return button
     }()
 
-    lazy var resultLabel: UILabel = {
+    let resultLabel: UILabel = {
         let label = UILabel()
         label.text = "계산 결과가 여기에 표시됩니다"
         label.textColor = .label
