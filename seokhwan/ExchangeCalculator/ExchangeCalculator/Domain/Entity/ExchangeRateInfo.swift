@@ -9,14 +9,9 @@ struct ExchangeRateInfo: Hashable {
         exchangeRates = []
     }
 
-    init(from dto: ExchangeRateInfoDTO, with countries: [String: String]) {
-        lastUpdated = Date(timeIntervalSince1970: dto.timeLastUpdateUnix)
-        exchangeRates = dto.rates
-            .map { currency, value in
-                let country = countries[currency] ?? "-"
-                return ExchangeRate(currency: currency, country: country, value: value)
-            }
-            .sorted { $0.currency < $1.currency }
+    init(lastUpdated: Date, exchangeRates: ExchangeRates) {
+        self.lastUpdated = lastUpdated
+        self.exchangeRates = exchangeRates
     }
 }
 

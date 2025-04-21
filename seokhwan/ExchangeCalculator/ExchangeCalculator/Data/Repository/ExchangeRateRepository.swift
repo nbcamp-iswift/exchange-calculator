@@ -13,7 +13,7 @@ final class ExchangeRateRepository {
         switch result {
         case .success(let dto):
             let countries = CurrencyCountryMapper.countries(for: Array(dto.rates.keys))
-            return .success(ExchangeRateInfo(from: dto, with: countries))
+            return .success(dto.toEntity(with: countries))
         case .failure(let error):
             return .failure(error)
         }
