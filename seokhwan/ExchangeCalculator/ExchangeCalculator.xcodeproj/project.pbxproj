@@ -7,11 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		445E6F4D2DB22DC900DB825E /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 445E6F4C2DB22DC900DB825E /* README.md */; };
+		445E6F4F2DB22DD200DB825E /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 445E6F4E2DB22DD200DB825E /* .swiftlint.yml */; };
+		445E6F512DB22DD800DB825E /* .swiftFormat in Resources */ = {isa = PBXBuildFile; fileRef = 445E6F502DB22DD800DB825E /* .swiftFormat */; };
+		445E6FB12DB41E7400DB825E /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 445E6FB02DB41E7400DB825E /* Then */; };
+		445E70272DB49F5D00DB825E /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 445E70262DB49F5D00DB825E /* RxCocoa */; };
 		44EB79F42DAD0274004B9935 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 44EB79F32DAD0274004B9935 /* SnapKit */; };
 		44EB79F72DAD0284004B9935 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 44EB79F62DAD0284004B9935 /* Alamofire */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		445E6F4C2DB22DC900DB825E /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = SOURCE_ROOT; };
+		445E6F4E2DB22DD200DB825E /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = .swiftlint.yml; path = "/Users/youseokhwan/Develop/nbcamp/exchange-calculator/.swiftlint.yml"; sourceTree = "<absolute>"; };
+		445E6F502DB22DD800DB825E /* .swiftFormat */ = {isa = PBXFileReference; lastKnownFileType = text; name = .swiftFormat; path = "/Users/youseokhwan/Develop/nbcamp/exchange-calculator/.swiftFormat"; sourceTree = "<absolute>"; };
 		44EB79412DACF2FD004B9935 /* ExchangeCalculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExchangeCalculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -42,6 +50,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				44EB79F42DAD0274004B9935 /* SnapKit in Frameworks */,
+				445E6FB12DB41E7400DB825E /* Then in Frameworks */,
+				445E70272DB49F5D00DB825E /* RxCocoa in Frameworks */,
 				44EB79F72DAD0284004B9935 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -52,6 +62,9 @@
 		44EB79382DACF2FD004B9935 = {
 			isa = PBXGroup;
 			children = (
+				445E6F4C2DB22DC900DB825E /* README.md */,
+				445E6F4E2DB22DD200DB825E /* .swiftlint.yml */,
+				445E6F502DB22DD800DB825E /* .swiftFormat */,
 				44EB79432DACF2FD004B9935 /* ExchangeCalculator */,
 				44EB79422DACF2FD004B9935 /* Products */,
 			);
@@ -89,6 +102,8 @@
 			packageProductDependencies = (
 				44EB79F32DAD0274004B9935 /* SnapKit */,
 				44EB79F62DAD0284004B9935 /* Alamofire */,
+				445E6FB02DB41E7400DB825E /* Then */,
+				445E70262DB49F5D00DB825E /* RxCocoa */,
 			);
 			productName = ExchangeCalculator;
 			productReference = 44EB79412DACF2FD004B9935 /* ExchangeCalculator.app */;
@@ -121,6 +136,8 @@
 			packageReferences = (
 				44EB79F22DAD0274004B9935 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				44EB79F52DAD0284004B9935 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				445E6FAF2DB41E7400DB825E /* XCRemoteSwiftPackageReference "Then" */,
+				445E70252DB49F5D00DB825E /* XCRemoteSwiftPackageReference "RxSwift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 44EB79422DACF2FD004B9935 /* Products */;
@@ -137,6 +154,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				445E6F512DB22DD800DB825E /* .swiftFormat in Resources */,
+				445E6F4F2DB22DD200DB825E /* .swiftlint.yml in Resources */,
+				445E6F4D2DB22DC900DB825E /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -403,6 +423,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		445E6FAF2DB41E7400DB825E /* XCRemoteSwiftPackageReference "Then" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devxoul/Then";
+			requirement = {
+				kind = exactVersion;
+				version = 3.0.0;
+			};
+		};
+		445E70252DB49F5D00DB825E /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift";
+			requirement = {
+				kind = exactVersion;
+				version = 6.9.0;
+			};
+		};
 		44EB79F22DAD0274004B9935 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit";
@@ -422,6 +458,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		445E6FB02DB41E7400DB825E /* Then */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 445E6FAF2DB41E7400DB825E /* XCRemoteSwiftPackageReference "Then" */;
+			productName = Then;
+		};
+		445E70262DB49F5D00DB825E /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 445E70252DB49F5D00DB825E /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
 		44EB79F32DAD0274004B9935 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 44EB79F22DAD0274004B9935 /* XCRemoteSwiftPackageReference "SnapKit" */;
