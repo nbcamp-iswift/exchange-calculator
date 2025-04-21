@@ -95,19 +95,12 @@ extension MainViewModel {
 
     private func bindState() {
         Observable.combineLatest(
-            state.asObservable().map(\.searchBarText).distinctUntilChanged(),
-            state.asObservable().map(\.originalExchangeRates).distinctUntilChanged()
+            state.map(\.searchBarText).distinctUntilChanged(),
+            state.map(\.originalExchangeRates).distinctUntilChanged()
         )
         .observe(on: MainScheduler.asyncInstance)
-        .map { searchbarText, exchangeRates in
-            if searchbarText.isEmpty {
-                return exchangeRates
-            } else {
-                return exchangeRates.filter {
-                    $0.currencyCode.lowercased().contains(searchbarText.lowercased()) ||
-                        $0.country.contains(searchbarText)
-                }
-            }
+        .map { [weak self] searchbarText, exchangeRates -> [ExchangeRate] in
+            self?.useCase.filterExchangeRates(text: searchbarText, originalExchangeRates: exchangeRates) ?? []
         }
         .subscribe { [weak self] filteredExchangeRate in
             guard let self else { return }
