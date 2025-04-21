@@ -13,7 +13,12 @@ struct ExchangeRateInfoDTO: Codable {
         let exchangeRates = rates
             .map { currency, value in
                 let country = countries[currency] ?? "-"
-                return ExchangeRate(currency: currency, country: country, value: value)
+                return ExchangeRate(
+                    currency: currency,
+                    country: country,
+                    value: value,
+                    isFavorite: false // TODO: favorite 값을 CoreData에서 fetch 해서 대입하기
+                )
             }
             .sorted { $0.currency < $1.currency }
 

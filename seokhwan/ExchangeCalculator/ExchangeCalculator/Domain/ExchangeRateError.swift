@@ -2,6 +2,7 @@ import Foundation
 
 enum ExchangeRateError: LocalizedError {
     case dataLoadFailed
+    case favoriteUpdateFailed
     case emptyInput
     case invalidNumber
 
@@ -9,6 +10,8 @@ enum ExchangeRateError: LocalizedError {
         switch self {
         case .dataLoadFailed:
             return "데이터를 불러올 수 없습니다"
+        case .favoriteUpdateFailed:
+            return "즐겨찾기 상태를 변경할 수 없습니다"
         case .emptyInput:
             return "금액을 입력해 주세요"
         case .invalidNumber:
