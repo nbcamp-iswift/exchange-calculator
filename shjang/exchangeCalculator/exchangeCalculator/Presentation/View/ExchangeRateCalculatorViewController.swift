@@ -6,13 +6,6 @@ final class ExchangeRateCalculatorViewController: UIViewController {
     private let viewModel: ExchangeRateCalculatorViewModel
     private var cancellables = Set<AnyCancellable>()
 
-    private lazy var titleLabel = UILabel().then {
-        $0.textAlignment = .left
-        $0.text = "환율 정보"
-        $0.font = .systemFont(ofSize: 24, weight: .bold)
-        $0.textColor = .black
-    }
-
     private lazy var currencyLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 24, weight: .bold)
     }
@@ -74,11 +67,11 @@ final class ExchangeRateCalculatorViewController: UIViewController {
 
     private func setAttributes() {
         view.backgroundColor = .white
+        title = "환율 정보"
     }
 
     private func setHierarchy() {
         [
-            titleLabel,
             labelStackView,
             amountTextField,
             convertButton,
@@ -89,14 +82,8 @@ final class ExchangeRateCalculatorViewController: UIViewController {
     }
 
     private func setConstraints() {
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide)
-            make.leading.equalTo(view.safeAreaLayoutGuide).offset(20)
-            make.height.equalTo(44)
-        }
-
         labelStackView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(2) // 32
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(32) // 32
             make.centerX.equalToSuperview()
             make.height.equalTo(44)
         }
@@ -123,8 +110,8 @@ final class ExchangeRateCalculatorViewController: UIViewController {
     }
 
     private func setBindings() {
-        currencyLabel.text = viewModel.getCurrency()
-        countryLabel.text = viewModel.getCountryName()
+        currencyLabel.text = viewModel.currency
+        countryLabel.text = viewModel.countryName
 
         viewModel.$result
             .receive(on: DispatchQueue.main)
@@ -142,7 +129,7 @@ final class ExchangeRateCalculatorViewController: UIViewController {
                     format: "$%.2f -> %@ %@",
                     amount,
                     result,
-                    viewModel.getCurrency()
+                    viewModel.currency
                 )
 
                 resultLabel.text = formatted

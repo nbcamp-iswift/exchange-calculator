@@ -1,9 +1,9 @@
 import Foundation
 
 final class ExchangeRateCalculatorViewModel {
-    private let currency: String
-    private let countryName: String
-    private let exchangeRate: String
+    let currency: String
+    let countryName: String
+    let exchangeRate: String
 
     @Published private(set) var result: String = ""
 
@@ -11,18 +11,6 @@ final class ExchangeRateCalculatorViewModel {
         self.currency = currency
         self.countryName = countryName
         self.exchangeRate = exchangeRate
-    }
-
-    func getCurrency() -> String {
-        currency
-    }
-
-    func getCountryName() -> String {
-        countryName
-    }
-
-    func getExchangeRate() -> String {
-        exchangeRate
     }
 
     func convert(amount: Double) {
