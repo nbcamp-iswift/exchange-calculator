@@ -44,8 +44,6 @@ enum Constant {
     enum Alert {
         static let title = "오류"
         static let fetchErrorMessage = "데이터를 불러올 수 없습니다"
-        static let emptyInputErrorMessage = "금액을 입력해주세요"
-        static let invalidNumberErrorMessage = "올바른 숫자를 입력해주세요"
         static let confirm = "확인"
     }
 

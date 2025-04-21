@@ -10,7 +10,8 @@ import Combine
 
 final class ListViewModel: ViewModelProtocol {
     private let exchangeRatesUseCase: ExchangeRatesUseCase
-    var action: ((Action) -> Void)?
+    private var cancellables = Set<AnyCancellable>()
+    var action = PassthroughSubject<Action, Never>()
     var state = State()
 
     enum Action {
@@ -33,7 +34,7 @@ final class ListViewModel: ViewModelProtocol {
     }
 
     private func bindActions() {
-        action = { [weak self] action in
+        action.sink { [weak self] action in
             switch action {
             case .viewDidLoad:
                 self?.loadList()
@@ -43,6 +44,7 @@ final class ListViewModel: ViewModelProtocol {
                 self?.filterRates(with: text)
             }
         }
+        .store(in: &cancellables)
     }
 
     private func loadList() {

@@ -1,5 +1,5 @@
 //
-//  CountryCodeMapper .swift
+//  CurrencyCodeMapper.swift
 //  ExchangeCalculator
 //
 //  Created by 곽다은 on 4/17/25.

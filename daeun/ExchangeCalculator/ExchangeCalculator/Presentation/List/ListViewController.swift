@@ -46,7 +46,7 @@ final class ListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewModel.action?(.viewDidLoad)
+        viewModel.action.send(.viewDidLoad)
         configure()
     }
 }
@@ -90,14 +90,14 @@ extension ListViewController {
     private func setBindings() {
         listView.searchBar.textDidChangePublisher
             .sink { [weak self] text in
-                self?.viewModel.action?(.didChangeSearchBarText(text))
+                self?.viewModel.action.send(.didChangeSearchBarText(text))
             }
             .store(in: &cancellables)
 
         listView.tableView.didSelectRowPublisher
             .map(\.row)
             .sink { [weak self] row in
-                self?.viewModel.action?(.didTapCell(row))
+                self?.viewModel.action.send(.didTapCell(row))
             }
             .store(in: &cancellables)
 
@@ -110,7 +110,6 @@ extension ListViewController {
             .store(in: &cancellables)
 
         viewModel.state.fetchError
-            .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 self?.showAlert(
                     title: Constant.Alert.title,

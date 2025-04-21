@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ConversionResult {
-    let inputAmount: Double
-    let converted: Double
+enum ConversionResult {
+    case success(inputAmount: Double, converted: Double)
+    case failure(ConvertError)
 }

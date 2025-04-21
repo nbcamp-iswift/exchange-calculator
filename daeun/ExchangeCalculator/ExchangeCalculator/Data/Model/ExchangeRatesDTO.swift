@@ -16,7 +16,7 @@ struct ExchangeRatesDTO: Decodable {
         case rates
     }
 
-    func toDomain() -> [ExchangeRate] {
+    func toEntity() -> [ExchangeRate] {
         rates
             .map { key, value in
                 let roundedValue = value.roundedTo(digits: Constant.Digits.rate)

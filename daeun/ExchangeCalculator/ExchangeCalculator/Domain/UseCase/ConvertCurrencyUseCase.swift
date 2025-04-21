@@ -7,23 +7,12 @@
 
 import Foundation
 
-enum ConvertError: Error {
-    case emptyInput
-    case invalidNumberFormat
-}
-
 protocol ConvertCurrencyUseCase {
-    func execute(
-        amount: String?,
-        with rate: ExchangeRate
-    ) -> Result<ConversionResult, ConvertError>
+    func execute(amount: String?, with rate: ExchangeRate) -> ConversionResult
 }
 
 final class DefaultConvertCurrencyUseCase: ConvertCurrencyUseCase {
-    func execute(
-        amount: String?,
-        with rate: ExchangeRate
-    ) -> Result<ConversionResult, ConvertError> {
+    func execute(amount: String?, with rate: ExchangeRate) -> ConversionResult {
         guard let text = amount, !text.isEmpty else {
             return .failure(.emptyInput)
         }
@@ -32,7 +21,6 @@ final class DefaultConvertCurrencyUseCase: ConvertCurrencyUseCase {
         }
 
         let converted = rate.value * amountValue
-        let conversionResult = ConversionResult(inputAmount: amountValue, converted: converted)
-        return .success(conversionResult)
+        return .success(inputAmount: amountValue, converted: converted)
     }
 }

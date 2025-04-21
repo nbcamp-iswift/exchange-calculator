@@ -50,14 +50,13 @@ extension DetailViewController {
 
     private func setAttributes() {
         title = Constant.Title.exchangeCalc
-        navigationController?.navigationBar.prefersLargeTitles = true
     }
 
     private func setBindings() {
         detailView.convertButton.tapPublisher
             .sink { [weak self] _ in
                 let text = self?.detailView.amountTextField.text
-                self?.viewModel.action?(.didTapConvertButton(text))
+                self?.viewModel.action.send(.didTapConvertButton(text))
             }
             .store(in: &cancellables)
 
@@ -76,23 +75,9 @@ extension DetailViewController {
             }
             .store(in: &cancellables)
 
-        viewModel.state.inputError
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                self?.showAlert(
-                    title: Constant.Alert.title,
-                    message: Constant.Alert.emptyInputErrorMessage
-                )
-            }
-            .store(in: &cancellables)
-
-        viewModel.state.invalidNumberFormatError
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                self?.showAlert(
-                    title: Constant.Alert.title,
-                    message: Constant.Alert.invalidNumberErrorMessage
-                )
+        viewModel.state.errorMessage
+            .sink { [weak self] message in
+                self?.showAlert(title: Constant.Alert.title, message: message)
             }
             .store(in: &cancellables)
     }
