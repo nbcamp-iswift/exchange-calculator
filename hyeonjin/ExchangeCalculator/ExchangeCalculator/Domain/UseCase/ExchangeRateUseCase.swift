@@ -23,11 +23,11 @@ final class ExchangeRateUseCase: ExchangeRateUseCaseProtocol {
         text: String,
         originalExchangeRates: [ExchangeRate]
     ) -> [ExchangeRate] {
-        return text.isEmpty
-        ? originalExchangeRates
-        : originalExchangeRates.filter {
-            $0.currencyCode.lowercased().contains(text.lowercased()) ||
-                $0.country.contains(text)
-        }
+        text.isEmpty
+            ? originalExchangeRates
+            : originalExchangeRates.filter {
+                $0.currencyCode.lowercased().contains(text.lowercased()) ||
+                    $0.country.contains(text)
+            }
     }
 }
