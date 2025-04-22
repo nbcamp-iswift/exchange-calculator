@@ -3,5 +3,6 @@
     <entity name="ExchangeRate" representedClassName="ExchangeRate" syncable="YES">
         <attribute name="currency" optional="YES" attributeType="String"/>
         <attribute name="isFavorite" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="oldValue" optional="YES" attributeType="Double" usesScalarValueType="YES"/>
     </entity>
 </model>

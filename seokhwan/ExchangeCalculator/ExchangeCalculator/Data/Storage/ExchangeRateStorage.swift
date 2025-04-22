@@ -29,6 +29,29 @@ final class ExchangeRateStorage {
         }
     }
 
+    func updateOldValues(with rates: [String: Double]) async -> Result<Void, ExchangeRateError> {
+        await context.perform { [weak self] in
+            let request = ExchangeRateEntity.fetchRequest() as? NSFetchRequest<ExchangeRateEntity>
+            guard let request,
+                  let context = self?.context,
+                  let entities = try? context.fetch(request) else {
+                return .failure(.dataSaveFailed)
+            }
+
+            for entity in entities {
+                guard let oldValue = rates[entity.currency] else { continue }
+                entity.oldValue = oldValue
+            }
+
+            do {
+                try context.save()
+                return .success(())
+            } catch {
+                return .failure(.dataSaveFailed)
+            }
+        }
+    }
+
     func toggleIsFavorite(for currency: String) async -> Result<Void, ExchangeRateError> {
         await context.perform { [weak self] in
             let request = ExchangeRateEntity.fetchRequest() as? NSFetchRequest<ExchangeRateEntity>

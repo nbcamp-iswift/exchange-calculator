@@ -10,14 +10,25 @@ final class ExchangeRateRepository {
     }
 
     func fetchExchangeRates() async -> Result<ExchangeRateInfo, ExchangeRateError> {
-        let serviceResult = await service.fetchExchangeRateInfo()
+        let result = await service.fetchExchangeRateInfo()
 
-        switch serviceResult {
+        switch result {
         case .success(let dto):
-            let countries = CurrencyCountryMapper.countries(for: Array(dto.rates.keys))
-            let storageResult = await storage.fetchAll()
+            // TODO: CoreData가 비어있다면, MockData를 insert
 
-            switch storageResult {
+            let updateResult = await updateOldValue(from: dto)
+
+            switch updateResult {
+            case .success:
+                break
+            case .failure(let error):
+                return .failure(error)
+            }
+
+            let countries = CurrencyCountryMapper.countries(for: Array(dto.rates.keys))
+            let fetchResult = await storage.fetchAll()
+
+            switch fetchResult {
             case .success(let entities):
                 let result = makeExchangeRateInfo(
                     dto: dto,
@@ -44,6 +55,22 @@ final class ExchangeRateRepository {
         }
     }
 
+    private func updateOldValue(
+        from dto: ExchangeRateInfoDTO
+    ) async -> Result<Void, ExchangeRateError> {
+        let lastUpdate = UserDefaults.standard.double(forKey: "timeLastUpdateUnix")
+        guard dto.timeLastUpdateUnix > lastUpdate else { return .success(()) }
+        let result = await storage.updateOldValues(with: dto.rates)
+
+        switch result {
+        case .success:
+            UserDefaults.standard.set(dto.timeLastUpdateUnix, forKey: "timeLastUpdateUnix")
+            return .success(())
+        case .failure(let error):
+            return .failure(error)
+        }
+    }
+
     private func makeExchangeRateInfo(
         dto: ExchangeRateInfoDTO,
         countries: [String: String],
@@ -52,13 +79,14 @@ final class ExchangeRateRepository {
         let exchangeRates = dto.rates
             .map { currency, value in
                 let country = countries[currency] ?? "-"
-                let isFavorite = entities.first { $0.currency == currency }?.isFavorite ?? false
+                let entity = entities.first { $0.currency == currency }
 
                 return ExchangeRate(
                     currency: currency,
                     country: country,
                     value: value,
-                    isFavorite: isFavorite
+                    oldValue: entity?.oldValue ?? 100.0,
+                    isFavorite: entity?.isFavorite ?? false
                 )
             }
             .sorted {

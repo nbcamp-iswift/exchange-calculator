@@ -26,6 +26,8 @@ final class ExchangeRateCell: UITableViewCell {
         $0.textAlignment = .right
     }
 
+    private lazy var isRisingLabel = UILabel()
+
     private lazy var favoriteButton = UIButton(type: .system).then {
         $0.tintColor = .systemYellow
     }
@@ -50,6 +52,13 @@ final class ExchangeRateCell: UITableViewCell {
         countryLabel.text = exchangeRate.country
         rateLabel.text = String(format: "%.4f", exchangeRate.value)
 
+        let diff = exchangeRate.value - exchangeRate.oldValue
+        if abs(diff) > 0.01 {
+            isRisingLabel.text = diff > 0.0 ? "⬆️" : "⬇️"
+        } else {
+            isRisingLabel.text = ""
+        }
+
         let imageName = exchangeRate.isFavorite ? "star.fill" : "star"
         favoriteButton.setImage(.init(systemName: imageName), for: .normal)
     }
@@ -72,7 +81,7 @@ private extension ExchangeRateCell {
 
     func setHierarchy() {
         labelStackView.addArrangedSubviews(currencyLabel, countryLabel)
-        contentView.addSubviews(labelStackView, rateLabel, favoriteButton)
+        contentView.addSubviews(labelStackView, rateLabel, isRisingLabel, favoriteButton)
     }
 
     func setConstraints() {
@@ -87,10 +96,16 @@ private extension ExchangeRateCell {
             make.width.equalTo(120)
         }
 
-        favoriteButton.snp.makeConstraints { make in
+        isRisingLabel.snp.makeConstraints { make in
             make.leading.equalTo(rateLabel.snp.trailing).offset(16)
-            make.trailing.equalToSuperview().inset(16)
             make.centerY.equalToSuperview()
+            make.width.equalTo(23)
+        }
+
+        favoriteButton.snp.makeConstraints { make in
+            make.leading.equalTo(isRisingLabel.snp.trailing).offset(16)
+            make.trailing.equalToSuperview().inset(16)
+            make.height.equalToSuperview()
         }
     }
 }

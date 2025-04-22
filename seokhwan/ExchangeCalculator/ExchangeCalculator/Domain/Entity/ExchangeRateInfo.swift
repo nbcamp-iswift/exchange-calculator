@@ -21,5 +21,6 @@ struct ExchangeRate: Hashable {
     let currency: String
     let country: String
     let value: Double
+    let oldValue: Double
     let isFavorite: Bool
 }
