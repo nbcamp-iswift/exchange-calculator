@@ -94,7 +94,10 @@ extension DetailViewController {
             .map(\.convertedResult)
             .distinctUntilChanged()
             .asDriver(onErrorJustReturn: "")
-            .drive(detailView.resultLabel.rx.text)
+            .drive { [weak self] result in
+                guard let self else { return }
+                detailView.resultLabel.text = result.isEmpty ? "계산 결과가 여기에 표시됩니다." : result
+            }
             .disposed(by: disposeBag)
 
         viewModel.state
