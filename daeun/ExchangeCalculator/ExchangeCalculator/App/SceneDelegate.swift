@@ -17,10 +17,14 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     ) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        let localFavoriteDataSource = LocalFavoriteDataSource()
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        let container = appDelegate.persistentContainer
+        let localFavoriteDataSource = LocalFavoriteDataSource(container: container)
+        let localRateChangeDataSource = LocalRateChangeDataSource(container: container)
 
         let exchangeRatesrepository = DefaultExchangeRatesRepository(
-            localDataSource: localFavoriteDataSource
+            favoriteDataSource: localFavoriteDataSource,
+            rateChangeDataSource: localRateChangeDataSource
         )
         let favoriteExchangeRepository = DefaultFavoriteExchangeRepository(
             localDataSource: localFavoriteDataSource

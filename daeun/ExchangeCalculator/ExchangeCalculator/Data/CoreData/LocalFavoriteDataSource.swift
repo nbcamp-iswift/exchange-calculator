@@ -7,15 +7,12 @@
 
 import Foundation
 import CoreData
-import UIKit
 
 final class LocalFavoriteDataSource {
     private var container: NSPersistentContainer?
 
-    init() {
-        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
-            container = appDelegate.persistentContainer
-        }
+    init(container: NSPersistentContainer) {
+        self.container = container
     }
 
     func readAllData() -> [String: Bool] {

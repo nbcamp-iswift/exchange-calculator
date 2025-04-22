@@ -44,6 +44,8 @@ final class ListCell: UITableViewCell, ReuseIdentifying {
         return label
     }()
 
+    private let fluctuationLabel = UILabel()
+
     private let favoriteButton: UIButton = {
         let button = UIButton()
         button.setImage(UIImage(systemName: "star"), for: .normal)
@@ -89,6 +91,7 @@ extension ListCell {
         [
             labelStackView,
             rateLabel,
+            fluctuationLabel,
             favoriteButton,
         ].forEach { contentView.addSubview($0) }
 
@@ -112,9 +115,18 @@ extension ListCell {
             make.width.equalTo(Constant.Size.rateLabelWidth)
         }
 
+        fluctuationLabel.snp.makeConstraints { make in
+            make.leading
+                .equalTo(rateLabel.snp.trailing)
+                .offset(Constant.Spacing.cellHorizontal)
+            make.centerY.equalToSuperview()
+        }
+
         favoriteButton.snp.makeConstraints { make in
             make.verticalEdges.equalToSuperview()
-            make.leading.equalTo(rateLabel.snp.trailing).offset(Constant.Spacing.cellHorizontal)
+            make.leading
+                .equalTo(fluctuationLabel.snp.trailing)
+                .offset(Constant.Spacing.cellHorizontal)
             make.trailing.equalToSuperview().inset(Constant.Spacing.cellHorizontal)
         }
     }
@@ -132,6 +144,8 @@ extension ListCell {
         currencyLabel.text = data.currencyCode
         countryLabel.text = data.countryName
         rateLabel.text = String(data.value)
+        fluctuationLabel.isHidden = abs(data.value - data.lastValue) <= 0.01
+        fluctuationLabel.text = data.value > data.lastValue ? "📈" : "📉"
         favoriteButton.isSelected = data.favorited
     }
 }
