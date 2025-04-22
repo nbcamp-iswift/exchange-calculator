@@ -5,7 +5,12 @@ import RxSwift
 import RxCocoa
 
 final class ExchangeRateCell: UITableViewCell {
+
+    // MARK: - Properties
+
     private var disposeBag = DisposeBag()
+
+    // MARK: - UI Components
 
     private lazy var labelStackView = UIStackView().then {
         $0.axis = .vertical
@@ -32,6 +37,8 @@ final class ExchangeRateCell: UITableViewCell {
         $0.tintColor = .systemYellow
     }
 
+    // MARK: - Initializers
+
     override init(style: CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configure()
@@ -42,10 +49,14 @@ final class ExchangeRateCell: UITableViewCell {
         fatalError()
     }
 
+    // MARK: - Lifecycle Methods
+
     override func prepareForReuse() {
         super.prepareForReuse()
         disposeBag = DisposeBag()
     }
+
+    // MARK: - Methods
 
     func update(with exchangeRate: ExchangeRate) {
         currencyLabel.text = exchangeRate.currency
@@ -72,6 +83,8 @@ final class ExchangeRateCell: UITableViewCell {
             .disposed(by: disposeBag)
     }
 }
+
+// MARK: - Configure
 
 private extension ExchangeRateCell {
     func configure() {

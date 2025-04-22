@@ -1,6 +1,9 @@
 import UIKit
 
 final class AppDIContainer {
+
+    // MARK: - Data Layer
+
     func makeExchangeRateService() -> ExchangeRateService {
         ExchangeRateService()
     }
@@ -16,6 +19,8 @@ final class AppDIContainer {
         )
     }
 
+    // MARK: - Domain Layer
+
     func makeFetchExchangeRateUseCase() -> FetchExchangeRateUseCase {
         FetchExchangeRateUseCase(exchangeRateRepository: makeExchangeRateRepository())
     }
@@ -27,6 +32,8 @@ final class AppDIContainer {
     func makeToggleIsFavoriteUseCase() -> ToggleIsFavoriteUseCase {
         ToggleIsFavoriteUseCase(exchangeRateRepository: makeExchangeRateRepository())
     }
+
+    // MARK: - Presentation Layer
 
     func makeExchangeRateViewModel() -> ExchangeRateViewModel {
         ExchangeRateViewModel(

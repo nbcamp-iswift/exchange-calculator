@@ -5,9 +5,14 @@ import RxSwift
 import RxCocoa
 
 final class CalculatorView: UIView {
+
+    // MARK: - Properties
+
     var didTapConvertButton = PublishRelay<String>()
 
     private let disposeBag = DisposeBag()
+
+    // MARK: - UI Components
 
     private lazy var labelStackView = UIStackView().then {
         $0.axis = .vertical
@@ -46,6 +51,8 @@ final class CalculatorView: UIView {
         $0.numberOfLines = 0
     }
 
+    // MARK: - Initializers
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
@@ -55,6 +62,8 @@ final class CalculatorView: UIView {
     required init?(coder: NSCoder) {
         fatalError()
     }
+
+    // MARK: - Methods
 
     func update(with exchangeRate: ExchangeRate) {
         currencyLabel.text = exchangeRate.currency
@@ -71,6 +80,8 @@ final class CalculatorView: UIView {
         amountTextField.text = ""
     }
 }
+
+// MARK: - Configure
 
 private extension CalculatorView {
     func configure() {

@@ -20,7 +20,7 @@ typealias ExchangeRates = [ExchangeRate]
 struct ExchangeRate: Hashable {
     let currency: String
     let country: String
-    let value: Double
-    let oldValue: Double
+    let value: Double // newRate
+    let oldValue: Double // oldRate
     let isFavorite: Bool
 }

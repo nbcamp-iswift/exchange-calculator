@@ -2,10 +2,15 @@ import UIKit
 import RxSwift
 
 final class CalculatorViewController: UIViewController {
+
+    // MARK: - Properties
+
     private let viewModel: CalculatorViewModel
     private let disposeBag = DisposeBag()
 
     private lazy var calculatorView = CalculatorView()
+
+    // MARK: - Initializers
 
     init(viewModel: CalculatorViewModel) {
         self.viewModel = viewModel
@@ -17,6 +22,8 @@ final class CalculatorViewController: UIViewController {
         fatalError()
     }
 
+    // MARK: - Lifecycle Methods
+
     override func loadView() {
         view = calculatorView
     }
@@ -27,6 +34,8 @@ final class CalculatorViewController: UIViewController {
         viewModel.action.accept(.viewDidLoad)
     }
 }
+
+// MARK: - Configure
 
 private extension CalculatorViewController {
     func configure() {

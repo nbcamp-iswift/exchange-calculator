@@ -3,6 +3,9 @@ import RxSwift
 import RxRelay
 
 final class ExchangeRateViewModel: ViewModelProtocol {
+
+    // MARK: - Types
+
     enum Action {
         case viewDidLoad
         case didChangeSearchText(searchText: String)
@@ -17,12 +20,16 @@ final class ExchangeRateViewModel: ViewModelProtocol {
         let errorMessage = PublishRelay<String>()
     }
 
+    // MARK: - Properties
+
     let action = PublishRelay<Action>()
     let state = State()
     let fetchExchangeRateUseCase: FetchExchangeRateUseCase
     let toggleIsFavoriteUseCase: ToggleIsFavoriteUseCase
 
     private let disposeBag = DisposeBag()
+
+    // MARK: - Initializers
 
     init(
         fetchExchangeRateUseCase: FetchExchangeRateUseCase,
@@ -50,6 +57,8 @@ final class ExchangeRateViewModel: ViewModelProtocol {
             }
             .disposed(by: disposeBag)
     }
+
+    // MARK: - Methods
 
     private func fetchExchangeRates() async {
         let result = await fetchExchangeRateUseCase.execute()

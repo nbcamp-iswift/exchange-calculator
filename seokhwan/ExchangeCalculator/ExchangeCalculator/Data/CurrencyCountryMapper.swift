@@ -1,5 +1,6 @@
 import Foundation
 
+// Currency를 입력받아 Country를 반환하는 Mapper
 enum CurrencyCountryMapper {
     static func country(for currency: String) -> String {
         mapping[currency] ?? "-"

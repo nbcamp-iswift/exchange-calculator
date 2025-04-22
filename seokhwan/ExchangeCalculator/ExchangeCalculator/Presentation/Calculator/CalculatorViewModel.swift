@@ -3,6 +3,9 @@ import RxSwift
 import RxRelay
 
 final class CalculatorViewModel: ViewModelProtocol {
+
+    // MARK: - Types
+
     enum Action {
         case viewDidLoad
         case convert(input: String)
@@ -14,11 +17,15 @@ final class CalculatorViewModel: ViewModelProtocol {
         let errorMessage = PublishRelay<String>()
     }
 
+    // MARK: - Properties
+
     let action = PublishRelay<Action>()
     let state = State()
     let useCase: ConvertExchangeRateUseCase
 
     private let disposeBag = DisposeBag()
+
+    // MARK: - Initializers
 
     init(
         exchangeRate: ExchangeRate,

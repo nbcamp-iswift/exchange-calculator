@@ -1,5 +1,10 @@
 import Foundation
 
+/*
+ 첫 실행 시, 등락폭을 계산하기 위한 Mock Data
+ (원본 유지, 0.1 이하 변동, 20이상 상승, 20이상 하락) 4가지 항목으로 무작위로 분류
+ */
+
 struct MockDataProvider {
     let data = [
         "RWF": 1479.14045, // 20 이상 상승

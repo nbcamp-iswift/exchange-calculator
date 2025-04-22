@@ -29,6 +29,7 @@ final class ExchangeRateStorage {
         }
     }
 
+    // 최초 실행 시, Mock Data 삽입
     func insertMockEntitiesIfNeeded() async -> Result<Void, ExchangeRateError> {
         await context.perform { [weak self] in
             let request = ExchangeRateEntity.fetchRequest() as? NSFetchRequest<ExchangeRateEntity>
@@ -59,6 +60,7 @@ final class ExchangeRateStorage {
         }
     }
 
+    // CoreData Entity의 OldValue를 업데이트하는 메서드
     func updateOldValues(with rates: [String: Double]) async -> Result<Void, ExchangeRateError> {
         await context.perform { [weak self] in
             let request = ExchangeRateEntity.fetchRequest() as? NSFetchRequest<ExchangeRateEntity>
@@ -82,6 +84,7 @@ final class ExchangeRateStorage {
         }
     }
 
+    // 즐겨찾기 상태 토글
     func toggleIsFavorite(for currency: String) async -> Result<Void, ExchangeRateError> {
         await context.perform { [weak self] in
             let request = ExchangeRateEntity.fetchRequest() as? NSFetchRequest<ExchangeRateEntity>
@@ -94,14 +97,8 @@ final class ExchangeRateStorage {
                 return .failure(.storageError)
             }
 
-            let entity: ExchangeRateEntity
-            if let result = results.first {
-                entity = result
+            if let entity = results.first {
                 entity.isFavorite.toggle()
-            } else {
-                entity = ExchangeRateEntity(context: context)
-                entity.currency = currency
-                entity.isFavorite = true
             }
 
             do {

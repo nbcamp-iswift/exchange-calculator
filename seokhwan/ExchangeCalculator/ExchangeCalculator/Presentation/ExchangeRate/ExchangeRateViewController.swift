@@ -3,11 +3,16 @@ import RxSwift
 import RxRelay
 
 final class ExchangeRateViewController: UIViewController {
+
+    // MARK: - Properties
+
     private let viewModel: ExchangeRateViewModel
     private let container: AppDIContainer
     private let disposeBag = DisposeBag()
 
     private lazy var exchangeRateView = ExchangeRateView()
+
+    // MARK: - Initializers
 
     init(viewModel: ExchangeRateViewModel, container: AppDIContainer) {
         self.viewModel = viewModel
@@ -20,6 +25,8 @@ final class ExchangeRateViewController: UIViewController {
         fatalError()
     }
 
+    // MARK: - Lifecycle Methods
+
     override func loadView() {
         view = exchangeRateView
     }
@@ -30,6 +37,8 @@ final class ExchangeRateViewController: UIViewController {
         viewModel.action.accept(.viewDidLoad)
     }
 }
+
+// MARK: - Configure
 
 private extension ExchangeRateViewController {
     func configure() {
