@@ -30,4 +30,9 @@ final class ExchangeRateUseCase: ExchangeRateUseCaseProtocol {
                     $0.country.contains(text)
             }
     }
+    func updateBookmarkedExchangeRate(bookmarkedExchangeRate: ExchangeRate) -> Observable<Void> {
+        repository.updateBookmarkedExchangeRate(
+            bookmarkedExchangeRate: bookmarkedExchangeRate
+        ).asObservable()
+    }
 }

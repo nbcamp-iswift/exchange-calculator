@@ -14,4 +14,10 @@ protocol ExchangeRateUseCaseProtocol {
         text: String,
         originalExchangeRates: [ExchangeRate]
     ) -> [ExchangeRate]
+
+    func bookmarkExchangeRate(
+        bookmarkedExchangeRate: ExchangeRate,
+        originalExchangeRates: [ExchangeRate]
+    ) -> [ExchangeRate]
+    func updateBookmarkedExchangeRate(bookmarkedExchangeRate: ExchangeRate) -> Observable<Void>
 }

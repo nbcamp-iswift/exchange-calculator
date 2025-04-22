@@ -63,7 +63,7 @@ extension MainViewController {
 
         setBindingFilteredExchangeRates()
         setBindingError()
-        setBindingSearchBarText()
+        setBindingSearchBar()
         setBindingTableView()
     }
 
