@@ -66,7 +66,7 @@ final class ExchangeRateCalculatorViewController: UIViewController {
     }
 
     private func setAttributes() {
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         title = "환율 정보"
     }
 

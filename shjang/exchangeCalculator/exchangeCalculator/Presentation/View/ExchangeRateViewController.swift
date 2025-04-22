@@ -48,7 +48,7 @@ final class ExchangeRateViewController: UIViewController {
     }
 
     private func setAttributes() {
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
     }
 
     private func setHierarchy() {

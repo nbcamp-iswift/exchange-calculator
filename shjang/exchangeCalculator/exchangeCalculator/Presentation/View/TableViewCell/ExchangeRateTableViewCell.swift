@@ -8,17 +8,17 @@ final class ExchangeRateTableViewCell: UITableViewCell {
     private var cancellable: AnyCancellable?
 
     private enum Const {
-        static let backgroundColor = UIColor.white
-        static let pressedColor = UIColor.gray
+        static let backgroundColor = UIColor.systemBackground
+        static let pressedColor = UIColor.secondarySystemBackground
     }
 
     private lazy var currencyLabel = UILabel().then {
-        $0.textColor = .black
+        $0.textColor = .label
         $0.font = .systemFont(ofSize: 16, weight: .medium)
     }
 
     private lazy var countryLabel = UILabel().then {
-        $0.textColor = .gray
+        $0.textColor = .secondaryLabel
         $0.font = .systemFont(ofSize: 14)
     }
 
@@ -30,7 +30,7 @@ final class ExchangeRateTableViewCell: UITableViewCell {
     }
 
     private lazy var rateLabel = UILabel().then {
-        $0.textColor = .black
+        $0.textColor = .label
         $0.font = .systemFont(ofSize: 16)
         $0.textAlignment = .right
     }
