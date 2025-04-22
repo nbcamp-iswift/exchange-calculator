@@ -19,7 +19,7 @@ final class ExchangeCalculatorServiceTests: XCTestCase {
 
     func test_fetchExchangeRate_returnMockData() {
         let expectation = XCTestExpectation(description: "환율 정보 가져오기 완료")
-        let networkManage = ExchangeRateRepository(service: MockReturnResponseDataSerivce())
+        let networkManage = NetworkManager(service: MockReturnResponseDataSerivce())
 
         networkManage.fetchExchangeRates()
             .subscribe { result in

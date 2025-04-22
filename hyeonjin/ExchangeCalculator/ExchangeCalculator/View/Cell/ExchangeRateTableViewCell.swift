@@ -11,28 +11,28 @@ import SnapKit
 final class ExchangeRateTableViewCell: UITableViewCell {
     static let identifier: String = "ExchangeRateTableViewCell"
 
-    private let labelStackView: UIStackView = {
+    private lazy var labelStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
         stackView.spacing = 4
         return stackView
     }()
 
-    private let currencyCodeLabel: UILabel = {
+    private lazy var currencyCodeLabel: UILabel = {
         let label = UILabel()
         label.textColor = .label
         label.font = .systemFont(ofSize: 16, weight: .medium)
         return label
     }()
 
-    private let countryLabel: UILabel = {
+    private lazy var countryLabel: UILabel = {
         let label = UILabel()
         label.textColor = .secondaryLabel
         label.font = .systemFont(ofSize: 14)
         return label
     }()
 
-    private let exchangeRateLabel: UILabel = {
+    private lazy var exchangeRateLabel: UILabel = {
         let label = UILabel()
         label.textColor = .label
         label.font = .systemFont(ofSize: 16)

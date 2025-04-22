@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ExchangeRate: Hashable {
+struct ExchangeRate {
     let currencyCode: String
     let value: String
     let country: String
