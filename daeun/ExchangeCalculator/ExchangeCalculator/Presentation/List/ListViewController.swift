@@ -79,7 +79,7 @@ extension ListViewController {
             cell.updateCell(for: exchangeRate)
             cell.isSelectedFavoriteButton
                 .sink { [weak self] _ in
-                    self?.viewModel.action.send(.didTapFavoriteButton(indexPath.row))
+                    self?.viewModel.action.send(.didTapFavoriteButton(exchangeRate))
                 }
                 .store(in: &cell.cancellables)
 

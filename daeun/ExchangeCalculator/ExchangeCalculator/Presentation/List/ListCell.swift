@@ -52,6 +52,12 @@ final class ListCell: UITableViewCell, ReuseIdentifying {
         return button
     }()
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        cancellables.removeAll()
+        setBindings()
+    }
+
     // MARK: - Life Cycles
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -117,8 +123,7 @@ extension ListCell {
         favoriteButton.tapPublisher
             .sink { [weak self] _ in
                 guard let self else { return }
-                favoriteButton.isSelected.toggle()
-                isSelectedFavoriteButton.send(favoriteButton.isSelected)
+                isSelectedFavoriteButton.send(!favoriteButton.isSelected)
             }
             .store(in: &cancellables)
     }
@@ -127,5 +132,6 @@ extension ListCell {
         currencyLabel.text = data.currencyCode
         countryLabel.text = data.countryName
         rateLabel.text = String(data.value)
+        favoriteButton.isSelected = data.favorited
     }
 }
