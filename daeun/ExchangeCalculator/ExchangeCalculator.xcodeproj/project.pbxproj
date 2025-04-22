@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		C92A83922DB11C540012C2E4 /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = C92A83912DB11C540012C2E4 /* CombineCocoa */; };
-		C93AE1682DB71A7600E046A3 /* FavoriteExchange+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93AE1672DB71A7600E046A3 /* FavoriteExchange+CoreDataProperties.swift */; };
-		C93AE1692DB71A7600E046A3 /* FavoriteExchange+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93AE1662DB71A7600E046A3 /* FavoriteExchange+CoreDataClass.swift */; };
 		C969EE522DAF672800109D2F /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = C969EE512DAF672800109D2F /* SnapKit */; };
 		C969EE8A2DAF83D100109D2F /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = C969EE892DAF83D100109D2F /* Alamofire */; };
 /* End PBXBuildFile section */
@@ -32,8 +30,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		C93AE1662DB71A7600E046A3 /* FavoriteExchange+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "FavoriteExchange+CoreDataClass.swift"; path = "ExchangeCalculator/Data/CoreData/FavoriteExchange+CoreDataClass.swift"; sourceTree = "<group>"; };
-		C93AE1672DB71A7600E046A3 /* FavoriteExchange+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "FavoriteExchange+CoreDataProperties.swift"; path = "ExchangeCalculator/Data/CoreData/FavoriteExchange+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		C950711B2DAE3D55002B4DD8 /* ExchangeCalculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExchangeCalculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C95071342DAE3D57002B4DD8 /* ExchangeCalculatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExchangeCalculatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C950713E2DAE3D57002B4DD8 /* ExchangeCalculatorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExchangeCalculatorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -101,8 +97,6 @@
 		C95071122DAE3D55002B4DD8 = {
 			isa = PBXGroup;
 			children = (
-				C93AE1662DB71A7600E046A3 /* FavoriteExchange+CoreDataClass.swift */,
-				C93AE1672DB71A7600E046A3 /* FavoriteExchange+CoreDataProperties.swift */,
 				C950711D2DAE3D55002B4DD8 /* ExchangeCalculator */,
 				C95071372DAE3D57002B4DD8 /* ExchangeCalculatorTests */,
 				C95071412DAE3D57002B4DD8 /* ExchangeCalculatorUITests */,
@@ -325,8 +319,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C93AE1682DB71A7600E046A3 /* FavoriteExchange+CoreDataProperties.swift in Sources */,
-				C93AE1692DB71A7600E046A3 /* FavoriteExchange+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
