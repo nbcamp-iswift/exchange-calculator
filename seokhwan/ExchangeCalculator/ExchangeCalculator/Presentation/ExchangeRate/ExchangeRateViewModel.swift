@@ -3,7 +3,6 @@ import RxSwift
 import RxRelay
 
 final class ExchangeRateViewModel: ViewModelProtocol {
-
     // MARK: - Types
 
     enum Action {

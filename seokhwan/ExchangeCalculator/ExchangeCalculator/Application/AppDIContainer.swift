@@ -1,7 +1,6 @@
 import UIKit
 
 final class AppDIContainer {
-
     // MARK: - Data Layer
 
     func makeExchangeRateService() -> ExchangeRateService {

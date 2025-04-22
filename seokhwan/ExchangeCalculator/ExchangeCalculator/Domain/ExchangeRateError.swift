@@ -18,4 +18,6 @@ enum ExchangeRateError: LocalizedError {
             return "올바른 숫자를 입력해 주세요"
         }
     }
+
+    // TODO: debugDescription 정의
 }

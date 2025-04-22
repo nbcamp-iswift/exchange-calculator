@@ -3,7 +3,6 @@ import RxSwift
 import RxRelay
 
 final class CalculatorViewModel: ViewModelProtocol {
-
     // MARK: - Types
 
     enum Action {

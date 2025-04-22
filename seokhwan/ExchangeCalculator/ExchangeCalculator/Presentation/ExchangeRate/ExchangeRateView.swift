@@ -5,7 +5,6 @@ import RxSwift
 import RxCocoa
 
 final class ExchangeRateView: UIView {
-
     // MARK: - Types
 
     enum Section {
@@ -33,12 +32,13 @@ final class ExchangeRateView: UIView {
 
     private lazy var tableView = UITableView().then {
         $0.register(ExchangeRateCell.self, forCellReuseIdentifier: ExchangeRateCell.identifier)
+        $0.separatorStyle = .none
         $0.rowHeight = 60
     }
 
     private lazy var noSearchResultsLabel = UILabel().then {
         $0.text = "검색 결과 없음"
-        $0.textColor = .gray
+        $0.textColor = .secondaryLabel
     }
 
     // MARK: - Initializers

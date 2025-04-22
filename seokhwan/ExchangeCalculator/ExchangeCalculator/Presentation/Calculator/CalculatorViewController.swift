@@ -2,7 +2,6 @@ import UIKit
 import RxSwift
 
 final class CalculatorViewController: UIViewController {
-
     // MARK: - Properties
 
     private let viewModel: CalculatorViewModel
