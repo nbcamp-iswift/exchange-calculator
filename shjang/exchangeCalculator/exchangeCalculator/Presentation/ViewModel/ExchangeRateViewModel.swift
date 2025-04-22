@@ -107,7 +107,17 @@ final class ExchangeRateViewModel {
             cachedData.map { ($0.currency, $0.rate) })
     }
 
-    private func saveCurrentRatesForNext() {}
+    private func saveCurrentRatesForNext() {
+        let favorites = Set(coreDataRepository.getFavorites().map(\.currency))
+
+        for rate in rates {
+            let isFavorite = favorites.contains(rate.currency)
+            coreDataRepository.saveOrUpdate(
+                rate: rate,
+                isFavorite: isFavorite
+            )
+        }
+    }
 
     private func normalize(_ text: String) -> String {
         text.folding(options: .diacriticInsensitive, locale: .current)

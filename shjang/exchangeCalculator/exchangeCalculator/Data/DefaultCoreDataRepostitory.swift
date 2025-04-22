@@ -60,7 +60,6 @@ final class DefaultCoreDataRepostitory: CoreDataStackProtocol {
                 entity.countryCode = countryCode
                 entity.createdAt = Date()
                 entity.isFavorite = isFavorite
-                print(isFavorite)
             }
 
             do {

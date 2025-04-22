@@ -32,6 +32,8 @@ final class ExchangeRateCoreDataRepostitoryMock: CoreDataStackProtocol {
         allRates.filter(\.isFavorite)
     }
 
+    func saveOrUpdate(rate: exchangeCalculator.ExchangeRate, isFavorite: Bool) {}
+
     func updateFavoriteStatus(
         currency: String,
         countryCode: String,
