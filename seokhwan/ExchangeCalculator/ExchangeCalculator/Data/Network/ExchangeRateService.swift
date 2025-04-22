@@ -10,7 +10,7 @@ final class ExchangeRateService {
         case .success(let dto):
             return .success(dto)
         case .failure:
-            return .failure(.dataLoadFailed)
+            return .failure(.networkError)
         }
     }
 }

@@ -15,7 +15,7 @@ final class ExchangeRateRepository {
         switch result {
         case .success(let dto):
             guard case .success = await updateOldValue(from: dto) else {
-                return .failure(.dataSaveFailed)
+                return .failure(.storageError)
             }
 
             let countries = CurrencyCountryMapper.countries(for: Array(dto.rates.keys))
@@ -57,7 +57,7 @@ final class ExchangeRateRepository {
             if case .success = await storage.insertMockEntitiesIfNeeded() {
                 return .success(())
             } else {
-                return .failure(.dataSaveFailed)
+                return .failure(.storageError)
             }
         }
 

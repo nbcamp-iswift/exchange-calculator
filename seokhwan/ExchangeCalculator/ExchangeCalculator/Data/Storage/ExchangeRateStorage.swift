@@ -22,7 +22,7 @@ final class ExchangeRateStorage {
         await context.perform { [weak self] in
             let request = ExchangeRateEntity.fetchRequest()
             guard let entities = try? self?.context.fetch(request) as? ExchangeRateEntities else {
-                return .failure(.favoriteUpdateFailed)
+                return .failure(.storageError)
             }
 
             return .success(entities)
@@ -36,7 +36,7 @@ final class ExchangeRateStorage {
 
             guard let request,
                   let context = self?.context else {
-                return .failure(.dataSaveFailed)
+                return .failure(.storageError)
             }
             let entityCount = (try? context.count(for: request)) ?? 0
             guard entityCount == 0 else { return .success(()) }
@@ -54,7 +54,7 @@ final class ExchangeRateStorage {
                 try context.save()
                 return .success(())
             } catch {
-                return .failure(.dataSaveFailed)
+                return .failure(.storageError)
             }
         }
     }
@@ -65,7 +65,7 @@ final class ExchangeRateStorage {
             guard let request,
                   let context = self?.context,
                   let entities = try? context.fetch(request) else {
-                return .failure(.dataSaveFailed)
+                return .failure(.storageError)
             }
 
             for entity in entities {
@@ -77,7 +77,7 @@ final class ExchangeRateStorage {
                 try context.save()
                 return .success(())
             } catch {
-                return .failure(.dataSaveFailed)
+                return .failure(.storageError)
             }
         }
     }
@@ -91,7 +91,7 @@ final class ExchangeRateStorage {
             guard let request,
                   let context = self?.context,
                   let results = try? context.fetch(request) else {
-                return .failure(.favoriteUpdateFailed)
+                return .failure(.storageError)
             }
 
             let entity: ExchangeRateEntity
@@ -108,7 +108,7 @@ final class ExchangeRateStorage {
                 try context.save()
                 return .success(())
             } catch {
-                return .failure(.favoriteUpdateFailed)
+                return .failure(.storageError)
             }
         }
     }

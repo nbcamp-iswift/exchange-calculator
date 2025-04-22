@@ -1,20 +1,17 @@
 import Foundation
 
 enum ExchangeRateError: LocalizedError {
-    case dataLoadFailed
-    case dataSaveFailed
-    case favoriteUpdateFailed
+    case networkError
+    case storageError
     case emptyInput
     case invalidNumber
 
     var errorDescription: String? {
         switch self {
-        case .dataLoadFailed:
-            return "데이터를 불러올 수 없습니다"
-        case .dataSaveFailed:
-            return "데이터 저장에 실패했습니다"
-        case .favoriteUpdateFailed:
-            return "즐겨찾기 상태를 변경할 수 없습니다"
+        case .networkError:
+            return "Network 오류가 발생했습니다"
+        case .storageError:
+            return "Storage 오류가 발생했습니다"
         case .emptyInput:
             return "금액을 입력해 주세요"
         case .invalidNumber:
