@@ -16,12 +16,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         options connectionOptions: UIScene.ConnectionOptions
     ) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            fatalError("AppDelegate를 가져올 수 없습니다.")
+        }
 
         window = UIWindow(windowScene: windowScene)
         let coordinator = Coordinator(
             navigationController: UINavigationController(),
-            DIContainer: DIContainer()
+            DIContainer: DIContainer(context: appDelegate.persistentContainer.viewContext)
         )
+
         window?.rootViewController = coordinator.navigationController
         window?.makeKeyAndVisible()
         coordinator.start()
