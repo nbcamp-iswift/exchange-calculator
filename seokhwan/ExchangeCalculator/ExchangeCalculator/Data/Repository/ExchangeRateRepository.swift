@@ -14,21 +14,14 @@ final class ExchangeRateRepository {
 
         switch result {
         case .success(let dto):
-            // TODO: CoreData가 비어있다면, MockData를 insert
-
-            let updateResult = await updateOldValue(from: dto)
-
-            switch updateResult {
-            case .success:
-                break
-            case .failure(let error):
-                return .failure(error)
+            guard case .success = await updateOldValue(from: dto) else {
+                return .failure(.dataSaveFailed)
             }
 
             let countries = CurrencyCountryMapper.countries(for: Array(dto.rates.keys))
-            let fetchResult = await storage.fetchAll()
+            let result = await storage.fetchAll()
 
-            switch fetchResult {
+            switch result {
             case .success(let entities):
                 let result = makeExchangeRateInfo(
                     dto: dto,
@@ -59,6 +52,15 @@ final class ExchangeRateRepository {
         from dto: ExchangeRateInfoDTO
     ) async -> Result<Void, ExchangeRateError> {
         let lastUpdate = UserDefaults.standard.double(forKey: "timeLastUpdateUnix")
+
+        if lastUpdate == 0.0 { // 최초 실행 시 Mock 데이터 Insert
+            if case .success = await storage.insertMockEntitiesIfNeeded() {
+                return .success(())
+            } else {
+                return .failure(.dataSaveFailed)
+            }
+        }
+
         guard dto.timeLastUpdateUnix > lastUpdate else { return .success(()) }
         let result = await storage.updateOldValues(with: dto.rates)
 
@@ -85,7 +87,7 @@ final class ExchangeRateRepository {
                     currency: currency,
                     country: country,
                     value: value,
-                    oldValue: entity?.oldValue ?? 100.0,
+                    oldValue: entity?.oldValue ?? 0.0,
                     isFavorite: entity?.isFavorite ?? false
                 )
             }

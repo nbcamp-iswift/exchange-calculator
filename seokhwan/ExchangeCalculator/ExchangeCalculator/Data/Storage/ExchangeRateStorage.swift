@@ -29,6 +29,36 @@ final class ExchangeRateStorage {
         }
     }
 
+    func insertMockEntitiesIfNeeded() async -> Result<Void, ExchangeRateError> {
+        await context.perform { [weak self] in
+            let request = ExchangeRateEntity.fetchRequest() as? NSFetchRequest<ExchangeRateEntity>
+            request?.fetchLimit = 1
+
+            guard let request,
+                  let context = self?.context else {
+                return .failure(.dataSaveFailed)
+            }
+            let entityCount = (try? context.count(for: request)) ?? 0
+            guard entityCount == 0 else { return .success(()) }
+
+            let mocks = MockDataProvider().data
+
+            for mock in mocks {
+                let entity = ExchangeRateEntity(context: context)
+                entity.currency = mock.key
+                entity.oldValue = mock.value
+                entity.isFavorite = false
+            }
+
+            do {
+                try context.save()
+                return .success(())
+            } catch {
+                return .failure(.dataSaveFailed)
+            }
+        }
+    }
+
     func updateOldValues(with rates: [String: Double]) async -> Result<Void, ExchangeRateError> {
         await context.perform { [weak self] in
             let request = ExchangeRateEntity.fetchRequest() as? NSFetchRequest<ExchangeRateEntity>
