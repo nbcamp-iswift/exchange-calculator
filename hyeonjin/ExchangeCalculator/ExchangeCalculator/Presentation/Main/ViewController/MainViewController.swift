@@ -36,7 +36,6 @@ final class MainViewController: UIViewController {
         super.viewDidLoad()
         setAttributes()
         setBindings()
-        hideKeyboardWhenTouchUpBackground()
     }
 
     private func showAlert() {
@@ -106,7 +105,7 @@ extension MainViewController {
             }.disposed(by: disposeBag)
     }
 
-    private func setBindingSearchBarText() {
+    private func setBindingSearchBar() {
         mainView.searchBar.rx.text
             .orEmpty
             .distinctUntilChanged()
@@ -115,6 +114,12 @@ extension MainViewController {
                 guard let self else { return }
                 viewModel.action.accept(.updateSearchBarText(text))
             }
+            .disposed(by: disposeBag)
+
+        mainView.searchBar.rx.searchButtonClicked
+            .subscribe(onNext: { [weak self] in
+                self?.mainView.searchBar.resignFirstResponder()
+            })
             .disposed(by: disposeBag)
     }
 
