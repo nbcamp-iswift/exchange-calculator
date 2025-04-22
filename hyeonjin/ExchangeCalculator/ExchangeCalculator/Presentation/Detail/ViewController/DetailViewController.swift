@@ -12,7 +12,7 @@ import RxCocoa
 final class DetailViewController: UIViewController {
     private let viewModel: DetailViewModel
 
-    private var disposeBag: DisposeBag = .init()
+    private let disposeBag: DisposeBag = .init()
 
     private let detailView: DetailView = .init()
 
@@ -104,7 +104,7 @@ extension DetailViewController {
             .subscribe { [weak self] error in
                 guard let self else { return }
                 showAlert(error: error)
-                viewModel.action.accept(.resetError)
+                viewModel.action.accept(.resetErrorState)
             }
             .disposed(by: disposeBag)
     }
