@@ -19,6 +19,7 @@ final class DIContainer: DIContainerProtocol {
     func makeMainViewModel() -> MainViewModel {
         let repository = ExchangeRateRepository(
             service: ExchangeRateService(),
+            coreDataService: CoreDataService(context: context)
         )
         let useCase = ExchangeRateUseCase(repository: repository)
         return MainViewModel(exchangeUseCase: useCase)

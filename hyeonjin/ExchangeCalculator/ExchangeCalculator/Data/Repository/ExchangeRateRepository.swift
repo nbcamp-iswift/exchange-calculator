@@ -10,9 +10,11 @@ import RxSwift
 
 final class ExchangeRateRepository: ExchangeRateRepositoryProtocol {
     private let service: ServiceProtocol
+    private let coreDataService: CoreDataService
 
-    init(service: ServiceProtocol) {
+    init(service: ServiceProtocol, coreDataService: CoreDataService) {
         self.service = service
+        self.coreDataService = coreDataService
     }
 
     func fetchExchangeRates() -> Single<[ExchangeRate]> {
