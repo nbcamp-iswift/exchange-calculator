@@ -11,7 +11,7 @@ final class CalculatorViewModel: ViewModelProtocol {
     }
 
     struct State {
-        let exchangeRate = PublishRelay<ExchangeRate>()
+        let exchangeRate = BehaviorRelay<ExchangeRate?>(value: nil)
         let convertedAmount = PublishRelay<Double>()
         let errorMessage = PublishRelay<String>()
     }

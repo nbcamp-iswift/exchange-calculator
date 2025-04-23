@@ -6,6 +6,7 @@
         <attribute name="oldValue" optional="YES" attributeType="Double" usesScalarValueType="YES"/>
     </entity>
     <entity name="LastScreen" representedClassName="LastScreen" syncable="YES">
-        <attribute name="rawValue" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <relationship name="exchangeRate" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ExchangeRate"/>
     </entity>
 </model>

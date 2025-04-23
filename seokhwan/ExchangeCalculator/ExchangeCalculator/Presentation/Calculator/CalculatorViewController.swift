@@ -38,7 +38,10 @@ final class CalculatorViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         Task {
-            await coordinator.updateLastScreen("CalculatorView")
+            await coordinator.updateLastScreen(
+                to: .calculatorView,
+                with: viewModel.state.exchangeRate.value
+            )
         }
     }
 }
@@ -59,7 +62,9 @@ private extension CalculatorViewController {
         viewModel.state.exchangeRate
             .observe(on: MainScheduler.instance)
             .bind { [weak self] exchangeRate in
-                self?.calculatorView.update(with: exchangeRate)
+                guard let self,
+                      let exchangeRate else { return }
+                calculatorView.update(with: exchangeRate)
             }
             .disposed(by: disposeBag)
 

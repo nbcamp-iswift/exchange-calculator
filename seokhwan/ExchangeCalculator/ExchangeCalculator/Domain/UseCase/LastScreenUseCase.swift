@@ -8,11 +8,11 @@ final class LastScreenUseCase {
         repository = lastScreenRepository
     }
 
-    func fetch() async -> String {
+    func fetch() async -> LastScreen {
         await repository.fetchLastScreen()
     }
 
-    func update(to lastScreen: String) async {
-        await repository.updateLastScreen(to: lastScreen)
+    func updateLastScreen(to type: LastScreenType, with exchangeRate: ExchangeRate? = nil) async {
+        await repository.updateLastScreen(to: type, with: exchangeRate)
     }
 }

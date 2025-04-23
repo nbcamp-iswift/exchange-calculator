@@ -22,17 +22,9 @@ final class Coordinator {
 
         Task {
             let lastScreen = await useCase.fetch()
-
-            if lastScreen == "CalculatorView" {
-                await showCalculatorView(
-                    with: ExchangeRate(
-                        currency: "AAA",
-                        country: "테스트",
-                        value: 100.0,
-                        oldValue: 105.0,
-                        isFavorite: false
-                    ))
-                // TODO: 임시 값
+            if lastScreen.type == .calculatorView,
+               let exchangeRate = lastScreen.exchangeRate {
+                await showCalculatorView(with: exchangeRate)
             }
         }
     }
@@ -46,7 +38,7 @@ final class Coordinator {
         navigationController.pushViewController(calculatorViewController, animated: true)
     }
 
-    func updateLastScreen(_ lastScreen: String) async {
-        await useCase.update(to: lastScreen)
+    func updateLastScreen(to type: LastScreenType, with exchangeRate: ExchangeRate? = nil) async {
+        await useCase.updateLastScreen(to: type, with: exchangeRate)
     }
 }

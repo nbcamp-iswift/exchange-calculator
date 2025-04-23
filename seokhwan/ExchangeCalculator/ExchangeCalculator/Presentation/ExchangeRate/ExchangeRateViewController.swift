@@ -39,7 +39,7 @@ final class ExchangeRateViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         Task {
-            await coordinator.updateLastScreen("ExchangeRateView")
+            await coordinator.updateLastScreen(to: .exchangeRateView)
         }
     }
 }

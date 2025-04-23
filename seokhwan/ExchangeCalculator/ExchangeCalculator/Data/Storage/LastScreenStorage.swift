@@ -6,7 +6,7 @@ final class LastScreenStorage {
     }
 
     // 마지막으로 본 화면 fetch
-    func fetch() async -> String? {
+    func fetch() async -> LastScreenEntity? {
         await context.perform { [weak self] in
             let request = LastScreenEntity.fetchRequest() as? NSFetchRequest<LastScreenEntity>
             guard let request,
@@ -15,12 +15,12 @@ final class LastScreenStorage {
                 return nil
             }
 
-            return entity.rawValue
+            return entity
         }
     }
 
     // 마지막으로 본 화면 update
-    func update(to lastScreen: String) async {
+    func updateLastScreen(to name: String, with exchangeRate: ExchangeRate?) async {
         await context.perform { [weak self] in
             let request = LastScreenEntity.fetchRequest() as? NSFetchRequest<LastScreenEntity>
             request?.fetchLimit = 1
@@ -33,8 +33,17 @@ final class LastScreenStorage {
                 context.delete(existing)
             }
 
-            let entity = LastScreenEntity(context: context)
-            entity.rawValue = lastScreen
+            var exchangeRateEntity: ExchangeRateEntity?
+            if let exchangeRate {
+                exchangeRateEntity = ExchangeRateEntity(context: context)
+                exchangeRateEntity?.currency = exchangeRate.currency
+                exchangeRateEntity?.oldValue = exchangeRate.oldValue
+                exchangeRateEntity?.isFavorite = exchangeRate.isFavorite
+            }
+
+            let lastScreenEntity = LastScreenEntity(context: context)
+            lastScreenEntity.name = name
+            lastScreenEntity.exchangeRate = exchangeRateEntity
 
             try? context.save()
         }
