@@ -32,7 +32,7 @@ final class ListCell: UITableViewCell, ReuseIdentifying {
 
     private let countryLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .gray
+        label.textColor = .secondaryLabel
         label.font = .systemFont(ofSize: Constant.FontSize.small)
         return label
     }()
