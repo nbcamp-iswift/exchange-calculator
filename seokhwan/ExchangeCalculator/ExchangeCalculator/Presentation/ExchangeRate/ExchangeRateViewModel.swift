@@ -3,10 +3,14 @@ import RxSwift
 import RxRelay
 
 final class ExchangeRateViewModel: ViewModelProtocol {
+
+    // MARK: - Types
+
     enum Action {
         case viewDidLoad
         case didChangeSearchText(searchText: String)
         case didTapCell(exchangeRate: ExchangeRate)
+        case didTapFavoriteButton(currency: String)
     }
 
     struct State {
@@ -16,14 +20,23 @@ final class ExchangeRateViewModel: ViewModelProtocol {
         let errorMessage = PublishRelay<String>()
     }
 
+    // MARK: - Properties
+
     let action = PublishRelay<Action>()
     let state = State()
-    let useCase: FetchExchangeRateUseCase
+    let fetchExchangeRateUseCase: FetchExchangeRateUseCase
+    let toggleIsFavoriteUseCase: ToggleIsFavoriteUseCase
 
     private let disposeBag = DisposeBag()
 
-    init(exchangeRateUseCase: FetchExchangeRateUseCase) {
-        useCase = exchangeRateUseCase
+    // MARK: - Initializers
+
+    init(
+        fetchExchangeRateUseCase: FetchExchangeRateUseCase,
+        toggleIsFavoriteUseCase: ToggleIsFavoriteUseCase
+    ) {
+        self.fetchExchangeRateUseCase = fetchExchangeRateUseCase
+        self.toggleIsFavoriteUseCase = toggleIsFavoriteUseCase
 
         action
             .subscribe { [weak self] action in
@@ -35,14 +48,20 @@ final class ExchangeRateViewModel: ViewModelProtocol {
                 case .didChangeSearchText(let text):
                     self?.filterExchangeRates(by: text)
                 case .didTapCell(let exchangeRate):
-                    self?.state.selectedExchangeRate.accept(exchangeRate)
+                    self?.selectExchangeRate(exchangeRate)
+                case .didTapFavoriteButton(let currency):
+                    Task {
+                        await self?.toggleIsFavorite(for: currency)
+                    }
                 }
             }
             .disposed(by: disposeBag)
     }
 
+    // MARK: - Methods
+
     private func fetchExchangeRates() async {
-        let result = await useCase.execute()
+        let result = await fetchExchangeRateUseCase.execute()
 
         switch result {
         case .success(let info):
@@ -70,5 +89,20 @@ final class ExchangeRateViewModel: ViewModelProtocol {
             }
 
         state.filteredExchangeRates.accept(result)
+    }
+
+    private func selectExchangeRate(_ exchangeRate: ExchangeRate) {
+        state.selectedExchangeRate.accept(exchangeRate)
+    }
+
+    private func toggleIsFavorite(for currency: String) async {
+        let result = await toggleIsFavoriteUseCase.execute(for: currency)
+
+        switch result {
+        case .success:
+            await fetchExchangeRates()
+        case .failure(let error):
+            state.errorMessage.accept(error.localizedDescription)
+        }
     }
 }

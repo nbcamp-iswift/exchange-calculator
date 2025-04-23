@@ -8,18 +8,4 @@ struct ExchangeRateInfoDTO: Codable {
         case timeLastUpdateUnix = "time_last_update_unix"
         case rates
     }
-
-    func toEntity(with countries: [String: String]) -> ExchangeRateInfo {
-        let exchangeRates = rates
-            .map { currency, value in
-                let country = countries[currency] ?? "-"
-                return ExchangeRate(currency: currency, country: country, value: value)
-            }
-            .sorted { $0.currency < $1.currency }
-
-        return ExchangeRateInfo(
-            lastUpdated: Date(timeIntervalSince1970: timeLastUpdateUnix),
-            exchangeRates: exchangeRates
-        )
-    }
 }

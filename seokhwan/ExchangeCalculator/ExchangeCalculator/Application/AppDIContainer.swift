@@ -1,13 +1,25 @@
 import UIKit
 
 final class AppDIContainer {
+
+    // MARK: - Data Layer
+
     func makeExchangeRateService() -> ExchangeRateService {
         ExchangeRateService()
     }
 
-    func makeExchangeRateRepository() -> ExchangeRateRepository {
-        ExchangeRateRepository(exchangeRateService: makeExchangeRateService())
+    func makeExchangeRateStorage() -> ExchangeRateStorage {
+        ExchangeRateStorage.shared
     }
+
+    func makeExchangeRateRepository() -> ExchangeRateRepository {
+        ExchangeRateRepository(
+            exchangeRateService: makeExchangeRateService(),
+            exchangeRateStorage: makeExchangeRateStorage()
+        )
+    }
+
+    // MARK: - Domain Layer
 
     func makeFetchExchangeRateUseCase() -> FetchExchangeRateUseCase {
         FetchExchangeRateUseCase(exchangeRateRepository: makeExchangeRateRepository())
@@ -17,8 +29,17 @@ final class AppDIContainer {
         ConvertExchangeRateUseCase()
     }
 
+    func makeToggleIsFavoriteUseCase() -> ToggleIsFavoriteUseCase {
+        ToggleIsFavoriteUseCase(exchangeRateRepository: makeExchangeRateRepository())
+    }
+
+    // MARK: - Presentation Layer
+
     func makeExchangeRateViewModel() -> ExchangeRateViewModel {
-        ExchangeRateViewModel(exchangeRateUseCase: makeFetchExchangeRateUseCase())
+        ExchangeRateViewModel(
+            fetchExchangeRateUseCase: makeFetchExchangeRateUseCase(),
+            toggleIsFavoriteUseCase: makeToggleIsFavoriteUseCase()
+        )
     }
 
     func makeCalculatorViewModel(with exchangeRate: ExchangeRate) -> CalculatorViewModel {

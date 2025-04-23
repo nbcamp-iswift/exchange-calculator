@@ -5,6 +5,9 @@ import RxSwift
 import RxCocoa
 
 final class ExchangeRateView: UIView {
+
+    // MARK: - Types
+
     enum Section {
         case main
     }
@@ -12,11 +15,16 @@ final class ExchangeRateView: UIView {
     typealias DataSource = UITableViewDiffableDataSource<Section, ExchangeRate>
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, ExchangeRate>
 
+    // MARK: - Properties
+
     let didChangeSearchText = PublishRelay<String>()
     let didTapCell = PublishRelay<ExchangeRate>()
+    let didTapFavoriteButton = PublishRelay<String>()
 
     private var dataSource: DataSource?
     private let disposeBag = DisposeBag()
+
+    // MARK: - UI Components
 
     private lazy var searchBar = UISearchBar().then {
         $0.searchBarStyle = .minimal
@@ -33,6 +41,8 @@ final class ExchangeRateView: UIView {
         $0.textColor = .gray
     }
 
+    // MARK: - Initializers
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         configure()
@@ -42,6 +52,8 @@ final class ExchangeRateView: UIView {
     required init?(coder: NSCoder) {
         fatalError()
     }
+
+    // MARK: - Methods
 
     func update(with exchangeRates: ExchangeRates) {
         var snapshot = Snapshot()
@@ -58,6 +70,8 @@ final class ExchangeRateView: UIView {
         }
     }
 }
+
+// MARK: - Configure
 
 private extension ExchangeRateView {
     func configure() {
@@ -93,12 +107,16 @@ private extension ExchangeRateView {
     }
 
     func setDataSource() {
-        dataSource = DataSource(tableView: tableView) { tableView, indexPath, exchangeRate in
-            guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: ExchangeRateCell.identifier,
-                for: indexPath
-            ) as? ExchangeRateCell else { return UITableViewCell() }
+        dataSource = DataSource(
+            tableView: tableView
+        ) { [weak self] tableView, indexPath, exchangeRate in
+            guard let self,
+                  let cell = tableView.dequeueReusableCell(
+                      withIdentifier: ExchangeRateCell.identifier,
+                      for: indexPath
+                  ) as? ExchangeRateCell else { return UITableViewCell() }
             cell.update(with: exchangeRate)
+            cell.bind(to: didTapFavoriteButton)
 
             return cell
         }
