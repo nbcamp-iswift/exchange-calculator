@@ -21,9 +21,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
 
         window = UIWindow(windowScene: windowScene)
+        let diContainer = DIContainer(context: appDelegate.persistentContainer.viewContext)
         let coordinator = Coordinator(
             navigationController: UINavigationController(),
-            DIContainer: DIContainer(context: appDelegate.persistentContainer.viewContext)
+            DIContainer: diContainer,
+            sceneUseCase: diContainer.makeSceneUseCase()
         )
 
         window?.rootViewController = coordinator.navigationController

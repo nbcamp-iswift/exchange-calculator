@@ -11,13 +11,15 @@ import RxCocoa
 
 final class DetailViewController: UIViewController {
     private let viewModel: DetailViewModel
+    private let coordinator: Coordinator
 
     private let disposeBag: DisposeBag = .init()
 
     private let detailView: DetailView = .init()
 
-    init(viewModel: DetailViewModel) {
+    init(viewModel: DetailViewModel, coordinator: Coordinator) {
         self.viewModel = viewModel
+        self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -36,6 +38,11 @@ final class DetailViewController: UIViewController {
         setAttributes()
         setBindings()
         hideKeyboardWhenTouchUpBackground()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        coordinator.popDetailView()
     }
 
     private func showAlert(error: ConvertError) {
