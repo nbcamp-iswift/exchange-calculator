@@ -1,7 +1,7 @@
 import Foundation
 
 final class ToggleIsFavoriteUseCase {
-    let repository: ExchangeRateRepository
+    private let repository: ExchangeRateRepository
 
     init(exchangeRateRepository: ExchangeRateRepository) {
         repository = exchangeRateRepository

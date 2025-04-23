@@ -20,8 +20,8 @@ final class CalculatorViewModel: ViewModelProtocol {
 
     let action = PublishRelay<Action>()
     let state = State()
-    let useCase: ConvertExchangeRateUseCase
 
+    private let useCase: ConvertExchangeRateUseCase
     private let disposeBag = DisposeBag()
 
     // MARK: - Initializers

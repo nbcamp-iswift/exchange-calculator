@@ -23,9 +23,9 @@ final class ExchangeRateViewModel: ViewModelProtocol {
 
     let action = PublishRelay<Action>()
     let state = State()
-    let fetchExchangeRateUseCase: FetchExchangeRateUseCase
-    let toggleIsFavoriteUseCase: ToggleIsFavoriteUseCase
 
+    private let fetchExchangeRateUseCase: FetchExchangeRateUseCase
+    private let toggleIsFavoriteUseCase: ToggleIsFavoriteUseCase
     private let disposeBag = DisposeBag()
 
     // MARK: - Initializers
