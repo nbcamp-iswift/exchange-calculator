@@ -24,16 +24,15 @@ final class DetailView: UIView {
 
     private let currencyLabel: UILabel = {
         let label = UILabel()
-        label.text = "KRW"
         label.font = .systemFont(ofSize: FontSize.extraLarge, weight: .bold)
+        label.textColor = .label
         return label
     }()
 
     private let countryLabel: UILabel = {
         let label = UILabel()
-        label.text = "대한민국"
         label.font = .systemFont(ofSize: FontSize.medium)
-        label.textColor = .gray
+        label.textColor = .secondaryLabel
         return label
     }()
 
@@ -64,6 +63,7 @@ final class DetailView: UIView {
         let label = UILabel()
         label.text = Constant.Text.calcResult
         label.font = .systemFont(ofSize: FontSize.large, weight: .medium)
+        label.textColor = .label
         label.textAlignment = .center
         return label
     }()
@@ -102,7 +102,7 @@ extension DetailView {
     }
 
     private func setAttributes() {
-        backgroundColor = .white
+        backgroundColor = .systemBackground
     }
 
     private func setHierachy() {
