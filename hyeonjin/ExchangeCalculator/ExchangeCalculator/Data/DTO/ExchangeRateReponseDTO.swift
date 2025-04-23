@@ -39,7 +39,9 @@ struct ExchangeRateReponseDTO: Codable {
             ExchangeRate(
                 currencyCode: $0.key,
                 value: String(format: "%.4f", $0.value),
-                country: CurrencyCodeMap.map[$0.key] ?? "알 수 없음"
+                country: CurrencyCodeMap.map[$0.key] ?? "알 수 없음",
+                isBookmark: false,
+                arrowState: .none
             )
         }
         .sorted { $0.currencyCode < $1.currencyCode }

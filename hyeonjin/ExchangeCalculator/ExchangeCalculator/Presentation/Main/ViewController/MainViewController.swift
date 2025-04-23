@@ -13,7 +13,7 @@ final class MainViewController: UIViewController {
     let coordinator: Coordinator
     private let viewModel: MainViewModel
 
-    private var disposeBag: DisposeBag = .init()
+    private let disposeBag: DisposeBag = .init()
 
     private let mainView: MainView = .init()
 
@@ -36,7 +36,6 @@ final class MainViewController: UIViewController {
         super.viewDidLoad()
         setAttributes()
         setBindings()
-        hideKeyboardWhenTouchUpBackground()
     }
 
     private func showAlert() {
@@ -64,13 +63,13 @@ extension MainViewController {
 
         setBindingFilteredExchangeRates()
         setBindingError()
-        setBindingSearchBarText()
+        setBindingSearchBar()
         setBindingTableView()
     }
 
     private func setBindingFilteredExchangeRates() {
         viewModel.state
-            .map(\.filteredExchangeRate)
+            .map(\.filteredExchangeRates)
             .distinctUntilChanged()
             .asDriver(onErrorJustReturn: [])
             .drive(
@@ -80,11 +79,19 @@ extension MainViewController {
                 )
             ) { _, item, cell in
                 cell.setupCell(item: item)
+                cell.bookmarkButton.rx
+                    .tap
+                    .asDriver()
+                    .drive { [weak self] _ in
+                        guard let self else { return }
+                        viewModel.action.accept(.tappedBookmark(item))
+                    }
+                    .disposed(by: cell.disposeBag)
             }
             .disposed(by: disposeBag)
 
         viewModel.state
-            .map(\.filteredExchangeRate)
+            .map(\.filteredExchangeRates)
             .distinctUntilChanged()
             .map(\.isEmpty)
             .observe(on: MainScheduler.instance)
@@ -101,12 +108,12 @@ extension MainViewController {
                 guard let self else { return }
                 mainView.exchangeTableView.deselectRow(at: indexPath, animated: true)
                 coordinator.showDetailView(
-                    exchangeRate: viewModel.state.value.filteredExchangeRate[indexPath.row]
+                    exchangeRate: viewModel.state.value.filteredExchangeRates[indexPath.row]
                 )
             }.disposed(by: disposeBag)
     }
 
-    private func setBindingSearchBarText() {
+    private func setBindingSearchBar() {
         mainView.searchBar.rx.text
             .orEmpty
             .distinctUntilChanged()
@@ -115,6 +122,12 @@ extension MainViewController {
                 guard let self else { return }
                 viewModel.action.accept(.updateSearchBarText(text))
             }
+            .disposed(by: disposeBag)
+
+        mainView.searchBar.rx.searchButtonClicked
+            .subscribe(onNext: { [weak self] in
+                self?.mainView.searchBar.resignFirstResponder()
+            })
             .disposed(by: disposeBag)
     }
 

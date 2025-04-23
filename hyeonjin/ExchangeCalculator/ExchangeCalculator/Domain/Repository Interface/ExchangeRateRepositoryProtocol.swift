@@ -10,4 +10,5 @@ import RxSwift
 
 protocol ExchangeRateRepositoryProtocol {
     func fetchExchangeRates() -> Single<[ExchangeRate]>
+    func updateBookmarkedExchangeRate(bookmarkedExchangeRate: ExchangeRate) -> Single<Void>
 }

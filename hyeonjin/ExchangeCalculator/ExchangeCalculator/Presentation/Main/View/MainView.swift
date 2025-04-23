@@ -13,6 +13,8 @@ final class MainView: UIView {
         let searchBar = UISearchBar()
         searchBar.searchBarStyle = .minimal
         searchBar.placeholder = "통화 검색"
+        searchBar.searchTextField.enablesReturnKeyAutomatically = false
+        searchBar.returnKeyType = .done
         return searchBar
     }()
 

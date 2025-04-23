@@ -14,6 +14,7 @@ final class MainViewModel: ViewModelProtocol {
         case fetchExchangeRates
         case updateSearchBarText(String)
         case filterExchangeRates([ExchangeRate])
+        case tappedBookmark(ExchangeRate)
     }
 
     enum Mutation {
@@ -21,19 +22,20 @@ final class MainViewModel: ViewModelProtocol {
         case setError(Error)
         case setSearchBarText(String)
         case setFilteredExchangeRates([ExchangeRate])
+        case updateBookmark([ExchangeRate])
     }
 
     struct State {
         var originalExchangeRates: [ExchangeRate] = []
         var searchBarText: String = ""
-        var filteredExchangeRate: [ExchangeRate] = []
+        var filteredExchangeRates: [ExchangeRate] = []
         var error: Error?
     }
 
     let state: BehaviorRelay<State>
     let action = PublishRelay<Action>()
 
-    var disposeBag: DisposeBag = .init()
+    private let disposeBag: DisposeBag = .init()
     let useCase: ExchangeRateUseCaseProtocol
 
     init(exchangeUseCase: ExchangeRateUseCaseProtocol) {
@@ -52,6 +54,16 @@ final class MainViewModel: ViewModelProtocol {
             return .just(Mutation.setSearchBarText(text))
         case .filterExchangeRates(let filteredExchangeRates):
             return .just(Mutation.setFilteredExchangeRates(filteredExchangeRates))
+        case .tappedBookmark(let bookmarkedExchangeRate):
+            let bookmarkedExchangeRates: [ExchangeRate] = useCase.bookmarkExchangeRate(
+                bookmarkedExchangeRate: bookmarkedExchangeRate,
+                originalExchangeRates: state.value.originalExchangeRates
+            )
+            return useCase.updateBookmarkedExchangeRate(
+                bookmarkedExchangeRate: bookmarkedExchangeRate
+            )
+            .map { Mutation.updateBookmark(bookmarkedExchangeRates) }
+            .catch { .just(.setError($0)) }
         }
     }
 
@@ -66,7 +78,9 @@ final class MainViewModel: ViewModelProtocol {
         case .setSearchBarText(let text):
             newState.searchBarText = text
         case .setFilteredExchangeRates(let filteredExchangeRates):
-            newState.filteredExchangeRate = filteredExchangeRates
+            newState.filteredExchangeRates = filteredExchangeRates
+        case .updateBookmark(let bookmarkedExchangeRates):
+            newState.originalExchangeRates = bookmarkedExchangeRates
         }
 
         return newState

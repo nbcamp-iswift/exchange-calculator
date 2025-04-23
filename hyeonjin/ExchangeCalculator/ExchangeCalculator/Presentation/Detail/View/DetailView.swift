@@ -52,7 +52,6 @@ final class DetailView: UIView {
 
     let resultLabel: UILabel = {
         let label = UILabel()
-        label.text = "계산 결과가 여기에 표시됩니다"
         label.textColor = .label
         label.font = .systemFont(ofSize: 20, weight: .medium)
         label.textAlignment = .center

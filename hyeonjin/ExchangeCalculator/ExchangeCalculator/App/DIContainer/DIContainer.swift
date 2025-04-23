@@ -6,10 +6,21 @@
 //
 
 import Foundation
+import UIKit
+import CoreData
 
 final class DIContainer: DIContainerProtocol {
+    private let context: NSManagedObjectContext
+
+    init(context: NSManagedObjectContext) {
+        self.context = context
+    }
+
     func makeMainViewModel() -> MainViewModel {
-        let repository = ExchangeRateRepository(service: ExchangeRateService())
+        let repository = ExchangeRateRepository(
+            service: ExchangeRateService(),
+            coreDataService: CoreDataService(context: context)
+        )
         let useCase = ExchangeRateUseCase(repository: repository)
         return MainViewModel(exchangeUseCase: useCase)
     }

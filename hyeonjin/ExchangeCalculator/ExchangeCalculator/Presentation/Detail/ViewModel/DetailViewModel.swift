@@ -18,7 +18,7 @@ final class DetailViewModel: ViewModelProtocol {
     enum Action {
         case tappedConvertButton
         case updateAmount(String)
-        case resetError
+        case resetErrorState
     }
 
     enum Mutation {
@@ -38,7 +38,7 @@ final class DetailViewModel: ViewModelProtocol {
     let state: BehaviorRelay<State>
     let action = PublishRelay<Action>()
 
-    var disposeBag: DisposeBag = .init()
+    private let disposeBag: DisposeBag = .init()
 
     init(exchangeRate: ExchangeRate) {
         state = BehaviorRelay(value: .init(exchangeRate: exchangeRate))
@@ -62,7 +62,7 @@ final class DetailViewModel: ViewModelProtocol {
             ))
         case .updateAmount(let amount):
             return .just(Mutation.setAmount(amount))
-        case .resetError:
+        case .resetErrorState:
             return .just(Mutation.clearError)
         }
     }

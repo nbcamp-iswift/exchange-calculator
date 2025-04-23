@@ -7,8 +7,16 @@
 
 import Foundation
 
+enum ArrowState: String {
+    case increase
+    case decrease
+    case none
+}
+
 struct ExchangeRate: Hashable {
     let currencyCode: String
     let value: String
     let country: String
+    var isBookmark: Bool
+    var arrowState: ArrowState
 }
