@@ -1,6 +1,6 @@
 import UIKit
 
-final class AppDIContainer {
+final class DIContainer {
     // MARK: - Data Layer
 
     func makeExchangeRateService() -> ExchangeRateService {
@@ -49,7 +49,7 @@ final class AppDIContainer {
     }
 
     func makeExchangeRateViewController() -> ExchangeRateViewController {
-        ExchangeRateViewController(viewModel: makeExchangeRateViewModel(), container: self)
+        ExchangeRateViewController(viewModel: makeExchangeRateViewModel(), diContainer: self)
     }
 
     func makeCalculatorViewController(with exchangeRate: ExchangeRate) -> CalculatorViewController {
