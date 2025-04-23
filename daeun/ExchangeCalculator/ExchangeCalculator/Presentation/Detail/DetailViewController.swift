@@ -50,6 +50,7 @@ extension DetailViewController {
 
     private func setAttributes() {
         title = Constant.Title.exchangeCalc
+        setTapGestureToDismissKeyboard()
     }
 
     private func setBindings() {
