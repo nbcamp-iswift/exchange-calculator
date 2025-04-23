@@ -10,6 +10,7 @@ import Combine
 
 final class ListViewModel: ViewModelProtocol {
     private let exchangeRatesUseCase: ExchangeRatesUseCase
+    private let favoriteExchangeUseCase: FavoriteExchangeUseCase
     private var cancellables = Set<AnyCancellable>()
     var action = PassthroughSubject<Action, Never>()
     var state = State()
@@ -18,6 +19,7 @@ final class ListViewModel: ViewModelProtocol {
         case viewDidLoad
         case didTapCell(Int)
         case didChangeSearchBarText(String)
+        case didTapFavoriteButton(ExchangeRate)
     }
 
     struct State {
@@ -26,10 +28,15 @@ final class ListViewModel: ViewModelProtocol {
         var filteredRates = CurrentValueSubject<[ExchangeRate], Never>([])
         var hasMatches = CurrentValueSubject<Bool, Never>(true)
         let showDetailVC = PassthroughSubject<DetailViewController, Never>()
+        var currencSearchQuery = ""
     }
 
-    init(exchangeRatesUseCase: ExchangeRatesUseCase) {
+    init(
+        exchangeRatesUseCase: ExchangeRatesUseCase,
+        favoriteExchangeUseCase: FavoriteExchangeUseCase
+    ) {
         self.exchangeRatesUseCase = exchangeRatesUseCase
+        self.favoriteExchangeUseCase = favoriteExchangeUseCase
         bindActions()
     }
 
@@ -42,6 +49,8 @@ final class ListViewModel: ViewModelProtocol {
                 self?.selectRate(at: row)
             case .didChangeSearchBarText(let text):
                 self?.filterRates(with: text)
+            case .didTapFavoriteButton(let rate):
+                self?.updateFavorite(for: rate)
             }
         }
         .store(in: &cancellables)
@@ -50,11 +59,10 @@ final class ListViewModel: ViewModelProtocol {
     private func loadList() {
         Task {
             let result = await exchangeRatesUseCase.execute()
-
             switch result {
             case let .success(data):
                 state.originalRates = data
-                state.filteredRates.send(state.originalRates)
+                filterRates(with: state.currencSearchQuery)
             case .failure:
                 state.fetchError.send(())
             }
@@ -62,6 +70,7 @@ final class ListViewModel: ViewModelProtocol {
     }
 
     func filterRates(with searchQuery: String) {
+        state.currencSearchQuery = searchQuery
         let filteredRates = searchQuery.isEmpty
             ? state.originalRates
             : state.originalRates.filter { $0.matches(query: searchQuery) }
@@ -78,5 +87,10 @@ final class ListViewModel: ViewModelProtocol {
         )
         let detailVC = DetailViewController(viewModel: detailViewModel)
         state.showDetailVC.send(detailVC)
+    }
+
+    func updateFavorite(for rate: ExchangeRate) {
+        favoriteExchangeUseCase.toggleFavorite(for: rate.currencyCode)
+        loadList()
     }
 }

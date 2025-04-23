@@ -11,6 +11,8 @@ struct ExchangeRate: Hashable {
     let currencyCode: String
     let countryName: String
     let value: Double
+    let favorited: Bool
+    let lastValue: Double
 
     func matches(query: String) -> Bool {
         currencyCode.contains(query.uppercased()) || countryName.contains(query)
