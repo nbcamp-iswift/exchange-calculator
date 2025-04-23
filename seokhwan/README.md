@@ -62,6 +62,20 @@ MVVM-C 기반 Clean Architecture 적용
 
 <image src="Resources/result.gif" width="250px"></image>
 
+## 🔍 Memory Leak Check
+
+### Debug Memory Graph 사용
+
+<image src="Resources/leakcheck1.png" width="500px"></image>
+
+특이사항 없음(warning 6개는 TODO 주석에 따른 lint warning)
+
+### Leaks Instrument 사용
+
+<image src="Resources/leakcheck2.png" width="500px"></image>
+
+특이사항 없음
+
 ## 🔥 Trouble Shooting
 
 - [UISearchBar 경계선 제거](https://velog.io/@youseokhwan/UISearchBar-%EA%B2%BD%EA%B3%84%EC%84%A0-%EC%A0%9C%EA%B1%B0)
