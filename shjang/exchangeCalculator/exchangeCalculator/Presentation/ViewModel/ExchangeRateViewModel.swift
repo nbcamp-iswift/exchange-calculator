@@ -13,16 +13,30 @@ final class ExchangeRateViewModel {
 
     private let dataRepository: ExchangeRateRepository
     private let coreDataRepository: CoreDataStackProtocol
+    let appDataRepository: AppStateStore
 
     private var baseCurrency: String = "USD"
     private var rates: [ExchangeRate] = [] // current
     private var currentFilter: String = ""
     private var previousRate: [String: Double] = [:]
 
-    init(dataRepository: ExchangeRateRepository, coreDataRepository: CoreDataStackProtocol) {
+    init(
+        dataRepository: ExchangeRateRepository,
+        coreDataRepository: CoreDataStackProtocol,
+        appDataRepository: AppStateStore
+    ) {
         self.dataRepository = dataRepository
         self.coreDataRepository = coreDataRepository
+        self.appDataRepository = appDataRepository
         loadRates()
+    }
+
+    func viewWillAppear() {
+        appDataRepository.saveLastScreen(type: .table, selectedCurrency: nil)
+    }
+
+    func viewWillDisappear() {
+        appDataRepository.saveLastScreen(type: .table, selectedCurrency: nil)
     }
 
     func loadRates() {

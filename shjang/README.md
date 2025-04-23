@@ -86,9 +86,10 @@ This can be done normally on DIContainers, but for the simplicity, I used this i
     * created the model ExchangeRate+CoreDataClass.swift [o] with Codegen to be "Manual/None"
     * delete the +Properties.swift [o]
 
-* Implement CoreDataStack 
-  * 
-
+* Create AppState Entity
+  * Make Appstate CoreData (xcdatamodel above)
+  ```swift
+  ```
 ## Log
 ### Lvl 1. Complete
 
@@ -105,19 +106,35 @@ This can be done normally on DIContainers, but for the simplicity, I used this i
 ### Lvl 6. Optional - But Complete
 * I don't know if this is the convention or not, but I focused on MVVM model rather how to implement. The reason behind is it's not necessary to group and actions / states for this project (if action and state are small)
 
-### Lvl 7. Complete
-Logic Description: 
-1. if user clicks the star -> subscribe by exchangeRateViewController
-2. let exchangeRateViewModel knows.
-  1. update favorite 
-  2. refreshViewModels (viewModel)
-  3. create either filter / new ModelList
-  4. state = .loaded(new Model)
-3. update UI 
+### Lvl 7 & 8: Complete
+* I don't think the initial data must be loaded and push them to cach right away. But I have tested if the arrow icons are displayed if there are data(field changes). It's in `exchangeCalculatorTests/ExchangeRateViewmodelTests`. That's how I ensure that the lvl 7 and 8 are completed.
 
+But test cases are shown below
+* If the data(current rate) from API is larger than the cache data's (currency) rate
+
+![alt text](<Resource/Screenshot 2025-04-23 at 4.14.25 PM.png>)
+
+* If the data(current rate) from API is smaller than the cache data's (currency) rate 
+![alt text](<Resource/Screenshot 2025-04-23 at 4.14.34 PM.png>)
+
+By using this, we can conclude that the state for direction from ViewModel updates viewcontroller to display direction. 
+
+Below is just whether the cache works or not for favorites
+
+![alt text](<Resource/Screen Recording 2025-04-23 at 4.11.33 PM.gif>)
+
+### Lvl 9 & 10: Complete
+![alt text](<Resource/Screen Recording 2025-04-23 at 3.39.21 PM.gif>)
+
+![alt text](<Resource/Screen Recording 2025-04-23 at 3.54.47 PM.gif>)
+
+### Comments: 
+* I should've made architecutre clear(usecase, data, presentation, entity), but I didn't because I wanted to focus on implementing the features without considering architecture due to my life's priority.
 
 ## Resource
 * [Closure, Observable, Combine](https://ios-daniel-yang.tistory.com/entry/iOSSwift-Data-Binding%EC%97%90-%EB%8C%80%ED%95%98%EC%97%AC-%EC%95%8C%EC%95%84%EB%B3%B4%EC%9E%90-Closure-Observable-Combine-MVVM)
 * [CustomTableViewCell](https://ios-development.tistory.com/1753)
 * [SearchBar](https://zeddios.tistory.com/1196)
 * [Case Sensitivity String](https://zeddios.tistory.com/463)
+* [Core Data](https://ios-development.tistory.com/236)
+* [Dark Mode](https://medium.com/@marwan8/beginner-guide-supporting-dark-mode-in-swift-ios-112aab6d14a6)

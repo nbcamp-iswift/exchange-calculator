@@ -1,6 +1,6 @@
 import CoreData
 
-public protocol CoreDataStackProtocol {
+protocol CoreDataStackProtocol {
     func updateFavoriteStatus(currency: String, countryCode: String, isFavorite: Bool)
     func getFavorites() -> [ExchangeRatewFav]
     func getAllExchangedRate() -> [ExchangeRatewFav]

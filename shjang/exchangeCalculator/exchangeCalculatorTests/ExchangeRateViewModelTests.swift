@@ -4,15 +4,29 @@ import CoreData
 
 struct ExchangeRatewFavMock {
     let currency: String
-    let countryCode: String = ""
+    let countryCode: String
     let rate: Double
     let isFavorite: Bool
-    let createdAt = Date()
-    let lastUpdated: Int64 = 0
+    let createdAt: Date
+    let lastUpdated: Int64
+}
+
+extension ExchangeRatewFavMock {
+    static func mock(currency: String, rate: Double, isFavorite: Bool = false) -> Self {
+        .init(
+            currency: currency,
+            countryCode: "MOCK",
+            rate: rate,
+            isFavorite: isFavorite,
+            createdAt: Date(),
+            lastUpdated: 123
+        )
+    }
 }
 
 final class ExchangeRateRepositoryMock: ExchangeRateRepository {
     var result: Result<[ExchangeRate], Error> = .success([])
+
     func fetch(
         baseCurrency: String,
         completion: @escaping (Result<[ExchangeRate], any Error>) -> Void
@@ -22,40 +36,67 @@ final class ExchangeRateRepositoryMock: ExchangeRateRepository {
 }
 
 final class ExchangeRateCoreDataRepostitoryMock: CoreDataStackProtocol {
-    var allRates: [exchangeCalculator.ExchangeRatewFav] = []
+    var allRates: [ExchangeRatewFavMock] = []
 
-    func getAllExchangedRate() -> [exchangeCalculator.ExchangeRatewFav] {
-        allRates
+    func getAllExchangedRate() -> [ExchangeRatewFav] {
+        allRates.map {
+            let model = ExchangeRatewFav(context: mockContext)
+            model.currency = $0.currency
+            model.countryCode = $0.countryCode
+            model.rate = $0.rate
+            model.isFavorite = $0.isFavorite
+            model.createdAt = $0.createdAt
+            model.lastUpdated = $0.lastUpdated
+            return model
+        }
     }
 
-    func getFavorites() -> [exchangeCalculator.ExchangeRatewFav] {
-        allRates.filter(\.isFavorite)
+    func getFavorites() -> [ExchangeRatewFav] {
+        getAllExchangedRate().filter(\.isFavorite)
     }
 
-    func saveOrUpdate(rate: exchangeCalculator.ExchangeRate, isFavorite: Bool) {}
-
-    func updateFavoriteStatus(
-        currency: String,
-        countryCode: String,
-        isFavorite: Bool
-    ) {}
-
+    func saveOrUpdate(rate: ExchangeRate, isFavorite: Bool) {}
+    func updateFavoriteStatus(currency: String, countryCode: String, isFavorite: Bool) {}
     func removeAll() {}
-    func count() -> Int? { nil }
+    func count() -> Int? { allRates.count }
+
+    private lazy var mockContext: NSManagedObjectContext = {
+        let container = NSPersistentContainer(name: "ExchangeRatewFav")
+        let description = NSPersistentStoreDescription()
+        description.type = NSInMemoryStoreType
+        container.persistentStoreDescriptions = [description]
+        container.loadPersistentStores { _, error in
+            if let error {
+                fatalError("In-memory store load failed: \(error)")
+            }
+        }
+        return container.viewContext
+    }()
+}
+
+final class AppStateStoreMock: AppStateStore {
+    func saveLastScreen(type: LastScreenType, selectedCurrency: String?) {}
+    func loadLastScreen() -> LastScreenInfo {
+        LastScreenInfo(screen: .table, selectedCurrency: nil)
+    }
 }
 
 final class ExchangeRateViewModelTests: XCTestCase {
     var viewmodel: ExchangeRateViewModel!
     var apiRepo: ExchangeRateRepositoryMock!
     var coreDataRepo: ExchangeRateCoreDataRepostitoryMock!
+    var appDataRepo: AppStateStoreMock!
 
     override func setUp() {
         super.setUp()
         apiRepo = ExchangeRateRepositoryMock()
         coreDataRepo = ExchangeRateCoreDataRepostitoryMock()
+        appDataRepo = AppStateStoreMock()
+
         viewmodel = ExchangeRateViewModel(
             dataRepository: apiRepo,
-            coreDataRepository: coreDataRepo
+            coreDataRepository: coreDataRepo,
+            appDataRepository: appDataRepo
         )
     }
 
@@ -63,24 +104,12 @@ final class ExchangeRateViewModelTests: XCTestCase {
         viewmodel = nil
         apiRepo = nil
         coreDataRepo = nil
+        appDataRepo = nil
         super.tearDown()
     }
 
-    private func mockRate(currency: String, rate: Double) -> ExchangeRatewFav {
-        let mock = ExchangeRatewFav(
-            context: NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-        )
-        mock.currency = currency
-        mock.countryCode = "Mock"
-        mock.rate = rate
-        mock.isFavorite = false
-        mock.lastUpdated = 123
-        mock.createdAt = Date()
-        return mock
-    }
-
     func test_directionUp_whenRateIncreased() {
-        // 1. Given
+        // Given
         let jpyRate = ExchangeRate(
             currency: "JPY",
             country: "Japan",
@@ -88,27 +117,29 @@ final class ExchangeRateViewModelTests: XCTestCase {
             timeLastUpdated: 12_345_678
         )
         apiRepo.result = .success([jpyRate])
-        coreDataRepo.allRates = [mockRate(currency: "JPY", rate: 82.0)]
-        // 2. When
+        coreDataRepo.allRates = [
+            .mock(currency: "JPY", rate: 82.0)
+        ]
+
+        // When
         viewmodel.loadRates()
 
-        // 3 Then
-        let exepction: XCTestExpectation = expectation(
-            description: "Loaded State with upward direction")
+        // Then
+        let expectation = XCTestExpectation(description: "Loaded State with upward direction")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             if case let .loaded(models) = self.viewmodel.state {
                 XCTAssertEqual(models.first?.direction, .up)
-                exepction.fulfill()
+                expectation.fulfill()
             } else {
                 XCTFail("Expected loaded state")
             }
         }
 
-        waitForExpectations(timeout: 1.0)
+        wait(for: [expectation], timeout: 1.0)
     }
 
     func test_directionDown_whenRateDecreased() {
-        // 1. Given
+        // Given
         let usdRate = ExchangeRate(
             currency: "USD",
             country: "USA",
@@ -116,22 +147,24 @@ final class ExchangeRateViewModelTests: XCTestCase {
             timeLastUpdated: 123
         )
         apiRepo.result = .success([usdRate])
-        coreDataRepo.allRates = [mockRate(currency: "USD", rate: 1.2)]
+        coreDataRepo.allRates = [
+            .mock(currency: "USD", rate: 1.2)
+        ]
 
-        // 2. When
+        // When
         viewmodel.loadRates()
 
-        // 3. Then
-        let exepction: XCTestExpectation = expectation(
-            description: "Loaded State with downward direction")
+        // Then
+        let expectation = XCTestExpectation(description: "Loaded State with downward direction")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             if case let .loaded(models) = self.viewmodel.state {
                 XCTAssertEqual(models.first?.direction, .down)
-                exepction.fulfill()
+                expectation.fulfill()
             } else {
                 XCTFail("Expected loaded state")
             }
         }
-        waitForExpectations(timeout: 1.0)
+
+        wait(for: [expectation], timeout: 1.0)
     }
 }
