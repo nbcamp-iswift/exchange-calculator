@@ -73,12 +73,47 @@ but since, `base_code` key should be matched with `json`. You create enum `Codin
 ### Repostiory(DataService) -> ViewModel -> ViewController
 This can be done normally on DIContainers, but for the simplicity, I used this in `SceneDelegate`.
 
+### Core Data
+* Create CoreData Entity
+  * Make exchangeRateWithFav CoreData (xcdatamodel)
+  ```swift
+  countryCode: String // (not optional)
+  currency: String    // (not optional)
+  isFavorite: Bool    // (not optional)
+  rate: Double        // (not optional)
+  ```
+  * Settings
+    * created the model ExchangeRate+CoreDataClass.swift [o] with Codegen to be "Manual/None"
+    * delete the +Properties.swift [o]
+
+* Implement CoreDataStack 
+  * 
+
 ## Log
 ### Lvl 1. Complete
 
 ### Lvl 2. Complete
 * AutoLayout
 ![alt text](<Resource/Screen Recording 2025-04-17 at 1.16.52 AM.gif>)
+
+### Lvl 3. Complete
+
+### Lvl 4. Complete
+
+### Lvl 5. Complete
+
+### Lvl 6. Optional - But Complete
+* I don't know if this is the convention or not, but I focused on MVVM model rather how to implement. The reason behind is it's not necessary to group and actions / states for this project (if action and state are small)
+
+### Lvl 7. Complete
+Logic Description: 
+1. if user clicks the star -> subscribe by exchangeRateViewController
+2. let exchangeRateViewModel knows.
+  1. update favorite 
+  2. refreshViewModels (viewModel)
+  3. create either filter / new ModelList
+  4. state = .loaded(new Model)
+3. update UI 
 
 
 ## Resource
