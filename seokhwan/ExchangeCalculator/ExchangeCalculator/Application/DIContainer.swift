@@ -48,8 +48,10 @@ final class DIContainer {
         )
     }
 
-    func makeExchangeRateViewController() -> ExchangeRateViewController {
-        ExchangeRateViewController(viewModel: makeExchangeRateViewModel(), diContainer: self)
+    func makeExchangeRateViewController(
+        with coordinator: Coordinator
+    ) -> ExchangeRateViewController {
+        ExchangeRateViewController(coordinator: coordinator, viewModel: makeExchangeRateViewModel())
     }
 
     func makeCalculatorViewController(with exchangeRate: ExchangeRate) -> CalculatorViewController {

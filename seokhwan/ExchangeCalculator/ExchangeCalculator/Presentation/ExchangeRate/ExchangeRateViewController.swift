@@ -5,17 +5,17 @@ import RxRelay
 final class ExchangeRateViewController: UIViewController {
     // MARK: - Properties
 
+    private let coordinator: Coordinator
     private let viewModel: ExchangeRateViewModel
-    private let diContainer: DIContainer
     private let disposeBag = DisposeBag()
 
     private lazy var exchangeRateView = ExchangeRateView()
 
     // MARK: - Initializers
 
-    init(viewModel: ExchangeRateViewModel, diContainer: DIContainer) {
+    init(coordinator: Coordinator, viewModel: ExchangeRateViewModel) {
+        self.coordinator = coordinator
         self.viewModel = viewModel
-        self.diContainer = diContainer
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -60,11 +60,7 @@ private extension ExchangeRateViewController {
         viewModel.state.selectedExchangeRate
             .observe(on: MainScheduler.instance)
             .bind { [weak self] exchangeRate in
-                guard let viewController = self?.diContainer.makeCalculatorViewController(
-                    with: exchangeRate
-                ) else { return }
-
-                self?.navigationController?.pushViewController(viewController, animated: true)
+                self?.coordinator.showCalculatorView(with: exchangeRate)
             }
             .disposed(by: disposeBag)
 
