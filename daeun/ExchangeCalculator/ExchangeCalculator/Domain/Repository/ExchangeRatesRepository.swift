@@ -10,4 +10,6 @@ import Foundation
 
 protocol ExchangeRatesRepository {
     func fetchExchangeRates() async -> Result<[ExchangeRate], AFError>
+    func saveLastViewedExchangeRate(code: String)
+    func deleteLastViewedExchangeRate()
 }

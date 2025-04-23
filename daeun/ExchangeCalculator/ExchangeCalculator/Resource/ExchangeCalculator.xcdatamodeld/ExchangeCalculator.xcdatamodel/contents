@@ -8,4 +8,7 @@
     <entity name="FavoriteExchange" representedClassName="FavoriteExchange" syncable="YES">
         <attribute name="code" optional="YES" attributeType="String"/>
     </entity>
+    <entity name="LastViewedExchange" representedClassName="LastViewedExchange" syncable="YES">
+        <attribute name="code" attributeType="String"/>
+    </entity>
 </model>

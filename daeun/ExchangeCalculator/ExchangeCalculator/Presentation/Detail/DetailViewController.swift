@@ -50,6 +50,9 @@ extension DetailViewController {
 
     private func setAttributes() {
         title = Constant.Title.exchangeCalc
+        navigationController?.navigationBar.backItem?.title = Constant.Title.exchangeInfo
+        navigationController?.navigationBar.prefersLargeTitles = true
+        setTapGestureToDismissKeyboard()
     }
 
     private func setBindings() {

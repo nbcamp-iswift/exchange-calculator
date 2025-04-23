@@ -11,6 +11,7 @@ import Foundation
 struct DefaultExchangeRatesRepository: ExchangeRatesRepository {
     let favoriteDataSource: LocalFavoriteDataSource
     let rateChangeDataSource: LocalRateChangeDataSource
+    let lastViewedDataSource: LocalLastViewedDataSource
 
     func fetchExchangeRates() async -> Result<[ExchangeRate], AFError> {
         let url = Constant.baseURL + Constant.baseCurrency
@@ -41,7 +42,7 @@ struct DefaultExchangeRatesRepository: ExchangeRatesRepository {
         }
     }
 
-    func updateCacheIfNeeded(on latestData: ExchangeRatesDTO) {
+    private func updateCacheIfNeeded(on latestData: ExchangeRatesDTO) {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
 
@@ -53,5 +54,13 @@ struct DefaultExchangeRatesRepository: ExchangeRatesRepository {
         if currentDate.isAfterOneDay(comparedTo: cachedDate) {
             rateChangeDataSource.updateData(to: latestData.rates, on: currentDate)
         }
+    }
+
+    func saveLastViewedExchangeRate(code: String) {
+        lastViewedDataSource.addData(code: code)
+    }
+
+    func deleteLastViewedExchangeRate() {
+        lastViewedDataSource.deleteData()
     }
 }

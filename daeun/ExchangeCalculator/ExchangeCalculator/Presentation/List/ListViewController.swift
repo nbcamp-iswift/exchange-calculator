@@ -49,6 +49,11 @@ final class ListViewController: UIViewController {
         viewModel.action.send(.viewDidLoad)
         configure()
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        viewModel.action.send(.viewDidAppear)
+    }
 }
 
 // MARK: - Methods
@@ -63,6 +68,7 @@ extension ListViewController {
     private func setAttributes() {
         title = Constant.Title.exchangeInfo
         navigationController?.navigationBar.prefersLargeTitles = true
+        setTapGestureToDismissKeyboard()
     }
 
     private func setDataSource() {
@@ -93,19 +99,33 @@ extension ListViewController {
     }
 
     private func setBindings() {
+        bindAction()
+        bindState()
+    }
+
+    private func bindAction() {
         listView.searchBar.textDidChangePublisher
             .sink { [weak self] text in
                 self?.viewModel.action.send(.didChangeSearchBarText(text))
             }
             .store(in: &cancellables)
 
-        listView.tableView.didSelectRowPublisher
-            .map(\.row)
-            .sink { [weak self] row in
-                self?.viewModel.action.send(.didTapCell(row))
+        listView.tableView.didScrollPublisher
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.listView.endEditing(true)
             }
             .store(in: &cancellables)
 
+        listView.tableView.didSelectRowPublisher
+            .sink { [weak self] indexPath in
+                self?.viewModel.action.send(.didTapCell(indexPath.row))
+                self?.listView.tableView.deselectRow(at: indexPath, animated: true)
+            }
+            .store(in: &cancellables)
+    }
+
+    private func bindState() {
         viewModel.state.filteredRates
             .receive(on: DispatchQueue.main)
             .sink { [weak self] rates in

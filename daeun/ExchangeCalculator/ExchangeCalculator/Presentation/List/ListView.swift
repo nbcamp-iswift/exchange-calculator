@@ -7,6 +7,7 @@
 
 import SnapKit
 import UIKit
+import Combine
 
 final class ListView: UIView {
     // MARK: - Components
@@ -27,7 +28,7 @@ final class ListView: UIView {
     private let noMatchLabel: UILabel = {
         let label = UILabel()
         label.text = Constant.Text.noMatch
-        label.textColor = .gray
+        label.textColor = .secondaryLabel
         label.isHidden = true
         return label
     }()
@@ -55,7 +56,7 @@ extension ListView {
     }
 
     private func setAttributes() {
-        backgroundColor = .white
+        backgroundColor = .systemBackground
     }
 
     private func setHierachy() {

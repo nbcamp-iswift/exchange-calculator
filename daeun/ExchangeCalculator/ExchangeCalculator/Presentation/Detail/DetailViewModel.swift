@@ -10,6 +10,7 @@ import Combine
 
 final class DetailViewModel: ViewModelProtocol {
     private let convertCurrencyUseCase: ConvertCurrencyUseCase
+    private var exchangeRatesUseCase: ExchangeRatesUseCase?
     private var cancellables = Set<AnyCancellable>()
     var action = PassthroughSubject<Action, Never>()
     let state = State()
@@ -30,6 +31,17 @@ final class DetailViewModel: ViewModelProtocol {
         bindActions()
     }
 
+    init(
+        code: String,
+        convertCurrencyUseCase: ConvertCurrencyUseCase,
+        exchangeRatesUseCase: ExchangeRatesUseCase
+    ) {
+        self.convertCurrencyUseCase = convertCurrencyUseCase
+        self.exchangeRatesUseCase = exchangeRatesUseCase
+        findItem(with: code)
+        bindActions()
+    }
+
     private func bindActions() {
         action.sink { [weak self] action in
             switch action {
@@ -38,6 +50,19 @@ final class DetailViewModel: ViewModelProtocol {
             }
         }
         .store(in: &cancellables)
+    }
+
+    private func findItem(with code: String) {
+        Task {
+            guard let result = await exchangeRatesUseCase?.loadList() else { return }
+            switch result {
+            case let .success(list):
+                let exchangeRate = list.first { $0.currencyCode == code }
+                state.exchangeRate.send(exchangeRate)
+            case let .failure(error):
+                print("failed to fetch list: \(error)")
+            }
+        }
     }
 
     private func convert(amount: String?) {

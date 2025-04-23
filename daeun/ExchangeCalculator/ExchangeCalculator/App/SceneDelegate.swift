@@ -19,12 +19,15 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: windowScene)
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
         let container = appDelegate.persistentContainer
+
         let localFavoriteDataSource = LocalFavoriteDataSource(container: container)
         let localRateChangeDataSource = LocalRateChangeDataSource(container: container)
+        let localLastViewedDataSource = LocalLastViewedDataSource(container: container)
 
         let exchangeRatesrepository = DefaultExchangeRatesRepository(
             favoriteDataSource: localFavoriteDataSource,
-            rateChangeDataSource: localRateChangeDataSource
+            rateChangeDataSource: localRateChangeDataSource,
+            lastViewedDataSource: localLastViewedDataSource
         )
         let favoriteExchangeRepository = DefaultFavoriteExchangeRepository(
             localDataSource: localFavoriteDataSource
@@ -42,7 +45,27 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         )
         let rootViewController = ListViewController(listViewModel: viewModel)
         let navigationController = UINavigationController(rootViewController: rootViewController)
+
+        pushDetailVCIfLastViewExist(to: navigationController, appDelegate, exchangeRatesUseCase)
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
+    }
+
+    private func pushDetailVCIfLastViewExist(
+        to navigationController: UINavigationController,
+        _ appDelegate: AppDelegate,
+        _ exchangeRatesUseCase: ExchangeRatesUseCase
+    ) {
+        let container = appDelegate.persistentContainer
+        let localLastViewedDataSource = LocalLastViewedDataSource(container: container)
+        if let code = localLastViewedDataSource.readData() {
+            let detailViewModel = DetailViewModel(
+                code: code,
+                convertCurrencyUseCase: DefaultConvertCurrencyUseCase(),
+                exchangeRatesUseCase: exchangeRatesUseCase
+            )
+            let detailVC = DetailViewController(viewModel: detailViewModel)
+            navigationController.pushViewController(detailVC, animated: true)
+        }
     }
 }
