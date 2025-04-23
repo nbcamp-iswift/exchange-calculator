@@ -20,7 +20,7 @@ struct ExchangeRate: Hashable {
     var isBookmark: Bool
     var arrowState: ArrowState
 
-    static var dummyEntity: ExchangeRate {
+    static var dummyEntity: Self {
         ExchangeRate(
             currencyCode: "USD",
             value: "0",
