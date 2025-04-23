@@ -12,6 +12,8 @@
 		58A2034A2DB5E13000680822 /* ExchangeRatewFav.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 58A203482DB5E13000680822 /* ExchangeRatewFav.xcdatamodeld */; };
 		58A204E02DB71C8800680822 /* ExchangeRatewFav+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A204DF2DB71C8800680822 /* ExchangeRatewFav+CoreDataProperties.swift */; };
 		58A204E12DB71C8800680822 /* ExchangeRatewFav+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A204DE2DB71C8800680822 /* ExchangeRatewFav+CoreDataClass.swift */; };
+		58A206AE2DB8BED500680822 /* AppStates+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A206AD2DB8BED500680822 /* AppStates+CoreDataProperties.swift */; };
+		58A206AF2DB8BED500680822 /* AppStates+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58A206AC2DB8BED500680822 /* AppStates+CoreDataClass.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +31,8 @@
 		58A204DE2DB71C8800680822 /* ExchangeRatewFav+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ExchangeRatewFav+CoreDataClass.swift"; sourceTree = "<group>"; };
 		58A204DF2DB71C8800680822 /* ExchangeRatewFav+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ExchangeRatewFav+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		58A204EE2DB739AD00680822 /* exchangeCalculatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = exchangeCalculatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		58A206AC2DB8BED500680822 /* AppStates+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppStates+CoreDataClass.swift"; sourceTree = "<group>"; };
+		58A206AD2DB8BED500680822 /* AppStates+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppStates+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		58EC91A62DACCA9A006F03C4 /* exchangeCalculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = exchangeCalculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -81,6 +85,8 @@
 		58EC919D2DACCA9A006F03C4 = {
 			isa = PBXGroup;
 			children = (
+				58A206AC2DB8BED500680822 /* AppStates+CoreDataClass.swift */,
+				58A206AD2DB8BED500680822 /* AppStates+CoreDataProperties.swift */,
 				58A204DE2DB71C8800680822 /* ExchangeRatewFav+CoreDataClass.swift */,
 				58A204DF2DB71C8800680822 /* ExchangeRatewFav+CoreDataProperties.swift */,
 				58A203482DB5E13000680822 /* ExchangeRatewFav.xcdatamodeld */,
@@ -266,6 +272,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				58A206AE2DB8BED500680822 /* AppStates+CoreDataProperties.swift in Sources */,
+				58A206AF2DB8BED500680822 /* AppStates+CoreDataClass.swift in Sources */,
 				58A204E02DB71C8800680822 /* ExchangeRatewFav+CoreDataProperties.swift in Sources */,
 				58A204E12DB71C8800680822 /* ExchangeRatewFav+CoreDataClass.swift in Sources */,
 				58A2034A2DB5E13000680822 /* ExchangeRatewFav.xcdatamodeld in Sources */,

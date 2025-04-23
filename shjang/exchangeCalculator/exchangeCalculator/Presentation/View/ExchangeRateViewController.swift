@@ -39,6 +39,14 @@ final class ExchangeRateViewController: UIViewController {
         configure()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        viewModel.viewWillAppear()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        viewModel.viewWillDisappear()
+    }
+
     private func configure() {
         setAttributes()
         setHierarchy()
@@ -146,7 +154,8 @@ extension ExchangeRateViewController: UITableViewDelegate {
         let calculatorViewModel = ExchangeRateCalculatorViewModel(
             currency: item.title,
             countryName: item.subtitle,
-            exchangeRate: item.trailingText
+            exchangeRate: item.trailingText,
+            appDataRepository: viewModel.appDataRepository
         )
 
         let calculatorViewController = ExchangeRateCalculatorViewController(

@@ -81,6 +81,14 @@ final class ExchangeRateCalculatorViewController: UIViewController {
         }
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        viewModel.viewWillAppear()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        viewModel.viewWillDisappear()
+    }
+
     private func setConstraints() {
         labelStackView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(32) // 32

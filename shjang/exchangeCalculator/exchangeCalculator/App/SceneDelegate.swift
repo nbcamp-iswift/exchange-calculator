@@ -2,6 +2,8 @@ import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
+    private lazy var coreDataStack = CoreDataStack.shared
+    private lazy var appStateStore = DefaultAppStateStore(context: coreDataStack.viewContext)
 
     private func makeDefaultExchangedRateRepository() -> DefaultExchangeRateRepository {
         let appConfig = AppConfiguration()
@@ -10,13 +12,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     private func makeDefaultCoreDataRepository() ->
         DefaultCoreDataRepostitory {
-        DefaultCoreDataRepostitory(coreDataStack: CoreDataStack.shared)
+        DefaultCoreDataRepostitory(coreDataStack: coreDataStack)
     }
 
-    private func makeViewModel() -> ExchangeRateViewModel {
+    private func makeExchangeRateViewModel() -> ExchangeRateViewModel {
         ExchangeRateViewModel(
             dataRepository: makeDefaultExchangedRateRepository(),
-            coreDataRepository: makeDefaultCoreDataRepository()
+            coreDataRepository: makeDefaultCoreDataRepository(),
+            appDataRepository: appStateStore
         )
     }
 
@@ -27,11 +30,30 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     ) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
-        window
-            .rootViewController =
-            UINavigationController(
-                rootViewController: ExchangeRateViewController(viewModel: makeViewModel())
-            )
+
+        let lastScreen = appStateStore.loadLastScreen()
+        let exchangedRateViewController = ExchangeRateViewController(
+            viewModel: makeExchangeRateViewModel()
+        )
+        let navigationController = UINavigationController(
+            rootViewController: exchangedRateViewController
+        )
+
+        if lastScreen.screen == .calculator {
+            let allRate = makeDefaultCoreDataRepository().getAllExchangedRate()
+            if let matched = allRate.first(where: { $0.currency == lastScreen.selectedCurrency }) {
+                let viewModel = ExchangeRateCalculatorViewModel(
+                    currency: matched.currency,
+                    countryName: matched.countryCode,
+                    exchangeRate: matched.currency,
+                    appDataRepository: appStateStore
+                )
+                let calculatorVC = ExchangeRateCalculatorViewController(viewModel: viewModel)
+                navigationController.pushViewController(calculatorVC, animated: false)
+            }
+        }
+
+        window.rootViewController = navigationController
         window.makeKeyAndVisible()
         self.window = window
     }
