@@ -4,9 +4,10 @@
         <attribute name="currency" optional="YES" attributeType="String"/>
         <attribute name="isFavorite" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="oldValue" optional="YES" attributeType="Double" usesScalarValueType="YES"/>
+        <relationship name="lastScreen" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="LastScreen" inverseName="exchangeRate" inverseEntity="LastScreen"/>
     </entity>
     <entity name="LastScreen" representedClassName="LastScreen" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String"/>
-        <relationship name="exchangeRate" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ExchangeRate"/>
+        <relationship name="exchangeRate" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ExchangeRate" inverseName="lastScreen" inverseEntity="ExchangeRate"/>
     </entity>
 </model>
