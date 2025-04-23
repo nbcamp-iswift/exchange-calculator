@@ -8,7 +8,11 @@ final class DIContainer {
     }
 
     func makeExchangeRateStorage() -> ExchangeRateStorage {
-        ExchangeRateStorage.shared
+        ExchangeRateStorage()
+    }
+
+    func makeLastScreenStorage() -> LastScreenStorage {
+        LastScreenStorage()
     }
 
     func makeExchangeRateRepository() -> ExchangeRateRepository {
@@ -16,6 +20,10 @@ final class DIContainer {
             exchangeRateService: makeExchangeRateService(),
             exchangeRateStorage: makeExchangeRateStorage()
         )
+    }
+
+    func makeLastSreenRepository() -> LastScreenRepository {
+        LastScreenRepository(lastScreenStorage: makeLastScreenStorage())
     }
 
     // MARK: - Domain Layer
@@ -30,6 +38,10 @@ final class DIContainer {
 
     func makeToggleIsFavoriteUseCase() -> ToggleIsFavoriteUseCase {
         ToggleIsFavoriteUseCase(exchangeRateRepository: makeExchangeRateRepository())
+    }
+
+    func makeLastScreenUseCase() -> LastScreenUseCase {
+        LastScreenUseCase(lastScreenRepository: makeLastSreenRepository())
     }
 
     // MARK: - Presentation Layer
@@ -51,10 +63,19 @@ final class DIContainer {
     func makeExchangeRateViewController(
         with coordinator: Coordinator
     ) -> ExchangeRateViewController {
-        ExchangeRateViewController(coordinator: coordinator, viewModel: makeExchangeRateViewModel())
+        ExchangeRateViewController(
+            coordinator: coordinator,
+            viewModel: makeExchangeRateViewModel()
+        )
     }
 
-    func makeCalculatorViewController(with exchangeRate: ExchangeRate) -> CalculatorViewController {
-        CalculatorViewController(viewModel: makeCalculatorViewModel(with: exchangeRate))
+    func makeCalculatorViewController(
+        coordinator: Coordinator,
+        exchangeRate: ExchangeRate
+    ) -> CalculatorViewController {
+        CalculatorViewController(
+            coordinator: coordinator,
+            viewModel: makeCalculatorViewModel(with: exchangeRate)
+        )
     }
 }

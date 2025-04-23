@@ -4,6 +4,7 @@ import RxSwift
 final class CalculatorViewController: UIViewController {
     // MARK: - Properties
 
+    private let coordinator: Coordinator
     private let viewModel: CalculatorViewModel
     private let disposeBag = DisposeBag()
 
@@ -11,7 +12,8 @@ final class CalculatorViewController: UIViewController {
 
     // MARK: - Initializers
 
-    init(viewModel: CalculatorViewModel) {
+    init(coordinator: Coordinator, viewModel: CalculatorViewModel) {
+        self.coordinator = coordinator
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -31,6 +33,13 @@ final class CalculatorViewController: UIViewController {
         super.viewDidLoad()
         configure()
         viewModel.action.accept(.viewDidLoad)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        Task {
+            await coordinator.updateLastScreen("CalculatorView")
+        }
     }
 }
 

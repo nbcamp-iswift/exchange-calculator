@@ -1,21 +1,8 @@
 import CoreData
 
 final class ExchangeRateStorage {
-    static let shared = ExchangeRateStorage()
-
-    private let container: NSPersistentContainer
-
     private var context: NSManagedObjectContext {
-        container.viewContext
-    }
-
-    private init() {
-        container = NSPersistentContainer(name: "Model")
-        container.loadPersistentStores { _, error in
-            if let error {
-                fatalError("CoreData Error: \(error.localizedDescription)")
-            }
-        }
+        CoreDataContainer.shared.context
     }
 
     func fetchAll() async -> Result<ExchangeRateEntities, ExchangeRateError> {

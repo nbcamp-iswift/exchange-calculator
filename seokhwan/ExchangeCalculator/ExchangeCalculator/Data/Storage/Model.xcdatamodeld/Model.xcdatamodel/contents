@@ -5,4 +5,7 @@
         <attribute name="isFavorite" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="oldValue" optional="YES" attributeType="Double" usesScalarValueType="YES"/>
     </entity>
+    <entity name="LastScreen" representedClassName="LastScreen" syncable="YES">
+        <attribute name="rawValue" optional="YES" attributeType="String"/>
+    </entity>
 </model>

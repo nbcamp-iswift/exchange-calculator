@@ -35,6 +35,13 @@ final class ExchangeRateViewController: UIViewController {
         configure()
         viewModel.action.accept(.viewDidLoad)
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        Task {
+            await coordinator.updateLastScreen("ExchangeRateView")
+        }
+    }
 }
 
 // MARK: - Configure

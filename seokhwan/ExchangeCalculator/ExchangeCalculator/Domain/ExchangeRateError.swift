@@ -1,8 +1,8 @@
 import Foundation
 
 enum ExchangeRateError: LocalizedError {
-    case networkError
-    case storageError
+    case networkError // TODO: Network Error 구체화
+    case storageError // TODO: CoreData Error 구체화
     case emptyInput
     case invalidNumber
 
