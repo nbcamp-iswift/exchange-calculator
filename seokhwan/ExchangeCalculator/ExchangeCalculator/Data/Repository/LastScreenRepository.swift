@@ -1,6 +1,6 @@
 import Foundation
 
-final class LastScreenRepository {
+final class LastScreenRepository: LastScreenRepositoryProtocol {
     private let service: LastScreenStorage
 
     init(lastScreenStorage: LastScreenStorage) {

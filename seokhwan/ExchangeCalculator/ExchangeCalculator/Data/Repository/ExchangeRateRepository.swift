@@ -1,6 +1,6 @@
 import Foundation
 
-final class ExchangeRateRepository {
+final class ExchangeRateRepository: ExchangeRateRepositoryProtocol {
     private let service: ExchangeRateService
     private let storage: ExchangeRateStorage
 

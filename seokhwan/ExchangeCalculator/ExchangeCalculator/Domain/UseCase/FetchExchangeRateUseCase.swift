@@ -1,9 +1,9 @@
 import Foundation
 
 final class FetchExchangeRateUseCase {
-    private let repository: ExchangeRateRepository
+    private let repository: ExchangeRateRepositoryProtocol
 
-    init(exchangeRateRepository: ExchangeRateRepository) {
+    init(exchangeRateRepository: ExchangeRateRepositoryProtocol) {
         repository = exchangeRateRepository
     }
 

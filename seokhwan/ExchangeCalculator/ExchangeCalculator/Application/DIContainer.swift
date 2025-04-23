@@ -15,14 +15,14 @@ final class DIContainer {
         LastScreenStorage()
     }
 
-    func makeExchangeRateRepository() -> ExchangeRateRepository {
+    func makeExchangeRateRepository() -> ExchangeRateRepositoryProtocol {
         ExchangeRateRepository(
             exchangeRateService: makeExchangeRateService(),
             exchangeRateStorage: makeExchangeRateStorage()
         )
     }
 
-    func makeLastSreenRepository() -> LastScreenRepository {
+    func makeLastSreenRepository() -> LastScreenRepositoryProtocol {
         LastScreenRepository(lastScreenStorage: makeLastScreenStorage())
     }
 
