@@ -1,8 +1,8 @@
 import Foundation
 
 final class ExchangeRateRepository {
-    let service: ExchangeRateService
-    let storage: ExchangeRateStorage
+    private let service: ExchangeRateService
+    private let storage: ExchangeRateStorage
 
     init(exchangeRateService: ExchangeRateService, exchangeRateStorage: ExchangeRateStorage) {
         service = exchangeRateService

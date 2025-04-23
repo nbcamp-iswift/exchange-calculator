@@ -5,7 +5,6 @@ import RxSwift
 import RxCocoa
 
 final class CalculatorView: UIView {
-
     // MARK: - Properties
 
     var didTapConvertButton = PublishRelay<String>()
@@ -22,11 +21,12 @@ final class CalculatorView: UIView {
 
     private lazy var currencyLabel = UILabel().then {
         $0.font = .boldSystemFont(ofSize: 24)
+        $0.textColor = .label
     }
 
     private lazy var countryLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 16)
-        $0.textColor = .gray
+        $0.textColor = .secondaryLabel
     }
 
     private lazy var amountTextField = UITextField().then {
@@ -46,6 +46,7 @@ final class CalculatorView: UIView {
 
     private lazy var resultLabel = UILabel().then {
         $0.text = "계산 결과가 여기에 표시됩니다"
+        $0.textColor = .label
         $0.font = .systemFont(ofSize: 20, weight: .medium)
         $0.textAlignment = .center
         $0.numberOfLines = 0
@@ -128,6 +129,9 @@ private extension CalculatorView {
         convertButton.rx.tap
             .map { [weak self] in
                 self?.amountTextField.text?.trimmingCharacters(in: .whitespaces) ?? ""
+            }
+            .do { [weak self] _ in
+                self?.amountTextField.resignFirstResponder() // 키보드 내리기
             }
             .bind(to: didTapConvertButton)
             .disposed(by: disposeBag)

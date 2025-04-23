@@ -3,7 +3,6 @@ import RxSwift
 import RxRelay
 
 final class CalculatorViewModel: ViewModelProtocol {
-
     // MARK: - Types
 
     enum Action {
@@ -12,7 +11,7 @@ final class CalculatorViewModel: ViewModelProtocol {
     }
 
     struct State {
-        let exchangeRate = PublishRelay<ExchangeRate>()
+        let exchangeRate = BehaviorRelay<ExchangeRate?>(value: nil)
         let convertedAmount = PublishRelay<Double>()
         let errorMessage = PublishRelay<String>()
     }
@@ -21,8 +20,8 @@ final class CalculatorViewModel: ViewModelProtocol {
 
     let action = PublishRelay<Action>()
     let state = State()
-    let useCase: ConvertExchangeRateUseCase
 
+    private let useCase: ConvertExchangeRateUseCase
     private let disposeBag = DisposeBag()
 
     // MARK: - Initializers

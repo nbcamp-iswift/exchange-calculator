@@ -5,7 +5,6 @@ import RxSwift
 import RxCocoa
 
 final class ExchangeRateCell: UITableViewCell {
-
     // MARK: - Properties
 
     private var disposeBag = DisposeBag()
@@ -19,16 +18,18 @@ final class ExchangeRateCell: UITableViewCell {
 
     private lazy var currencyLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 16, weight: .medium)
+        $0.textColor = .label
     }
 
     private lazy var countryLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 14)
-        $0.textColor = .gray
+        $0.textColor = .secondaryLabel
     }
 
     private lazy var rateLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 16)
         $0.textAlignment = .right
+        $0.textColor = .label
     }
 
     private lazy var isRisingLabel = UILabel()
@@ -88,8 +89,13 @@ final class ExchangeRateCell: UITableViewCell {
 
 private extension ExchangeRateCell {
     func configure() {
+        setAttributes()
         setHierarchy()
         setConstraints()
+    }
+
+    func setAttributes() {
+        backgroundColor = .secondarySystemBackground
     }
 
     func setHierarchy() {

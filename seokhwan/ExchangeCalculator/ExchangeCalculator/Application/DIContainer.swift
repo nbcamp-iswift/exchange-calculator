@@ -1,7 +1,6 @@
 import UIKit
 
-final class AppDIContainer {
-
+final class DIContainer {
     // MARK: - Data Layer
 
     func makeExchangeRateService() -> ExchangeRateService {
@@ -9,7 +8,11 @@ final class AppDIContainer {
     }
 
     func makeExchangeRateStorage() -> ExchangeRateStorage {
-        ExchangeRateStorage.shared
+        ExchangeRateStorage()
+    }
+
+    func makeLastScreenStorage() -> LastScreenStorage {
+        LastScreenStorage()
     }
 
     func makeExchangeRateRepository() -> ExchangeRateRepository {
@@ -17,6 +20,10 @@ final class AppDIContainer {
             exchangeRateService: makeExchangeRateService(),
             exchangeRateStorage: makeExchangeRateStorage()
         )
+    }
+
+    func makeLastSreenRepository() -> LastScreenRepository {
+        LastScreenRepository(lastScreenStorage: makeLastScreenStorage())
     }
 
     // MARK: - Domain Layer
@@ -31,6 +38,10 @@ final class AppDIContainer {
 
     func makeToggleIsFavoriteUseCase() -> ToggleIsFavoriteUseCase {
         ToggleIsFavoriteUseCase(exchangeRateRepository: makeExchangeRateRepository())
+    }
+
+    func makeLastScreenUseCase() -> LastScreenUseCase {
+        LastScreenUseCase(lastScreenRepository: makeLastSreenRepository())
     }
 
     // MARK: - Presentation Layer
@@ -49,11 +60,22 @@ final class AppDIContainer {
         )
     }
 
-    func makeExchangeRateViewController() -> ExchangeRateViewController {
-        ExchangeRateViewController(viewModel: makeExchangeRateViewModel(), container: self)
+    func makeExchangeRateViewController(
+        with coordinator: Coordinator
+    ) -> ExchangeRateViewController {
+        ExchangeRateViewController(
+            coordinator: coordinator,
+            viewModel: makeExchangeRateViewModel()
+        )
     }
 
-    func makeCalculatorViewController(with exchangeRate: ExchangeRate) -> CalculatorViewController {
-        CalculatorViewController(viewModel: makeCalculatorViewModel(with: exchangeRate))
+    func makeCalculatorViewController(
+        coordinator: Coordinator,
+        exchangeRate: ExchangeRate
+    ) -> CalculatorViewController {
+        CalculatorViewController(
+            coordinator: coordinator,
+            viewModel: makeCalculatorViewModel(with: exchangeRate)
+        )
     }
 }

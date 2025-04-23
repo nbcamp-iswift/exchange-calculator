@@ -1,8 +1,8 @@
 import Foundation
 
 enum ExchangeRateError: LocalizedError {
-    case networkError
-    case storageError
+    case networkError // TODO: Network Error 구체화
+    case storageError // TODO: CoreData Error 구체화
     case emptyInput
     case invalidNumber
 
@@ -18,4 +18,6 @@ enum ExchangeRateError: LocalizedError {
             return "올바른 숫자를 입력해 주세요"
         }
     }
+
+    // TODO: debugDescription 정의
 }

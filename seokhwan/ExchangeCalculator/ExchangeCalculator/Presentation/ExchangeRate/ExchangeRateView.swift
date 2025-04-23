@@ -5,7 +5,6 @@ import RxSwift
 import RxCocoa
 
 final class ExchangeRateView: UIView {
-
     // MARK: - Types
 
     enum Section {
@@ -29,16 +28,18 @@ final class ExchangeRateView: UIView {
     private lazy var searchBar = UISearchBar().then {
         $0.searchBarStyle = .minimal
         $0.placeholder = "통화 검색"
+        $0.enablesReturnKeyAutomatically = false // 검색어가 없어도 search 버튼 활성화
     }
 
     private lazy var tableView = UITableView().then {
         $0.register(ExchangeRateCell.self, forCellReuseIdentifier: ExchangeRateCell.identifier)
+        $0.separatorStyle = .none
         $0.rowHeight = 60
     }
 
     private lazy var noSearchResultsLabel = UILabel().then {
         $0.text = "검색 결과 없음"
-        $0.textColor = .gray
+        $0.textColor = .secondaryLabel
     }
 
     // MARK: - Initializers
@@ -126,6 +127,12 @@ private extension ExchangeRateView {
         searchBar.rx.text
             .orEmpty
             .bind(to: didChangeSearchText)
+            .disposed(by: disposeBag)
+
+        searchBar.rx.searchButtonClicked
+            .bind { [weak self] in
+                self?.searchBar.resignFirstResponder() // 키보드 내리기
+            }
             .disposed(by: disposeBag)
 
         tableView.rx.itemSelected

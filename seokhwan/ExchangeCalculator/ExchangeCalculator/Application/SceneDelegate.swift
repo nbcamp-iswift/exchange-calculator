@@ -3,7 +3,8 @@ import UIKit
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
-    private let container = AppDIContainer()
+    private var coordinator: Coordinator?
+    private let diContainer = DIContainer()
 
     func scene(
         _ scene: UIScene,
@@ -12,12 +13,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     ) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
 
-        let rootViewController = container.makeExchangeRateViewController()
-        let navigationController = UINavigationController(rootViewController: rootViewController)
-        navigationController.navigationBar.prefersLargeTitles = true
-
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = navigationController
-        window?.makeKeyAndVisible()
+        coordinator = Coordinator(window: window, diContainer: diContainer)
+        coordinator?.start()
     }
 }

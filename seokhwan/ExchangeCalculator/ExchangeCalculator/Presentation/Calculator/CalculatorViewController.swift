@@ -2,9 +2,9 @@ import UIKit
 import RxSwift
 
 final class CalculatorViewController: UIViewController {
-
     // MARK: - Properties
 
+    private let coordinator: Coordinator
     private let viewModel: CalculatorViewModel
     private let disposeBag = DisposeBag()
 
@@ -12,7 +12,8 @@ final class CalculatorViewController: UIViewController {
 
     // MARK: - Initializers
 
-    init(viewModel: CalculatorViewModel) {
+    init(coordinator: Coordinator, viewModel: CalculatorViewModel) {
+        self.coordinator = coordinator
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -33,6 +34,16 @@ final class CalculatorViewController: UIViewController {
         configure()
         viewModel.action.accept(.viewDidLoad)
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        Task {
+            await coordinator.updateLastScreen(
+                to: .calculatorView,
+                with: viewModel.state.exchangeRate.value
+            )
+        }
+    }
 }
 
 // MARK: - Configure
@@ -51,7 +62,9 @@ private extension CalculatorViewController {
         viewModel.state.exchangeRate
             .observe(on: MainScheduler.instance)
             .bind { [weak self] exchangeRate in
-                self?.calculatorView.update(with: exchangeRate)
+                guard let self,
+                      let exchangeRate else { return }
+                calculatorView.update(with: exchangeRate)
             }
             .disposed(by: disposeBag)
 
