@@ -119,4 +119,46 @@ final class CoreDataService {
             throw CoreDataError.deleteFailed
         }
     }
+
+    func saveLatestScene(exchangeRate: ExchangeRate, value: Bool) throws {
+        let existingScenes = try context.fetch(NSFetchRequest<LatestScene>(
+            entityName: "LatestScene")
+        )
+        for scene in existingScenes {
+            context.delete(scene)
+        }
+
+        guard let entity = NSEntityDescription.insertNewObject(
+            forEntityName: "LatestScene",
+            into: context
+        ) as? LatestScene else { throw CoreDataError.unknownEntity }
+
+        let fetchRequest = NSFetchRequest<ExChangeRateCoreDataModel>(
+            entityName: "ExChangeRateCoreDataModel"
+        )
+        fetchRequest.predicate = NSPredicate(
+            format: "currencyCode == %@", exchangeRate.currencyCode
+        )
+
+        guard let exchangeRateObject = try context.fetch(fetchRequest).first else {
+            throw CoreDataError.noMatch
+        }
+
+        entity.relationship = exchangeRateObject
+        entity.isEmptyScene = value
+
+        do {
+            try context.save()
+        } catch {
+            throw CoreDataError.saveFailed
+        }
+    }
+
+    func fetchSuccessedLatestScene() throws -> LatestScene {
+        let fetchRequest = NSFetchRequest<LatestScene>(entityName: "LatestScene")
+        guard let fetchLatestScene = try context.fetch(fetchRequest).first else {
+            throw CoreDataError.noMatch
+        }
+        return fetchLatestScene
+    }
 }

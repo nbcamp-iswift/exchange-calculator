@@ -9,4 +9,5 @@ import Foundation
 
 protocol DIContainerProtocol {
     func makeMainViewModel() -> MainViewModel
+    func makeSceneUseCase() -> SceneUseCase
 }

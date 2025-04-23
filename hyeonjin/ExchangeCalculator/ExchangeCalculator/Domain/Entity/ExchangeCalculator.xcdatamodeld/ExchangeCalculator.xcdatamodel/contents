@@ -7,4 +7,8 @@
         <attribute name="isBookmark" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="value" optional="YES" attributeType="String"/>
     </entity>
+    <entity name="LatestScene" representedClassName="LatestScene" syncable="YES">
+        <attribute name="isEmptyScene" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <relationship name="relationship" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ExChangeRateCoreDataModel"/>
+    </entity>
 </model>

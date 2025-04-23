@@ -24,4 +24,11 @@ final class DIContainer: DIContainerProtocol {
         let useCase = ExchangeRateUseCase(repository: repository)
         return MainViewModel(exchangeUseCase: useCase)
     }
+
+    func makeSceneUseCase() -> SceneUseCase {
+        let repository = SceneRepository(
+            coreDataService: CoreDataService(context: context)
+        )
+        return SceneUseCase(repository: repository)
+    }
 }

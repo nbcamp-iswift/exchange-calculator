@@ -10,6 +10,8 @@
 		9F42A7E12DAE703200ADD007 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 9F42A7E02DAE703200ADD007 /* SnapKit */; };
 		9F7593DC2DB62D09008F142F /* ExChangeRateCoreDataModel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7593DB2DB62D09008F142F /* ExChangeRateCoreDataModel+CoreDataProperties.swift */; };
 		9F7593DD2DB62D09008F142F /* ExChangeRateCoreDataModel+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7593DA2DB62D09008F142F /* ExChangeRateCoreDataModel+CoreDataClass.swift */; };
+		9F7596392DB8841F008F142F /* LatestScene+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7596382DB8841F008F142F /* LatestScene+CoreDataProperties.swift */; };
+		9F75963B2DB8845E008F142F /* LatestScene+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F75963A2DB8845E008F142F /* LatestScene+CoreDataClass.swift */; };
 		9F7CA4B72DAF4C5000B64BF0 /* RxBlocking in Frameworks */ = {isa = PBXBuildFile; productRef = 9F7CA4B62DAF4C5000B64BF0 /* RxBlocking */; };
 		9F7CA4BB2DAF4C5000B64BF0 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 9F7CA4BA2DAF4C5000B64BF0 /* RxCocoa */; };
 		9F7CA4BF2DAF4C5000B64BF0 /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = 9F7CA4BE2DAF4C5000B64BF0 /* RxRelay */; };
@@ -31,6 +33,8 @@
 		9F42A6F42DACDF9F00ADD007 /* ExchangeCalculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExchangeCalculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F7593DA2DB62D09008F142F /* ExChangeRateCoreDataModel+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ExChangeRateCoreDataModel+CoreDataClass.swift"; sourceTree = "<group>"; };
 		9F7593DB2DB62D09008F142F /* ExChangeRateCoreDataModel+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ExChangeRateCoreDataModel+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		9F7596382DB8841F008F142F /* LatestScene+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LatestScene+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		9F75963A2DB8845E008F142F /* LatestScene+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LatestScene+CoreDataClass.swift"; sourceTree = "<group>"; };
 		9F7CA59A2DAFB2E500B64BF0 /* ExchangeCalculatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExchangeCalculatorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F7CA5C32DB0875200B64BF0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -87,6 +91,8 @@
 		9F42A6EB2DACDF9F00ADD007 = {
 			isa = PBXGroup;
 			children = (
+				9F75963A2DB8845E008F142F /* LatestScene+CoreDataClass.swift */,
+				9F7596382DB8841F008F142F /* LatestScene+CoreDataProperties.swift */,
 				9F7593DA2DB62D09008F142F /* ExChangeRateCoreDataModel+CoreDataClass.swift */,
 				9F7593DB2DB62D09008F142F /* ExChangeRateCoreDataModel+CoreDataProperties.swift */,
 				9F7CA5C32DB0875200B64BF0 /* README.md */,
@@ -269,6 +275,8 @@
 			files = (
 				9F7593DC2DB62D09008F142F /* ExChangeRateCoreDataModel+CoreDataProperties.swift in Sources */,
 				9F7593DD2DB62D09008F142F /* ExChangeRateCoreDataModel+CoreDataClass.swift in Sources */,
+				9F7596392DB8841F008F142F /* LatestScene+CoreDataProperties.swift in Sources */,
+				9F75963B2DB8845E008F142F /* LatestScene+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
