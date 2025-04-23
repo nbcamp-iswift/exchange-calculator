@@ -48,6 +48,7 @@ final class ListCell: UITableViewCell, ReuseIdentifying {
 
     private let favoriteButton: UIButton = {
         let button = UIButton()
+        button.configuration?.contentInsets = .zero
         button.setImage(UIImage(systemName: "star"), for: .normal)
         button.setImage(UIImage(systemName: "star.fill"), for: .selected)
         button.tintColor = .systemYellow
@@ -77,14 +78,9 @@ final class ListCell: UITableViewCell, ReuseIdentifying {
 
 extension ListCell {
     private func configure() {
-        setAttributes()
         setHierachy()
         setConstraints()
         setBindings()
-    }
-
-    private func setAttributes() {
-        selectionStyle = .none
     }
 
     private func setHierachy() {
@@ -128,6 +124,7 @@ extension ListCell {
                 .equalTo(fluctuationLabel.snp.trailing)
                 .offset(Constant.Spacing.cellHorizontal)
             make.trailing.equalToSuperview().inset(Constant.Spacing.cellHorizontal)
+            make.width.equalTo(favoriteButton.snp.height).multipliedBy(2.0 / 3.0)
         }
     }
 
