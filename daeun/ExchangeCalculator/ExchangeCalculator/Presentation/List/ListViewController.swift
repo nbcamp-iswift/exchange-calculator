@@ -49,6 +49,11 @@ final class ListViewController: UIViewController {
         viewModel.action.send(.viewDidLoad)
         configure()
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        viewModel.action.send(.viewDidAppear)
+    }
 }
 
 // MARK: - Methods

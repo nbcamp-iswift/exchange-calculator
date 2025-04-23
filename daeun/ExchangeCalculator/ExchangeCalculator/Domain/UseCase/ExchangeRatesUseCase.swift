@@ -9,13 +9,23 @@ import Alamofire
 import Foundation
 
 protocol ExchangeRatesUseCase {
-    func execute() async -> Result<[ExchangeRate], AFError>
+    func loadList() async -> Result<[ExchangeRate], AFError>
+    func saveLastViewedExchangeRate(code: String)
+    func deleteLastViewedExchangeRate()
 }
 
 struct DefaultExchangeRatesUseCase: ExchangeRatesUseCase {
     let repository: ExchangeRatesRepository
 
-    func execute() async -> Result<[ExchangeRate], AFError> {
+    func loadList() async -> Result<[ExchangeRate], AFError> {
         await repository.fetchExchangeRates()
+    }
+
+    func saveLastViewedExchangeRate(code: String) {
+        repository.saveLastViewedExchangeRate(code: code)
+    }
+
+    func deleteLastViewedExchangeRate() {
+        repository.deleteLastViewedExchangeRate()
     }
 }

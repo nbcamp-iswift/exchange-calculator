@@ -17,6 +17,7 @@ final class ListViewModel: ViewModelProtocol {
 
     enum Action {
         case viewDidLoad
+        case viewDidAppear
         case didTapCell(Int)
         case didChangeSearchBarText(String)
         case didTapFavoriteButton(ExchangeRate)
@@ -45,6 +46,8 @@ final class ListViewModel: ViewModelProtocol {
             switch action {
             case .viewDidLoad:
                 self?.loadList()
+            case .viewDidAppear:
+                self?.deleteSelectedRate()
             case .didTapCell(let row):
                 self?.selectRate(at: row)
             case .didChangeSearchBarText(let text):
@@ -58,7 +61,7 @@ final class ListViewModel: ViewModelProtocol {
 
     private func loadList() {
         Task {
-            let result = await exchangeRatesUseCase.execute()
+            let result = await exchangeRatesUseCase.loadList()
             switch result {
             case let .success(data):
                 state.originalRates = data
@@ -69,7 +72,7 @@ final class ListViewModel: ViewModelProtocol {
         }
     }
 
-    func filterRates(with searchQuery: String) {
+    private func filterRates(with searchQuery: String) {
         state.currencSearchQuery = searchQuery
         let filteredRates = searchQuery.isEmpty
             ? state.originalRates
@@ -78,8 +81,10 @@ final class ListViewModel: ViewModelProtocol {
         state.hasMatches.send(!state.filteredRates.value.isEmpty)
     }
 
-    func selectRate(at row: Int) {
+    private func selectRate(at row: Int) {
         let exchangeRate = state.filteredRates.value[row]
+        saveSelectedRate(code: exchangeRate.currencyCode)
+
         let convertCurrencyUseCase = DefaultConvertCurrencyUseCase()
         let detailViewModel = DetailViewModel(
             exchangeRate: exchangeRate,
@@ -89,8 +94,16 @@ final class ListViewModel: ViewModelProtocol {
         state.showDetailVC.send(detailVC)
     }
 
-    func updateFavorite(for rate: ExchangeRate) {
+    private func updateFavorite(for rate: ExchangeRate) {
         favoriteExchangeUseCase.toggleFavorite(for: rate.currencyCode)
         loadList()
+    }
+
+    private func saveSelectedRate(code: String) {
+        exchangeRatesUseCase.saveLastViewedExchangeRate(code: code)
+    }
+
+    private func deleteSelectedRate() {
+        exchangeRatesUseCase.deleteLastViewedExchangeRate()
     }
 }
