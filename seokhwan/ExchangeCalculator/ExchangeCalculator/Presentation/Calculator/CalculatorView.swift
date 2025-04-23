@@ -130,6 +130,9 @@ private extension CalculatorView {
             .map { [weak self] in
                 self?.amountTextField.text?.trimmingCharacters(in: .whitespaces) ?? ""
             }
+            .do { [weak self] _ in
+                self?.amountTextField.resignFirstResponder() // 키보드 내리기
+            }
             .bind(to: didTapConvertButton)
             .disposed(by: disposeBag)
     }

@@ -28,6 +28,7 @@ final class ExchangeRateView: UIView {
     private lazy var searchBar = UISearchBar().then {
         $0.searchBarStyle = .minimal
         $0.placeholder = "통화 검색"
+        $0.enablesReturnKeyAutomatically = false // 검색어가 없어도 search 버튼 활성화
     }
 
     private lazy var tableView = UITableView().then {
@@ -126,6 +127,12 @@ private extension ExchangeRateView {
         searchBar.rx.text
             .orEmpty
             .bind(to: didChangeSearchText)
+            .disposed(by: disposeBag)
+
+        searchBar.rx.searchButtonClicked
+            .bind { [weak self] in
+                self?.searchBar.resignFirstResponder() // 키보드 내리기
+            }
             .disposed(by: disposeBag)
 
         tableView.rx.itemSelected
