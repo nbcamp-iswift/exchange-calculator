@@ -2,9 +2,9 @@ import Foundation
 
 // TODO: 이 요소가 UseCase로 분리될 만한 요소인지 고민해 보기
 final class LastScreenUseCase {
-    private let repository: LastScreenRepository
+    private let repository: LastScreenRepositoryProtocol
 
-    init(lastScreenRepository: LastScreenRepository) {
+    init(lastScreenRepository: LastScreenRepositoryProtocol) {
         repository = lastScreenRepository
     }
 
