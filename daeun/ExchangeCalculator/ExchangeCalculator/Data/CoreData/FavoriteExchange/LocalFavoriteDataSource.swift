@@ -20,7 +20,7 @@ final class LocalFavoriteDataSource {
 
         do {
             let results = try context.fetch(FavoriteExchange.fetchRequest())
-            return Dictionary(uniqueKeysWithValues: results.map { ($0.code ?? "", true) })
+            return Dictionary(uniqueKeysWithValues: results.map { ($0.code, true) })
         } catch {
             print("context read error")
         }

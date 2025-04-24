@@ -14,7 +14,7 @@ public extension FavoriteExchange {
         NSFetchRequest<FavoriteExchange>(entityName: "FavoriteExchange")
     }
 
-    @NSManaged var code: String?
+    @NSManaged var code: String
 }
 
 extension FavoriteExchange: Identifiable {}

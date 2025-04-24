@@ -29,7 +29,7 @@ struct DefaultExchangeRatesRepository: ExchangeRatesRepository {
                     countryName: CurrencyCodeMapper.name(for: code),
                     value: roundedValue,
                     favorited: favoriteMap[code] ?? false,
-                    lastValue: cachedRateMap[code] ?? 100.0
+                    lastValue: cachedRateMap[code] ?? roundedValue
                 )
             }
             .sorted {
@@ -42,17 +42,17 @@ struct DefaultExchangeRatesRepository: ExchangeRatesRepository {
         }
     }
 
-    private func updateCacheIfNeeded(on latestData: ExchangeRatesDTO) {
+    func updateCacheIfNeeded(on currentData: ExchangeRatesDTO) {
         let formatter = DateFormatter()
         formatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss Z"
 
-        guard let currentDate = formatter.date(from: latestData.lastUpdated) else { return }
+        guard let currentDate = formatter.date(from: currentData.lastUpdated) else { return }
         guard let cachedDate = rateChangeDataSource.readLastUpdatedDate() else {
-            rateChangeDataSource.updateData(to: latestData.rates, on: currentDate)
+            rateChangeDataSource.updateData(to: currentData.rates, on: currentDate)
             return
         }
         if currentDate.isAfterOneDay(comparedTo: cachedDate) {
-            rateChangeDataSource.updateData(to: latestData.rates, on: currentDate)
+            rateChangeDataSource.updateData(to: currentData.rates, on: currentDate)
         }
     }
 

@@ -19,7 +19,7 @@ final class LocalRateChangeDataSource {
         guard let context = container?.viewContext else { return [:] }
         do {
             let results = try context.fetch(CachedRate.fetchRequest())
-            return .init(uniqueKeysWithValues: results.map { ($0.code ?? "", $0.lastValue) })
+            return .init(uniqueKeysWithValues: results.map { ($0.code, $0.lastValue) })
         } catch {
             print("context read error: \(error)")
         }
@@ -29,7 +29,9 @@ final class LocalRateChangeDataSource {
     func readLastUpdatedDate() -> Date? {
         guard let context = container?.viewContext else { return nil }
         do {
-            let results = try context.fetch(CachedRate.fetchRequest())
+            let request = CachedRate.fetchRequest()
+            request.fetchLimit = 1
+            let results = try context.fetch(request)
             return results.first?.lastUpdated
         } catch {}
 
@@ -41,9 +43,7 @@ final class LocalRateChangeDataSource {
         let request = CachedRate.fetchRequest()
         do {
             let existing = try context.fetch(request)
-            let existingMap = Dictionary(
-                uniqueKeysWithValues: existing.map { ($0.code ?? "", $0) }
-            )
+            let existingMap = Dictionary(uniqueKeysWithValues: existing.map { ($0.code, $0) })
 
             guard let entity = NSEntityDescription.entity(
                 forEntityName: CachedRate.className,
@@ -52,12 +52,14 @@ final class LocalRateChangeDataSource {
 
             for (code, value) in rates {
                 if let object = existingMap[code] {
-                    object.lastValue = value
+                    object.lastValue = object.currValue
+                    object.currValue = value.roundedTo(digits: Constant.Digits.rate)
                     object.lastUpdated = currentDate
                 } else {
                     let newObject = CachedRate(entity: entity, insertInto: context)
                     newObject.code = code
                     newObject.lastValue = value.roundedTo(digits: Constant.Digits.rate)
+                    newObject.currValue = value.roundedTo(digits: Constant.Digits.rate)
                     newObject.lastUpdated = currentDate
                 }
             }
