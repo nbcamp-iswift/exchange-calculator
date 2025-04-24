@@ -2,9 +2,11 @@
 
 실시간 환율 정보를 기반으로 통화 간 변환이 가능한 iOS 앱입니다.  
 
+<br>
+
+https://github.com/user-attachments/assets/765ca70f-9fe3-4207-8f0a-066ebc448ae6
 
 
----
 
 ## 📲 주요 기능
 
@@ -13,7 +15,7 @@
 - 즐겨찾기 추가/삭제
 - 마지막으로 조회한 통화 정보 복원
 
----
+<br>
 
 ## 🧭 아키텍처
 
@@ -31,6 +33,8 @@ Repository
 📦 LocalDataSource (Core Data)
 ```
 
+<br>
+
 ### ✅ 기술 스택
 - **Swift 5**
 - **UIKit**
@@ -38,7 +42,7 @@ Repository
 - **Combine**
 - **Alamofire** (환율 API 호출)
 
----
+<br>
 
 ## 📁 프로젝트 구조
 ```
@@ -63,7 +67,7 @@ ExchangeCalculator/
 │   └── Mapper, Constant 등
 └── Resource/                   // Assets, Info.plist
 ```
----
+<br>
 
 ## 💾 Core Data 로컬 저장소
 
@@ -75,7 +79,7 @@ ExchangeCalculator/
 
 > 각각은 `LocalRateChangeDataSource`, `LocalFavoriteDataSource`, `LocalLastViewedDataSource` 클래스를 통해 관리됩니다.
 
----
+<br>
 
 ## 🧩 주요 유즈케이스
 
@@ -90,7 +94,7 @@ ExchangeCalculator/
 - 금액을 환율로 변환 (`execute`)
 - 에러처리 (`empty input`, `invalid number` 등)
 
----
+<br>
 
 ## 🧪 상태 관리 (ViewModel)
 
@@ -102,4 +106,4 @@ ExchangeCalculator/
   - 통화 변환 실행 및 결과 바인딩
   - Combine을 통한 상태 흐름 처리 (`PassthroughSubject`, `CurrentValueSubject` 활용)
 
----
+<br>
