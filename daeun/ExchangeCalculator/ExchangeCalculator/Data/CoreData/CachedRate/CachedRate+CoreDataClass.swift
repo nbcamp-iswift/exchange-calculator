@@ -15,6 +15,7 @@ public class CachedRate: NSManagedObject {
 
     enum Key {
         static let code = "code"
+        static let currValue = "currValue"
         static let lastValue = "lastValue"
         static let lastUpdated = "lastUpdated"
     }

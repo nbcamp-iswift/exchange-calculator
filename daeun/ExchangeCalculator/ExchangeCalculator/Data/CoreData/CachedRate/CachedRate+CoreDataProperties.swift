@@ -14,9 +14,10 @@ public extension CachedRate {
         NSFetchRequest<CachedRate>(entityName: "CachedRate")
     }
 
-    @NSManaged var code: String?
+    @NSManaged var code: String
     @NSManaged var lastValue: Double
-    @NSManaged var lastUpdated: Date?
+    @NSManaged var currValue: Double
+    @NSManaged var lastUpdated: Date
 }
 
 extension CachedRate: Identifiable {}
