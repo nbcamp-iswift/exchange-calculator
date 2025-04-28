@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		445E6F4D2DB22DC900DB825E /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 445E6F4C2DB22DC900DB825E /* README.md */; };
-		445E6F4F2DB22DD200DB825E /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 445E6F4E2DB22DD200DB825E /* .swiftlint.yml */; };
-		445E6F512DB22DD800DB825E /* .swiftFormat in Resources */ = {isa = PBXBuildFile; fileRef = 445E6F502DB22DD800DB825E /* .swiftFormat */; };
 		445E6FB12DB41E7400DB825E /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = 445E6FB02DB41E7400DB825E /* Then */; };
 		445E70272DB49F5D00DB825E /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 445E70262DB49F5D00DB825E /* RxCocoa */; };
 		44EB79F42DAD0274004B9935 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 44EB79F32DAD0274004B9935 /* SnapKit */; };
@@ -18,8 +16,6 @@
 
 /* Begin PBXFileReference section */
 		445E6F4C2DB22DC900DB825E /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = SOURCE_ROOT; };
-		445E6F4E2DB22DD200DB825E /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = .swiftlint.yml; path = "/Users/youseokhwan/Develop/nbcamp/exchange-calculator/.swiftlint.yml"; sourceTree = "<absolute>"; };
-		445E6F502DB22DD800DB825E /* .swiftFormat */ = {isa = PBXFileReference; lastKnownFileType = text; name = .swiftFormat; path = "/Users/youseokhwan/Develop/nbcamp/exchange-calculator/.swiftFormat"; sourceTree = "<absolute>"; };
 		44EB79412DACF2FD004B9935 /* ExchangeCalculator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExchangeCalculator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -63,8 +59,6 @@
 			isa = PBXGroup;
 			children = (
 				445E6F4C2DB22DC900DB825E /* README.md */,
-				445E6F4E2DB22DD200DB825E /* .swiftlint.yml */,
-				445E6F502DB22DD800DB825E /* .swiftFormat */,
 				44EB79432DACF2FD004B9935 /* ExchangeCalculator */,
 				44EB79422DACF2FD004B9935 /* Products */,
 			);
@@ -85,8 +79,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 44EB79542DACF2FF004B9935 /* Build configuration list for PBXNativeTarget "ExchangeCalculator" */;
 			buildPhases = (
-				44866B732DB0F81A008FE798 /* Run SwiftFormat Shell Script */,
-				44866B742DB0F822008FE798 /* Run SwiftLint Shell Script */,
 				44EB793D2DACF2FD004B9935 /* Sources */,
 				44EB793E2DACF2FD004B9935 /* Frameworks */,
 				44EB793F2DACF2FD004B9935 /* Resources */,
@@ -154,54 +146,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				445E6F512DB22DD800DB825E /* .swiftFormat in Resources */,
-				445E6F4F2DB22DD200DB825E /* .swiftlint.yml in Resources */,
 				445E6F4D2DB22DC900DB825E /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		44866B732DB0F81A008FE798 /* Run SwiftFormat Shell Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Run SwiftFormat Shell Script";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nCONFIG_PATH=\"../../.swiftformat\"\n\nif which swiftlint > /dev/null; then\n  if [ -f \"$CONFIG_PATH\" ]; then\n    swiftformat . --config \"$CONFIG_PATH\"\n  else\n    echo \"warning: SwiftFormat config file not found\"\n  fi\nelse\n  echo \"warning: SwiftFormat not installed\"\nfi\n";
-		};
-		44866B742DB0F822008FE798 /* Run SwiftLint Shell Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Run SwiftLint Shell Script";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [[ \"$(uname -m)\" == arm64 ]]; then\n    export PATH=\"/opt/homebrew/bin:$PATH\"\nfi\n\nCONFIG_PATH=\"../../.swiftlint.yml\"\n\nif which swiftlint > /dev/null; then\n  if [ -f \"$CONFIG_PATH\" ]; then\n    swiftlint --config \"$CONFIG_PATH\"\n  else\n    echo \"warning: SwiftLint config file not found\"\n  fi\nelse\n  echo \"warning: SwiftLint not installed\"\nfi\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		44EB793D2DACF2FD004B9935 /* Sources */ = {
